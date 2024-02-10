@@ -13,7 +13,7 @@ import java.awt.Toolkit;
 
 /**
  * Fenêtre du jeu.
- * Par défaut en plein écran (PAS ENCORE).
+ * Par défaut en plein écran (PAS ENCORE, mais presque , c'est pas un détail essentiel car on peut mettre en plein écran nous-même).
  * On y ajoutera les panels qui correspondent aux différentes
  * sections du jeu (menu, choix du niveau, interface de jeu).
  */
