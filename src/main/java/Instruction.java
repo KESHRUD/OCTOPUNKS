@@ -1,5 +1,3 @@
-package fichiers;
-
 import java.util.Stack;
 
 public class Instruction {
