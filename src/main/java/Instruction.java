@@ -1,124 +1,135 @@
 package src.main.java;
 
 public class Instruction {
-    private final String nomInstruction;
-    private String[] listArgs;
+    private final InstructionType instructionType;
+    private String[] arguments;
 
-    public Instruction(String command){
-
-        this.nomInstruction = command;
-    }
-    public Instruction(String command, String arg1){
-        this.nomInstruction = command;
-        this.listArgs = new String[1];
-        this.listArgs[0] = arg1;
+    public Instruction(InstructionType instructionType) {
+        this.instructionType = instructionType;
     }
 
-    public Instruction(String command, String arg1, String arg2){
-        this.nomInstruction = command;
-        this.listArgs = new String[2];
-        this.listArgs[0] = arg1;
-        this.listArgs[1] = arg2;
-
+    public Instruction(InstructionType instructionType, String... arguments) {
+        this.instructionType = instructionType;
+        this.arguments = arguments;
     }
 
-    public Instruction(String command, String arg1,String arg2,String arg3 ){
-        this.nomInstruction = command;
-        this.listArgs = new String[3];
-        this.listArgs[0] = arg1;
-        this.listArgs[1] = arg2;
-        this.listArgs[2] = arg3;
+    public InstructionType getInstructionType() {
+        return instructionType;
     }
 
-    public String getNomInstruction() {
-        return nomInstruction;
-    }
-    public String[] getInstructionArgs(){
-        return listArgs;
+    public String[] getArguments() {
+        return arguments;
     }
 
-    public void printInstruction(){
-        System.out.print(nomInstruction);
-        if (listArgs != null)
-            for (String args : listArgs)
-                System.out.print(" " + args);
-        System.out.println("\n");
+    public void printInstruction() {
+        System.out.print(instructionType);
+        if (arguments != null) {
+            for (String arg : arguments) {
+                System.out.print(" " + arg);
+            }
+        }
+        System.out.println();
     }
-    // Méthode pour exécuter une instruction
-  //ces méthodes sont à implementer dans la classe Robot
-    public void executer(Monde monde, Robot robot) {
-        switch (nomInstruction) {
-            case "COPY":
-                monde.copy(robot, argument);
+
+    public void execute(Monde monde, Robot robot) {
+        switch (instructionType) {
+            case COPY:
+                monde.copy(robot, arguments[0]);
                 break;
-            case "ADDI":
-                robot.add(argument);
+            case ADDI:
+                robot.add(arguments[0]);
                 break;
-            case "MULI":
-                robot.multiply(argument);
+            case MULI:
+                robot.multiply(arguments[0]);
                 break;
-            case "SUBI":
-                robot.subtract(argument);
+            case SUBI:
+                robot.subtract(arguments[0]);
                 break;
-            case "JUMP":
-                robot.jump(argument);
+            case JUMP:
+                robot.jump(Integer.parseInt(arguments[0]));
                 break;
-            case "FJMP":
-                robot.conditionalJump(argument);
+            case FJMP:
+                robot.conditionalJump(Integer.parseInt(arguments[0]));
                 break;
-            case "LINK":
-                robot.link(argument);
+            case LINK:
+                robot.link(arguments[0]);
                 break;
-            case "TEST_EOF":
+            case TEST_EOF:
                 robot.testEndOfFile();
                 break;
-            case "GRAB":
+            case GRAB:
                 robot.grab();
                 break;
-            case "DROP":
+            case DROP:
                 robot.drop();
                 break;
-            case "NOOP":
+            case NOOP:
                 // Ne rien faire
                 break;
-            case "DIVI":
-                robot.divide(argument);
+            case DIVI:
+                robot.divide(arguments[0]);
                 break;
-            case "MODI":
-                robot.modulo(argument);
+            case MODI:
+                robot.modulo(arguments[0]);
                 break;
-            case "SWIZ":
+            case SWIZ:
                 robot.swizzle();
                 break;
-            case "TEST":
-                robot.test(argument);
+            case TEST:
+                robot.test(arguments[0]);
                 break;
-            case "KILL":
+            case KILL:
                 robot.kill();
                 break;
-            case "MODE":
-                robot.mode(argument);
+            case MODE:
+                robot.mode(arguments[0]);
                 break;
-            case "TEST_MRD":
-                robot.testMemory(argument);
+            case TEST_MRD:
+                robot.testMemory(arguments[0]);
                 break;
-            case "VOID_M":
+            case VOID_M:
                 robot.voidMemory();
                 break;
-            case "SEEK":
-                robot.seek(argument);
+            case SEEK:
+                robot.seek(Integer.parseInt(arguments[0]));
                 break;
-            case "MAKE":
-                robot.make(argument);
+            case MAKE:
+                robot.make(arguments[0]);
                 break;
-            case "WIPE":
+            case WIPE:
                 robot.wipe();
                 break;
-            case "VOID_F":
+            case VOID_F:
                 robot.voidFile();
                 break;
             default:
-                throw new UnsupportedOperationException("Instruction non prise en charge : " + type);
+                throw new UnsupportedOperationException("Instruction non prise en charge : " + instructionType);
         }
+    }
+
+    public enum InstructionType {
+        COPY,
+        ADDI,
+        MULI,
+        SUBI,
+        JUMP,
+        FJMP,
+        LINK,
+        TEST_EOF,
+        GRAB,
+        DROP,
+        NOOP,
+        DIVI,
+        MODI,
+        SWIZ,
+        TEST,
+        KILL,
+        MODE,
+        TEST_MRD,
+        VOID_M,
+        SEEK,
+        MAKE,
+        WIPE,
+        VOID_F
     }
 }
