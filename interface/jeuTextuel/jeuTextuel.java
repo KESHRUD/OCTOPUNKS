@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import src.main.java.Instruction;
 
-public class JeuTextuel{
-    public JeuTextuel() {
+public class jeuTextuel{
+    public jeuTextuel() {
         boolean jeuEnCours = true;
 
         String menu;
