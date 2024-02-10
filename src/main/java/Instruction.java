@@ -1,93 +1,120 @@
-import java.util.Stack;
+package src.main.java;
 
 public class Instruction {
-    private TypeInstruction type;
-    private int argument;
+    private final String nomInstruction;
+    private String[] listArgs;
 
-    public Instruction(TypeInstruction type, int argument) {
-        this.type = type;
-        this.argument = argument;
+    public Instruction(String command){
+
+        this.nomInstruction = command;
+    }
+    public Instruction(String command, String arg1){
+        this.nomInstruction = command;
+        this.listArgs = new String[1];
+        this.listArgs[0] = arg1;
     }
 
-    public TypeInstruction getType() {
-        return type;
+    public Instruction(String command, String arg1, String arg2){
+        this.nomInstruction = command;
+        this.listArgs = new String[2];
+        this.listArgs[0] = arg1;
+        this.listArgs[1] = arg2;
+
     }
 
-    public int getArgument() {
-        return argument;
+    public Instruction(String command, String arg1,String arg2,String arg3 ){
+        this.nomInstruction = command;
+        this.listArgs = new String[3];
+        this.listArgs[0] = arg1;
+        this.listArgs[1] = arg2;
+        this.listArgs[2] = arg3;
     }
 
+    public String getNomInstruction() {
+        return nomInstruction;
+    }
+    public String[] getInstructionArgs(){
+        return listArgs;
+    }
+
+    public void printInstruction(){
+        System.out.print(nomInstruction);
+        if (listArgs != null)
+            for (String args : listArgs)
+                System.out.print(" " + args);
+        System.out.println("\n");
+    }
     // Méthode pour exécuter une instruction
   //ces méthodes sont à implementer dans la classe Robot
     public void executer(Monde monde, Robot robot) {
-        switch (type) {
-            case COPY:
+        switch (nomInstruction) {
+            case "COPY":
                 monde.copy(robot, argument);
                 break;
-            case ADDI:
+            case "ADDI":
                 robot.add(argument);
                 break;
-            case MULI:
+            case "MULI":
                 robot.multiply(argument);
                 break;
-            case SUBI:
+            case "SUBI":
                 robot.subtract(argument);
                 break;
-            case JUMP:
+            case "JUMP":
                 robot.jump(argument);
                 break;
-            case FJMP:
+            case "FJMP":
                 robot.conditionalJump(argument);
                 break;
-            case LINK:
+            case "LINK":
                 robot.link(argument);
                 break;
-            case TEST_EOF:
+            case "TEST_EOF":
                 robot.testEndOfFile();
                 break;
-            case GRAB:
+            case "GRAB":
                 robot.grab();
                 break;
-            case DROP:
+            case "DROP":
                 robot.drop();
                 break;
-            case NOOP:
+            case "NOOP":
                 // Ne rien faire
                 break;
-            case DIVI:
+            case "DIVI":
                 robot.divide(argument);
                 break;
-            case MODI:
+            case "MODI":
                 robot.modulo(argument);
                 break;
-            case SWIZ:
+            case "SWIZ":
                 robot.swizzle();
                 break;
-            case TEST:
+            case "TEST":
                 robot.test(argument);
                 break;
-            case KILL:
+            case "KILL":
                 robot.kill();
                 break;
-            case MODE:
+            case "MODE":
                 robot.mode(argument);
                 break;
-            case TEST_MRD:
+            case "TEST_MRD":
                 robot.testMemory(argument);
                 break;
-            case VOID_M:
+            case "VOID_M":
                 robot.voidMemory();
                 break;
-            case SEEK:
+            case "SEEK":
                 robot.seek(argument);
                 break;
-            case MAKE:
+            case "MAKE":
                 robot.make(argument);
                 break;
-            case WIPE:
+            case "WIPE":
                 robot.wipe();
                 break;
-            case VOID_F:
+            case "VOID_F":
                 robot.voidFile();
                 break;
             default:
