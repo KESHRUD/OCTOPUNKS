@@ -105,16 +105,16 @@ public class jeuTextuel{
             String[] code = instruction.split(" ");
             switch (code.length) {
                 case 1:
-                    listeInstruction.add(new Instruction(code[0]));
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0])));
                     break;
                 case 2:
-                    listeInstruction.add(new Instruction(code[0], code[1]));
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0]), code[1]));
                     break;
                 case 3:
-                    listeInstruction.add(new Instruction(code[0], code[1], code[2]));
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0]), code[1], code[2]));
                     break;
                 case 4:
-                    listeInstruction.add(new Instruction(code[0], code[1], code[2], code[3]));
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0]), code[1], code[2], code[3]));
                     break;
                 default:
                     System.out.println("Erreur nombres d'arguments");
