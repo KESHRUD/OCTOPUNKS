@@ -353,4 +353,16 @@ public class Robot {
 }
 }
 }
-
+/**
+ * voila le complication: que j'ai trouvé sur les instructions
+ *  -JUMP FJMP : je sais pas trop comment faire ca 
+ *  - LINK : la logique du code actuel ne permet pas de faire ca 
+ *  - TEST_EOF GRAB DROP : a mon avis on doit ajouter des attributs fichiers dans robots
+ *  - KILL : a implemnetr dans mondeca cosnsiste a tuer l'autre robot
+ *  - Mode : le manuel dit ca Toggle the M register between the local and global channels. mais j'ai pas compris ce que ca fait 
+ *   - TSET_MRD VOID_M SEEK: pareil
+ *   - MAKE WIPE VOID F: probleme de fichier le robot doit creer et grap un nv fichier  les attribust actuelle ne permettent pas ca 
+ *  
+ * En gros c'est un probleme d'attributs(fichier que tient le robot)  il manque des attributs dans cette classe
+ * Je vais essayer de regler ca au plus vite
+ */
