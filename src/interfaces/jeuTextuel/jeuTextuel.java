@@ -44,7 +44,7 @@ public class jeuTextuel {
 
     public void lancerNiveau(String cheminNiveau) {
         boolean executionEnCours = true;
-        int i = 0;
+        int i = 0,j = 0;
         boolean niveauEnCours = true;
         String asmbCode = "";
         String lastLign = "";
@@ -53,6 +53,7 @@ public class jeuTextuel {
         System.out.println("Pour terminer le niveau vous devrez faire en sorte que le robot\namène l'objet dans la 3e grille !");
         System.out.println("Saisissez le code assembleur,\nn'oubliez pas d'utiliser l'instruction HALT pour terminer votre code ASBM.\n(entrez 'Menu' pour retourner au menu)\n");
         while (niveauEnCours && executionEnCours) {
+
             // INTERFACE CODE ASSEMBLEUR //
 
             Scanner code = new Scanner(System.in);
@@ -61,15 +62,28 @@ public class jeuTextuel {
                 asmbCode += lastLign + "\n";
             }
 
-            if (lastLign.equalsIgnoreCase("Menu")) niveauEnCours = false;
-            System.out.println("Executer pas à pas votre code Assembleur en appuyant sur 'Entrée'");
-            ArrayList<Instruction> codeAssembleur = parse(asmbCode);
+            // PARTIE EXECUTION DU CODE ASSEMBLEUR
 
-            while (i < codeAssembleur.size()) {
-                lastLign = code.nextLine(); // Permet d'attendre que l'utilisateur appuie sur ENTREE
-                codeAssembleur.get(i).printInstruction();
+            if (lastLign.equalsIgnoreCase("Menu")) niveauEnCours = false;
+            System.out.println("(1) Exécuter pas à pas les instructions\n(2) Exécuter toutes les instructions directement");
+            String choix = code.nextLine();
+            ArrayList<Instruction> codeAssembleur = parse(asmbCode);
+            if (choix.equals("1")) {
+                System.out.println("Exécuter pas à pas votre code Assembleur en appuyant sur 'Entrée'");
+                while (i < codeAssembleur.size()) {
+                    lastLign = code.nextLine(); // Permet d'attendre que l'utilisateur appuie sur ENTREE
+                    codeAssembleur.get(i).printInstruction();
+                    afficheNiveau(cheminNiveau);
+                    i++;
+                }
+            }
+            else {
+                System.out.println("Exécution du code assembleur :");
+                while (j < codeAssembleur.size()) {
+                    codeAssembleur.get(j).printInstruction();
+                    j++;
+                }
                 afficheNiveau(cheminNiveau);
-                i++;
             }
             executionEnCours = false;
         }
