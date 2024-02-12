@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class jeuTextuel {
     public jeuTextuel() {
         boolean jeuEnCours = true;
-
         String menu;
 
         System.out.println("Bienvenue sur Octopunks !\n");
