@@ -1,6 +1,6 @@
 package src.interfaces.jeuTextuel;
 
-import src.main.java.Instruction;
+import src.main.Instruction;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
