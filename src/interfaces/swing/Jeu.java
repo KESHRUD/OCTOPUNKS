@@ -1,8 +1,5 @@
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.Toolkit;
-
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 
 
 public class Jeu extends JPanel
