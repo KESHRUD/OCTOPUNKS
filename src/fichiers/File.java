@@ -1,10 +1,10 @@
 package fichiers;
 
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class File extends Fichier {
-    private Queue<Integer> file;
+
+    private LinkedList<Integer> file;
 
     public File() {
         file = new LinkedList<>();
@@ -13,8 +13,8 @@ public class File extends Fichier {
     @Override
     public void lire() {
         if (!file.isEmpty()) {
-            int valeur = file.poll();
-            System.out.println("Lecture de la valeur : " + valeur);
+            int valeur = file.removeFirst();
+            System.out.println("Valeur lue depuis la file : " + valeur);
         } else {
             System.out.println("La file est vide !");
         }
@@ -22,12 +22,18 @@ public class File extends Fichier {
 
     @Override
     public void ecrire(int valeur) {
-        file.offer(valeur);
-        System.out.println("Ecriture de la valeur : " + valeur);
+        file.addLast(valeur);
+        System.out.println("Valeur " + valeur + " ajoutée à la file.");
     }
 
     @Override
     public boolean estVide() {
         return file.isEmpty();
+    }
+
+    @Override
+    public void vider() {
+        file.clear();
+        System.out.println("La file a été vidée.");
     }
 }
