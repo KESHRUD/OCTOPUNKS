@@ -12,13 +12,12 @@ import java.awt.Color;
  * Classe qui contient les commandes de mouvement du robot ( pas, stop, automatique…).
  * Il y a des choses à rajouter (keylistener).
  */
-public class Commandes extends JPanel
+public class zoneCommandes extends JPanel
 {
     private JLabel commandesLabel;
     private JButton boutonPas;
     private JButton boutonStop;
     private JButton boutonAutomatique;
-    private JButton boutonReinitialiser;
 
     /**
      * Le modèle de bouton standard est un carré de 60px * 60px,
@@ -27,7 +26,7 @@ public class Commandes extends JPanel
     private int boutonWidth = 60;
     private int boutonHeight = boutonWidth;
 
-    public Commandes()
+    public zoneCommandes()
     {
         this.setBounds(800,500,200,250);
         this.setBackground(Color.GREEN);
@@ -74,9 +73,5 @@ public class Commandes extends JPanel
         });
         this.add(this.boutonAutomatique);
 
-        /**
-         * Créer et ajouter un bouton de réinitialisation de la position
-         * du robot.
-         */
     }
 }
