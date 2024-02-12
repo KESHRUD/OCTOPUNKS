@@ -1,7 +1,11 @@
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.Font;
 
 
 /**
@@ -11,14 +15,20 @@ import java.awt.event.ActionListener;
  */
 public class Gameplay extends JPanel
 {
+    private Octopunks octopunks;
     private int niveau;
+
+    private JLabel titreSection;
+    private JPanel zoneChoixNiveau;
+    private JButton bouton1, bouton2, bouton3, bouton4;
 
     /**
      * Crée la page de choix du gameplay.
      */
-    public Gameplay()
+    public Gameplay(Octopunks octopunks)
     {
-        this.setBounds(0,0,(int)Octopunks.dimension.getWidth(),(int)Octopunks.dimension.getHeight());
+        this.octopunks = octopunks;
+        this.setBounds(0,0,(int)octopunks.getDimension().getWidth(),(int)octopunks.getDimension().getHeight());
         this.setLayout(null);
         this.setBackground(Color.BLUE);
 
@@ -29,12 +39,12 @@ public class Gameplay extends JPanel
          * - choix arbitraire de la couleur du label
          * - ajout du label dans la fenêtre
          */
-        JLabel titreSection = new JLabel("Choisissez un niveau :");
-        titreSection.setSize(300, 30);
-        titreSection.setLocation((int)(Octopunks.dimension.getWidth()/2-titreSection.getWidth()/2),20);
-        titreSection.setFont(new Font(Font.SERIF,Font.BOLD,25));
-        titreSection.setForeground(Color.GREEN);
-        this.add(titreSection);
+        this.titreSection = new JLabel("Choisissez un niveau :");
+        this.titreSection.setSize(300, 30);
+        this.titreSection.setLocation((int)(octopunks.getDimension().getWidth()/2-titreSection.getWidth()/2),20);
+        this.titreSection.setFont(new Font(Font.SERIF,Font.BOLD,25));
+        this.titreSection.setForeground(Color.GREEN);
+        this.add(this.titreSection);
 
 
         /**
@@ -47,13 +57,13 @@ public class Gameplay extends JPanel
          *    c'est pourquoi elle est privée.]
          * - ajout de la zone de boutons dans le panel principal
          */
-        JPanel zoneBoutons = new JPanel();
-        zoneBoutons.setLayout(null);
-        zoneBoutons.setSize((int)Octopunks.dimension.getWidth()/2,(int)Octopunks.dimension.getHeight()/2);
-        zoneBoutons.setLocation((int)Octopunks.dimension.getWidth()/4,(int)Octopunks.dimension.getHeight()/4);
-        zoneBoutons.setBackground(Color.PINK);
-        creerBoutons(zoneBoutons);
-        this.add(zoneBoutons);
+        this.zoneChoixNiveau = new JPanel();
+        this.zoneChoixNiveau.setLayout(null);
+        this.zoneChoixNiveau.setSize((int)octopunks.getDimension().getWidth()/2,(int)octopunks.getDimension().getHeight()/2);
+        this.zoneChoixNiveau.setLocation((int)octopunks.getDimension().getWidth()/4,(int)octopunks.getDimension().getHeight()/4);
+        this.zoneChoixNiveau.setBackground(Color.PINK);
+        creerBoutons(this.zoneChoixNiveau);
+        this.add(this.zoneChoixNiveau);
     }
 
 
@@ -64,6 +74,8 @@ public class Gameplay extends JPanel
      * @requires !(panel == null)
      * @ensures panel.contains(niveaux_liste) À VERIFIER
      * @throws new NullPointerException si le panel est null.
+     * (N.B : cette méthode est private car elle ne sert qu'à rendre le code 
+     * du constructeur plus propre.)
      */
     private void creerBoutons(JPanel panel)
     {
@@ -72,43 +84,39 @@ public class Gameplay extends JPanel
             throw new NullPointerException("Le panel est null.");
         }
 
-
-
         JLabel descriptif = new JLabel("");
         descriptif.setBounds(275, 300, 600, 300);
         panel.add(descriptif);
 
         // Création du 2ème bouton
-        JButton bouton2 = new JButton("Geek du vendredi soir");
-        bouton2.setSize(200,70);
-        bouton2.setLocation((int)(Octopunks.dimension.getWidth()/2 - bouton2.getWidth())/2, 100);
-        bouton2.addActionListener(new ActionListener() {
+        this.bouton2 = new JButton("Geek du vendredi soir");
+        this.bouton2.setSize(200,70);
+        this.bouton2.setLocation((int)(octopunks.getDimension().getWidth()/2 - this.bouton2.getWidth())/2, 100);
+        this.bouton2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
                 descriptif.setText("Destiné à ceux qui n'ont plus de vie sociale à cause du niveau 1.");
-                niveau = 2;
-                System.out.println("Niveau : " + niveau);
+                //this.niveau = 2;
+                //System.out.println("Niveau : " + this.niveau);
             }
         });
-        panel.add(bouton2);
+        panel.add(this.bouton2);
 
         // Création du 1er bouton
-        JButton bouton1 = new JButton("Octo-bébé");
-        bouton1.setSize(100,70);
-        bouton1.setLocation(bouton2.getX() - bouton1.getWidth(), 100);
-        bouton1.addActionListener(new ActionListener() {
+        this.bouton1 = new JButton("Octo-bébé");
+        this.bouton1.setSize(100,70);
+        this.bouton1.setLocation(this.bouton2.getX() - this.bouton1.getWidth(), 100);
+        this.bouton1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
                 descriptif.setText("Pour les nouveaux qui découvrent le jeu.");
-                niveau = 1;
-                System.out.println("Niveau : " + niveau);
+                //super.niveau = 1;
+                //System.out.println("Niveau : " + this.niveau);
             }
         });
-        panel.add(bouton1);
-
-        
+        panel.add(this.bouton1);
 
         // Création du 3ème bouton
         JButton bouton3 = new JButton("Maître Poulpe");
@@ -118,8 +126,8 @@ public class Gameplay extends JPanel
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
                 descriptif.setText("Réservé exclusivement aux nerds qui ont Octopunks dans les veines.");
-                niveau = 3;
-                System.out.println("Niveau : " + niveau);
+                //this.niveau = 3;
+                //System.out.println("Niveau : " + this.niveau);
             }
         });
         panel.add(bouton3);
@@ -131,22 +139,13 @@ public class Gameplay extends JPanel
         JButton bouton4 = new JButton("Confirmer");
         bouton4.setSize(100,70);
         bouton4.setLocation(bouton3.getX(), panel.getHeight()/2);
-        bouton4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                // À MODIFIER
-            }
-        });
+        // NE PAS OUBLIER D'AJOUTER UN LISTENER DANS LA CLASSE PRINCIPALE POUR CE BOUTON !!!
+        // SINON PAS DE CHANGEMENT DE PAGE !!!
         panel.add(bouton4);
     }
 
     public int getNiveau()
     {
         return this.niveau;
-    }
-
-    public void setActionListener(ActionListener l)
-    {
-
     }
 }
