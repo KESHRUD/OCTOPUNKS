@@ -1,17 +1,25 @@
+
+import fichiers.Fichier;
+
 public class Robot {
     private int positionX;
     private int positionY;
-    private int[] memory;
-    private int registreX;
+    private int registreX;//les 4 registres pour chaque robot 
     private int registreT;
     private int registreF;
     private int registreM;
+    private Fichier file; //le fichier que le robot peut tenir 
 
     // Constructeur
     public Robot(int positionX, int positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
-        this.memory = new int[2]; // Deux zones de mémoire par robot
+        file = null;
+    }
+    
+    //methode pour verifier si le robot tient un fichier
+    public boolean hasAFile(){
+        return (this.file != null);
     }
 
     // Méthode pour déplacer le robot en fonction des instructions
@@ -47,13 +55,7 @@ public class Robot {
         this.positionY = positionY;
     }
 
-    public int[] getMemory() {
-        return memory;
-    }
-
-    public void setMemory(int[] memory) {
-        this.memory = memory;
-    }
+    
 
     public int getRegistreX() {
         return registreX;
@@ -95,7 +97,7 @@ public class Robot {
                 setRegistreM(value);
                 break;
             case "T":
-                setRegistreM(value);
+                setRegistreT(value);
                 break;
             case "X":
                 setRegistreX(value);
@@ -105,6 +107,277 @@ public class Robot {
         }
     }
 
+    //COPY source(R/N) dest(R)
+    public void copy(String src, String dest){
+        int value;
+        switch(src){
+            case "F":
+                value = getRegistreF();
+                break;
+            case "M":
+                value = getRegistreM();
+                break;
+            case "T":
+                value = getRegistreT();
+                break;
+            case "X":
+                value = getRegistreX();
+                break;
+            default :
+                value = Integer.parseInt(src);
+                break;
+        }
+        setRegisterValue(dest, value);//dest doit etre un registre
+    }
+    //ADDI a(R/N) b(R/N) dest(R)
+    public void add(String a, String b, String dest){
+        int valueA, valueB;
+        switch(a){
+            case "F":
+                valueA = getRegistreF();
+                break;
+            case "M":
+                valueA = getRegistreM();
+                break;
+            case "T":
+                valueA = getRegistreT();
+                break;
+            case "X":
+                valueA = getRegistreX();
+                break;
+            default :
+                valueA = Integer.parseInt(a);
+                break;
+        }
+        switch(b){
+            case "F":
+                valueB = getRegistreF();
+                break;
+            case "M":
+                valueB = getRegistreM();
+                break;
+            case "T":
+                valueB = getRegistreT();
+                break;
+            case "X":
+                valueB = getRegistreX();
+                break;
+            default :
+                valueB = Integer.parseInt(b);
+                break;
+        }
+        int sum = valueA + valueB;
+        setRegisterValue(dest, sum);
+    }
+
+    public void multiply(String a, String b, String dest){
+        int valueA, valueB;
+        switch(a){
+            case "F":
+                valueA = getRegistreF();
+                break;
+            case "M":
+                valueA = getRegistreM();
+                break;
+            case "T":
+                valueA = getRegistreT();
+                break;
+            case "X":
+                valueA = getRegistreX();
+                break;
+            default :
+                valueA = Integer.parseInt(a);
+                break;
+        }
+        switch(b){
+            case "F":
+                valueB = getRegistreF();
+                break;
+            case "M":
+                valueB = getRegistreM();
+                break;
+            case "T":
+                valueB = getRegistreT();
+                break;
+            case "X":
+                valueB = getRegistreX();
+                break;
+            default :
+                valueB = Integer.parseInt(b);
+                break;
+        }
+        int product = valueA * valueB;
+        setRegisterValue(dest, product);
+    }
+
+    // SUBI a(R/N) b(R/N) dest(R)
+    public void substract(String a, String b, String dest){
+        int valueA, valueB;
+        switch(a){
+            case "F":
+                valueA = getRegistreF();
+                break;
+            case "M":
+                valueA = getRegistreM();
+                break;
+            case "T":
+                valueA = getRegistreT();
+                break;
+            case "X":
+                valueA = getRegistreX();
+                break;
+            default :
+                valueA = Integer.parseInt(a);
+                break;
+        }
+        switch(b){
+            case "F":
+                valueB = getRegistreF();
+                break;
+            case "M":
+                valueB = getRegistreM();
+                break;
+            case "T":
+                valueB = getRegistreT();
+                break;
+            case "X":
+                valueB = getRegistreX();
+                break;
+            default :
+                valueB = Integer.parseInt(b);
+                break;
+        }
+        int diff = valueA - valueB;
+        setRegisterValue(dest, diff);
+    }
+
+    public void divide (String a , String b, String dest){
+        int valueA, valueB;
+        switch(a){
+            case "F":
+                valueA = getRegistreF();
+                break;
+            case "M":
+                valueA = getRegistreM();
+                break;
+            case "T":
+                valueA = getRegistreT();
+                break;
+            case "X":
+                valueA = getRegistreX();
+                break;
+            default :
+                valueA = Integer.parseInt(a);
+                break;
+        }
+        switch(b){
+            case "F":
+                valueB = getRegistreF();
+                break;
+            case "M":
+                valueB = getRegistreM();
+                break;
+            case "T":
+                valueB = getRegistreT();
+                break;
+            case "X":
+                valueB = getRegistreX();
+                break;
+            default :
+                valueB = Integer.parseInt(b);
+                break;
+        }
+        if(valueB == 0){
+            throw new IllegalArgumentException("division by zero is not allowed");
+        }
+        int quotient = valueA / valueB;
+        setRegisterValue(dest, quotient);
+    }
+
+    public void modulo(String a , String b, String dest){
+        int valueA, valueB;
+        switch(a){
+            case "F":
+                valueA = getRegistreF();
+                break;
+            case "M":
+                valueA = getRegistreM();
+                break;
+            case "T":
+                valueA = getRegistreT();
+                break;
+            case "X":
+                valueA = getRegistreX();
+                break;
+            default :
+                valueA = Integer.parseInt(a);
+                break;
+        }
+        switch(b){
+            case "F":
+                valueB = getRegistreF();
+                break;
+            case "M":
+                valueB = getRegistreM();
+                break;
+            case "T":
+                valueB = getRegistreT();
+                break;
+            case "X":
+                valueB = getRegistreX();
+                break;
+            default :
+                valueB = Integer.parseInt(b);
+                break;
+        }
+        if(valueB == 0){
+            throw new IllegalArgumentException("division by zero is not allowed");
+        }
+        int mod = valueA % valueB;
+        setRegisterValue(dest, mod);
+    }
+
+    //SWIZ input(R/N) mask(R/N) dest(R)
+    public void swizzle(String input, String mask, String dest){
+        //a completer
+    }
+    //JUMP dest(L
+    public void jump(String lines){
+        //a completer faut que je recupere d'abord une arraylist d'instruction
+    }
+
+    //JUMP dest(L
+    public void conditionalJump(String lines){
+        if(registreT == 0){
+            jump(lines);
+        }
+    }
+
+    public void link(String nomMonde){
+        //a completer
+        // a en discuter demain avec amine
+    }
+
+    public void testEndOfFile(){
+
+    }
+
+
+
+
+
+
+
+//tout ce qui en bas pas la peine de le voir 
+//ne supprimer pas j'ai des truc a recup
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * @param label
+ */
     public void jumpToLabel(int label){
         //d'apres le prof on doit juste untiliser un entier
         // comme ca on saute le nombre indiqué d'instruction
@@ -121,10 +394,10 @@ public class Robot {
         //a completer
         return true;
     }
-
-    /**
+}
+    /*
      * @param instruction
-     */
+
     public void executeInstruction(Instruction instruction) {
         String[] arguments = instruction.getArguments();
         int valueA;
