@@ -1,14 +1,20 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class Salle {
-    private int[][] contenu; // Représentation de ce qui se trouve dans la salle
+    private Champ[][] contenu; // Représentation de ce qui se trouve dans la salle
     private Map<Integer, String> portes; // Représentation des portes numérotées
 
     // Constructeur
     public Salle() {
-        this.contenu = new int[5][5];
+        this.contenu = new Champ[5][5];
+        initialiserContenu();
         this.portes = new HashMap<>();
+    }
+
+    private void initialiserContenu() {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                contenu[i][j] = new Champ();
+            }
+        }
     }
 
     // Méthode pour ajouter une porte
@@ -18,25 +24,25 @@ public class Salle {
 
     // Méthode pour vérifier si un champ est occupé
     public boolean estOccupe(int x, int y) {
-        return contenu[x][y] == 1;
+        return contenu[x][y].estOccupe();
     }
 
     // Méthode pour occuper un champ
     public void occuperChamp(int x, int y) {
-        contenu[x][y] = 1;
+        contenu[x][y].occuper();
     }
 
     // Méthode pour libérer un champ
     public void libererChamp(int x, int y) {
-        contenu[x][y] = 0;
+        contenu[x][y].liberer();
     }
 
     // Getters et setters
-    public int[][] getContenu() {
+    public Champ[][] getContenu() {
         return contenu;
     }
 
-    public void setContenu(int[][] contenu) {
+    public void setContenu(Champ[][] contenu) {
         this.contenu = contenu;
     }
 
