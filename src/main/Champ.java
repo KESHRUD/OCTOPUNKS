@@ -1,23 +1,56 @@
-package main;
-import java.util.HashMap;
-import java.util.Map;
-
 public class Champ {
-    private boolean occupe;
+    private TypeCellule type;
+    private boolean occupe; // Indique si le champ est occupé
+    private String contenu; // Contenu du champ (fichier, registre, robot, etc.)
 
-    public Champ() {
-        this.occupe = false;
+    public Champ(TypeCellule type) {
+        this.type = type;
+        this.occupe = false; // Initialise le champ comme non occupé par défaut
+        this.contenu = null; // Initialise le contenu comme vide par défaut
     }
 
-    public boolean estOccupe() {
-        return occupe;
+    public TypeCellule getType() {
+        return type;
     }
 
-    public void occuper() {
-        occupe = true;
+    public void setType(TypeCellule type) {
+        this.type = type;
+    }
+
+    // Méthode estOccupe pour le type EXA
+    public boolean estOccupeEXA() {
+        return occupe && type == TypeCellule.EXA;
+    }
+
+    // Méthode estOccupe pour le type FICHIER
+    public boolean estOccupeFICHIER() {
+        return occupe && type == TypeCellule.FICHIER;
+    }
+
+    // Méthode estOccupe pour le type REGISTRE
+    public boolean estOccupeREGISTRE() {
+        return occupe && type == TypeCellule.REGISTRE;
+    }
+
+    public void occuper(String contenu) {
+        if (type == TypeCellule.EXA || type == TypeCellule.FICHIER || type == TypeCellule.REGISTRE) {
+            this.occupe = true;
+            this.contenu = contenu;
+        } else {
+            System.out.println("Impossible d'occuper ce type de champ avec " + type);
+        }
     }
 
     public void liberer() {
-        occupe = false;
+        this.occupe = false;
+        this.contenu = null;
+    }
+
+    public String getContenu() {
+        return contenu;
+    }
+
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
     }
 }
