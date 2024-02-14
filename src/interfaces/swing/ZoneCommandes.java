@@ -12,7 +12,7 @@ import java.awt.Color;
  * Classe qui contient les commandes de mouvement du robot ( pas, stop, automatique…).
  * Il y a des choses à rajouter (keylistener).
  */
-public class zoneCommandes extends JPanel
+public class ZoneCommandes extends JPanel
 {
     private JLabel commandesLabel;
     private JButton boutonPas;
@@ -26,7 +26,7 @@ public class zoneCommandes extends JPanel
     private int boutonWidth = 60;
     private int boutonHeight = boutonWidth;
 
-    public zoneCommandes()
+    public ZoneCommandes()
     {
         this.setBounds(800,500,200,250);
         this.setBackground(Color.GREEN);
