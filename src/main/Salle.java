@@ -1,10 +1,13 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Salle {
-    private Champ[][] contenu; // Représentation de ce qui se trouve dans la salle
+    private Map<Coordonnees, Champ> contenu; // Représentation de ce qui se trouve dans la salle
     private Map<Integer, String> portes; // Représentation des portes numérotées
 
     // Constructeur
     public Salle() {
-        this.contenu = new Champ[5][5];
+        this.contenu = new HashMap<>();
         initialiserContenu();
         this.portes = new HashMap<>();
     }
@@ -12,7 +15,7 @@ public class Salle {
     private void initialiserContenu() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                contenu[i][j] = new Champ();
+                contenu.put(new Coordonnees(i, j), new Champ(TypeCellule.VIDE));
             }
         }
     }
@@ -23,26 +26,26 @@ public class Salle {
     }
 
     // Méthode pour vérifier si un champ est occupé
-    public boolean estOccupe(int x, int y) {
-        return contenu[x][y].estOccupe();
+    public boolean estOccupe(Coordonnees coordonnees) {
+        return contenu.get(coordonnees).getType() != TypeCellule.VIDE;
     }
 
-    // Méthode pour occuper un champ
-    public void occuperChamp(int x, int y) {
-        contenu[x][y].occuper();
+    // Méthode pour occuper un champ avec un type de cellule donné
+    public void occuperChamp(Coordonnees coordonnees, TypeCellule typeCellule) {
+        contenu.get(coordonnees).setType(typeCellule);
     }
 
     // Méthode pour libérer un champ
-    public void libererChamp(int x, int y) {
-        contenu[x][y].liberer();
+    public void libererChamp(Coordonnees coordonnees) {
+        contenu.get(coordonnees).setType(TypeCellule.VIDE);
     }
 
     // Getters et setters
-    public Champ[][] getContenu() {
+    public Map<Coordonnees, Champ> getContenu() {
         return contenu;
     }
 
-    public void setContenu(Champ[][] contenu) {
+    public void setContenu(Map<Coordonnees, Champ> contenu) {
         this.contenu = contenu;
     }
 
