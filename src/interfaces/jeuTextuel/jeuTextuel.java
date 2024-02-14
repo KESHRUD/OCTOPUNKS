@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class jeuTextuel {
-    public jeuTextuel() {
+public class JeuTextuel {
+    public JeuTextuel() {
         boolean jeuEnCours = true;
         String menu;
 
@@ -141,6 +141,6 @@ public class jeuTextuel {
 
 
     public static void main(String[] var0) {
-        new jeuTextuel();
+        new JeuTextuel();
     }
 }
