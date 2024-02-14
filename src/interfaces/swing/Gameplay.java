@@ -1,3 +1,4 @@
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +17,6 @@ import java.awt.Font;
 public class Gameplay extends JPanel
 {
     private Octopunks octopunks;
-    private int niveau;
 
     private JLabel titreSection;
     private JPanel zoneChoixNiveau;
@@ -34,7 +34,7 @@ public class Gameplay extends JPanel
 
         /**
          * Ajout d'un "titre" de section (i.e la section de choix du niveau) :
-         * - replacement et redimensionnement
+         * - redimensionnement et replacement 
          * - choix arbitraire de la police d'écriture du label
          * - choix arbitraire de la couleur du label
          * - ajout du label dans la fenêtre
@@ -50,7 +50,7 @@ public class Gameplay extends JPanel
         /**
          * Création du conteneur des boutons :
          * - setLayout(null) permet de faire des modifications d'affichage dans le panel
-         * - replacement et redimensionnement
+         * - redimensionnement et replacement 
          * - choix arbitraire de la couleur de l'arrière-plan (À CHANGER)
          * - création des boutons dans la zone dédiée aux boutons (le panel zoneBoutons)
          *   [ N.B : cette méthode sert juste à rendre le code du constructeur plus propre,
@@ -85,7 +85,8 @@ public class Gameplay extends JPanel
         }
 
         JLabel descriptif = new JLabel("");
-        descriptif.setBounds(275, 300, 600, 300);
+        descriptif.setSize(600,300);
+        descriptif.setLocation(275, 300);
         panel.add(descriptif);
 
         // Création du 2ème bouton
@@ -97,8 +98,8 @@ public class Gameplay extends JPanel
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
                 descriptif.setText("Destiné à ceux qui n'ont plus de vie sociale à cause du niveau 1.");
-                //this.niveau = 2;
-                //System.out.println("Niveau : " + this.niveau);
+                octopunks.setNiveau(1);
+                System.out.println("Niveau : " + octopunks.getNiveau());
             }
         });
         panel.add(this.bouton2);
@@ -112,8 +113,8 @@ public class Gameplay extends JPanel
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
                 descriptif.setText("Pour les nouveaux qui découvrent le jeu.");
-                //super.niveau = 1;
-                //System.out.println("Niveau : " + this.niveau);
+                octopunks.setNiveau(2);
+                System.out.println("Niveau : " + octopunks.getNiveau());
             }
         });
         panel.add(this.bouton1);
@@ -126,8 +127,8 @@ public class Gameplay extends JPanel
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
                 descriptif.setText("Réservé exclusivement aux nerds qui ont Octopunks dans les veines.");
-                //this.niveau = 3;
-                //System.out.println("Niveau : " + this.niveau);
+                octopunks.setNiveau(3);
+                System.out.println("Niveau : " + octopunks.getNiveau());
             }
         });
         panel.add(bouton3);
@@ -139,13 +140,25 @@ public class Gameplay extends JPanel
         JButton bouton4 = new JButton("Confirmer");
         bouton4.setSize(100,70);
         bouton4.setLocation(bouton3.getX(), panel.getHeight()/2);
-        // NE PAS OUBLIER D'AJOUTER UN LISTENER DANS LA CLASSE PRINCIPALE POUR CE BOUTON !!!
-        // SINON PAS DE CHANGEMENT DE PAGE !!!
+        bouton4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                if(octopunks.getNiveau() == 0)
+                {
+                    descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+                    descriptif.setText("Il faut sélectionner un niveau avant de jouer !");
+                }
+                else
+                {
+                    octopunks.changerPage("Jeu");
+                }
+            }
+        });
         panel.add(bouton4);
     }
 
     public int getNiveau()
     {
-        return this.niveau;
+        return octopunks.getNiveau();
     }
 }
