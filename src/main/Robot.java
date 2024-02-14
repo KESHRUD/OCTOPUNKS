@@ -9,11 +9,15 @@ public class Robot {
     private int registreF;
     private int registreM;
     private Fichier file; //le fichier que le robot peut tenir 
+    private Salle currentSalle;
 
-    // Constructeur
-    public Robot(int positionX, int positionY) {
+
+   // Constructeur
+    public Robot(Salle currentSalle,int positionX, int positionY) {
+        this.currentSalle = currentSalle;
         this.positionX = positionX;
         this.positionY = positionY;
+        this.currentSalle = currentSalle;
         file = null;
     }
     
@@ -36,6 +40,14 @@ public class Robot {
                (positionX == 4 && autreRobot.getPositionX() == 0 && positionY == autreRobot.getPositionY()) ||
                (positionY == 0 && autreRobot.getPositionY() == 4 && positionX == autreRobot.getPositionX()) ||
                (positionY == 4 && autreRobot.getPositionY() == 0 && positionX == autreRobot.getPositionX());
+    }
+
+    public Salle getCurrentSalle() {
+        return currentSalle;
+    }
+
+    public void setCurrentSalle(Salle currentSalle) {
+        this.currentSalle = currentSalle;
     }
 
     // Getters et setters
