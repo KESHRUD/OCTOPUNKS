@@ -1,13 +1,6 @@
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.CardLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 
 
 /**
@@ -20,23 +13,17 @@ public class Octopunks extends JFrame
 {
    /**
     * La dimension de l'écran de l'utilisateur.
-    */ 
+    */
    private Dimension dimension;
 
-   /**
-    * Permet de changer de "page" (les pages sont des panels).
-    */
-   static CardLayout lesPages;
-   /**
-    * contenu est le conteneur qui va contenir les différentes pages
-    * (qui sont des panels)
-    */
-   static JPanel contenu;
+   private CardLayout lesPages;
+   private JPanel contenu;
 
-   
    private Menu menu;
    private Gameplay gameplay;
    private Jeu jeu;
+
+   private int niveau;
 
    /**
     * Lance le jeu. On va devoir changer de page en cliquant sur le
@@ -44,54 +31,93 @@ public class Octopunks extends JFrame
     */
    public Octopunks()
    {
-      dimension = Toolkit.getDefaultToolkit().getScreenSize();
+      this.dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
       this.setTitle("Octopunks");
 
-      lesPages = new CardLayout();
-      contenu = new JPanel(lesPages);
+      this.niveau = 0;
 
-      this.add(contenu);
-      contenu.setLayout(lesPages);
-      
+      // Création du CardLayout
+      this.lesPages = new CardLayout();
+      this.contenu = new JPanel(lesPages);
+
+      // Création des différentes pages
       this.menu = new Menu(this);
-      menu.getBouton().addActionListener(new ActionListener() {
-         public void actionPerformed(ActionEvent e)
-         {
-            lesPages.show(contenu,"gameplay");
-         }
-      });
-      
       this.gameplay = new Gameplay(this);
-
       this.jeu = new Jeu(this);
 
-      contenu.add(menu, "menu");
-      contenu.add(gameplay, "gameplay");
-      contenu.add(jeu, "jeu");
+      // Ajout des pages au CardLayout
+      this.contenu.add(this.menu, "Menu");
+      this.contenu.add(this.gameplay, "Gameplay");
+      this.contenu.add(this.jeu, "Jeu");
 
-      lesPages.show(contenu,"jeu");
+      
+      // Ajout du CardLayout à la fenêtre
+      this.add(this.contenu);
+
+      this.lesPages.show(this.contenu, "Menu");
 
       // Réglages de la fenêtre
-      this.setContentPane(contenu);
-      this.setLayout(null);
-      this.setSize((int)dimension.getWidth(),(int)dimension.getHeight());
+      this.setExtendedState(JFrame.MAXIMIZED_BOTH);
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       // On peut modifier la taille de la fenêtre.
       this.setResizable(true);
       //Centre la fenêtre
       this.setLocationRelativeTo(null);
       this.setVisible(true);
-
    }
 
    public Dimension getDimension()
    {
-      return dimension;
+      return this.dimension;
+   }
+
+
+   public Gameplay getGameplay()
+   {
+      if(this.gameplay == null)
+      {
+         throw new NullPointerException("La page de gameplay est null.");
+      }
+      return this.gameplay;
+   }
+
+   public Jeu getJeu()
+   {
+      if(this.jeu == null)
+      {
+         throw new NullPointerException("La page de jeu est null.");
+      }
+      return this.jeu;
+   }
+
+   public void changerPage(String nomPage)
+   {
+      lesPages.show(contenu, nomPage);
+   }
+
+   public Menu getMenu()
+   {
+      if(this.menu == null)
+      {
+         throw new NullPointerException("La page de menu est null.");
+      }
+      return this.menu;
+   }
+
+   @SuppressWarnings("unused")
+   public int getNiveau()
+   {
+      return this.niveau;
+   }
+
+   public void setNiveau(int niveau)
+   {
+      this.niveau = niveau;
    }
 
    public static void main(String[] args)
    {
-      Octopunks octopunks = new Octopunks();
+      SwingUtilities.invokeLater(Octopunks::new);
    }
 }
