@@ -1,11 +1,8 @@
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 
 
 /**
@@ -40,14 +37,9 @@ public class Menu extends JPanel
       
       boutonJouer.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            // AJOUTER LISTENER
+            octopunks.changerPage("Gameplay");
          }
      });
       this.add(boutonJouer);
-   }
-
-   public JButton getBouton()
-   {
-      return this.boutonJouer;
    }
 }
