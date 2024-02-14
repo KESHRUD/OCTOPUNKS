@@ -4,7 +4,9 @@ public enum TypeCellule {
     FICHIER('F'),
     REGISTRE('R'),
     CIBLE('@'),
-    MUR('#');
+    MUR('#'),
+    ENTREE('I'),
+    ARRIERE('1');
 
     private final char symbol;
 
@@ -36,6 +38,8 @@ public enum TypeCellule {
             case 'R' -> REGISTRE;
             case '@' -> CIBLE;
             case '#' -> MUR;
+            case 'I' -> ENTREE;
+            case '1' -> ARRIERE;
             default -> throw new IllegalArgumentException("Le caractère " + c + " n'est pas reconnu!");
         };
     }
