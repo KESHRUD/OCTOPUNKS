@@ -1,70 +1,82 @@
-
-import fichiers.Fichier;
-
 public class Robot {
-    private int positionX;
-    private int positionY;
-    private int registreX;//les 4 registres pour chaque robot 
+    private Coordonnees position; //position x y et salle
+    private int registreX;//les 4 registres pour chaque robot
     private int registreT;
     private int registreF;
-    private int registreM;
-    private Fichier file; //le fichier que le robot peut tenir 
-    private Salle currentSalle;
+    private int registreM;//ptr de fichier contient l'id du fichier
+    private Fichier file; //le fichier que le robot peut tenir
+    private boolean estMort; //si le robot est mort ou pas (est sur la salle)
 
 
-   // Constructeur
-    public Robot(Salle currentSalle,int positionX, int positionY) {
-        this.currentSalle = currentSalle;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.currentSalle = currentSalle;
+    
+    // Constructeur
+    public Robot(Coordonnees position) {
+        this.position = position;
         file = null;
+        estMort = false;
     }
     
     //methode pour verifier si le robot tient un fichier
     public boolean hasAFile(){
         return (this.file != null);
     }
-
+    
     // Méthode pour déplacer le robot en fonction des instructions
     public void move(int deltaX, int deltaY) {
         // Mise à jour de la position du robot
-        positionX += deltaX;
-        positionY += deltaY;
+        position.setX(deltaX);
+        position.setY(deltaY);
     }
-
+    
     // Méthode pour vérifier si le robot a atteint la condition de victoire
     public boolean checkVictoryCondition(Monde monde, Robot autreRobot) {
         // Vérifier si les robots sont sur des cases opposées
-        return (positionX == 0 && autreRobot.getPositionX() == 4 && positionY == autreRobot.getPositionY()) ||
-               (positionX == 4 && autreRobot.getPositionX() == 0 && positionY == autreRobot.getPositionY()) ||
-               (positionY == 0 && autreRobot.getPositionY() == 4 && positionX == autreRobot.getPositionX()) ||
-               (positionY == 4 && autreRobot.getPositionY() == 0 && positionX == autreRobot.getPositionX());
+        return (position.getX() == 0 && autreRobot.getPositionX() == 4 && position.getY() == autreRobot.getPositionY()) ||
+        (position.getX() == 4 && autreRobot.getPositionX() == 0 && getPositionY() == autreRobot.getPositionY()) ||
+        (position.getY() == 0 && autreRobot.getPositionY() == 4 && getPositionX() == autreRobot.getPositionX()) ||
+        (getPositionY() == 4 && autreRobot.getPositionY() == 0 && getPositionX() == autreRobot.getPositionX());
     }
-
+    
+    public boolean EstMort() {
+         return estMort;
+     }
+ 
+     public void setEstMort(boolean estMort) {
+         this.estMort = estMort;
+     }
     public Salle getCurrentSalle() {
-        return currentSalle;
+        return position.getSalle();
     }
 
     public void setCurrentSalle(Salle currentSalle) {
-        this.currentSalle = currentSalle;
+        this.position.setCurrentSalle(currentSalle);
     }
 
     // Getters et setters
+
+    public Fichier getFile(){
+        return file;
+    }
+
+    public void setFile(Fichier newFile){
+        this.file = newFile;
+        setRegistreM(newFile.getId());
+    }
+
     public int getPositionX() {
-        return positionX;
+        return position.getX();
     }
 
     public void setPositionX(int positionX) {
-        this.positionX = positionX;
+        this.position.setX(positionX);
     }
 
     public int getPositionY() {
-        return positionY;
+        return position.getY();
     }
 
     public void setPositionY(int positionY) {
-        this.positionY = positionY;
+        this.position.setY(positionY);
     }
 
     
@@ -365,289 +377,153 @@ public class Robot {
         }
     }
 
-    public void link(String nomMonde){
-        //a completer
-        // a en discuter demain avec amine
+    public void link(String a){
+        int valueA = Integer.parseInt(a);
+        if(valueA == -1){
+            if(getCurrentSalle().getLienEntrant() != null){ //dans le cas ou on fait LINK -1 dans la 1ere salle
+                setCurrentSalle(getCurrentSalle().getLienEntrant().getSalleAvant()); //la salle actuelle est la salle d'avant
+            }
+        }else{
+            for(Link unLien : getCurrentSalle().getLiensSortant()){
+                if(unLien.getId() == valueA){
+                    setCurrentSalle(unLien.getSalleApres());
+                    return;
+                }
+            }
+            setEstMort(true);//le robot doit mourir dans ce cas
+        }
     }
+
 
     public void testEndOfFile(){
-
+        // a completer
     }
 
-
-
-
-
-
-
-//tout ce qui en bas pas la peine de le voir 
-//ne supprimer pas j'ai des truc a recup
-
-/**
- * 
- * 
- * 
- * 
- * @param label
- */
-    public void jumpToLabel(int label){
-        //d'apres le prof on doit juste untiliser un entier
-        // comme ca on saute le nombre indiqué d'instruction
-    }
-
-    public boolean end_of_file(){
-        //je sais pas encore quel fichier tester 
-        //a continuer
-        return false;
-    }
-
-    public boolean canReadFromM(){
-        //j'ai pas bien compris son fonctionnement
-        //a completer
-        return true;
-    }
-}
-    /*
-     * @param instruction
-
-    public void executeInstruction(Instruction instruction) {
-        String[] arguments = instruction.getArguments();
-        int valueA;
-        int valueB;
-    switch (instruction.getInstructionType()) {
-        case COPY:
-            if (arguments.length == 2) {
-                //on doit gerer le cas ou le registre source n'est pas un registre valide mais jsp comment faire vu que les registre sont des int
-                valueA = Integer.parseInt(arguments[0]);
-                setRegisterValue(arguments[1], valueA); //on doit copier le 2eme argument dans le premier argument
-                
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for COPY instruction");
-            }
-            break;
-        case ADDI: //ADDI a(R/N) b(R/N) dest(R)
-            if (instruction.getArguments().length == 3) {
-                valueA = Integer.parseInt(arguments[0]);
-                valueB = Integer.parseInt(arguments[1]);
-                int sum = valueA + valueB;
-                setRegisterValue(arguments[2], sum);
-                
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for ADDI instruction");
-            }
-            break;
-        case MULI: // MULI a(R/N) b(R/N) dest(R)
-            if (arguments.length == 3) {
-                valueA = Integer.parseInt(arguments[0]);
-                valueB = Integer.parseInt(arguments[1]);
-                int product = valueA * valueB;
-                setRegisterValue(arguments[2], product);
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for MULI instruction");
-            }
-            break;
-        case SUBI:// SUBI a(R/N) b(R/N) dest(R)
-            if (arguments.length == 3) {
-                valueA = Integer.parseInt(arguments[0]);
-                valueB = Integer.parseInt(arguments[1]);
-                int diff = valueA - valueB;
-                setRegisterValue(arguments[2], diff);
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for SUBI instruction");
-            }
-            break;
-        case DIVI:
-            if (arguments.length == 3) {
-                valueA = Integer.parseInt(arguments[0]);
-                valueB = Integer.parseInt(arguments[1]);
-                if (valueB == 0) {
-                    throw new IllegalArgumentException("Division by zero is not allowed");
-                }
-                int quotient = valueA / valueB;
-                setRegisterValue(arguments[2], quotient);
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for DIVI instruction");
-            }
-            break;
-        case MODI:
-             if (arguments.length == 3) {
-                valueA = Integer.parseInt(arguments[0]);
-                valueB = Integer.parseInt(arguments[1]);
-                if (valueB == 0) {
-                    throw new IllegalArgumentException("Division by zero is not allowed");
-                }
-                int modulo = valueA % valueB;
-                setRegisterValue(arguments[2], modulo);
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for MODI instruction");
-            }
-            break;
-        case SWIZ:
-            if (arguments.length == 3) {
-                //a continuer (logqiue un peu compliqué ca prend du temps je reviens des que je finis les autres)
-                throw new IllegalArgumentException("Invalid number of arguments for SWIZ instruction");
-            }
-            break;
-            case JUMP:// JUMP N le on doit sauter N ligne dans le terminal
-            if (arguments.length == 1) {
-                valueA = Integer.parseInt(instruction.getArguments()[0]);
-                jumpToLabel(valueA);//faut revoir instruction snn je peux pas implementer jumpToLabel
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for JUMP instruction");
-            }
-            break;
-        case FJMP:
-            if (arguments.length == 1) { //jump avec condition
-                valueA = Integer.parseInt(arguments[0]); 
-                if (registreT == 0) { //condition 
-                    jumpToLabel(valueA); //sauter 
-                    //faut revoir instruction snn je peux pas implementer jumpToLabel 
-                    //je vais utiliser parse 
-                }
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for FJMP instruction");
-            }
-            break;
-        case LINK: //LINK dest(R/N)
-            if (arguments.length == 1) {
-                int link = Integer.parseInt(arguments[0]);
-                //Traverse the link numbered dest. If such a link does not exist, the EXA will crash
-                //linkTo(link);
-                // A COMPLETER : la logique du code actuel me permet pas de la faire
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for LINK instruction");
-            }
-            break;
-        case TEST_EOF:
-            if (arguments.length == 0) {
-                if (end_of_file()) { //tester la fin de fichier
-                    registreT = 1;
-                } else {
-                    registreT = 0;
-                }
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for TEST_EOF instruction");
-            }
-            break;
-        case GRAB:
-            if (arguments.length == 1) {
-                //problem lier aux attributs de robots 
-                //a mon avis il faut un attribut fichier(que tient le robot) avec ses methodes
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for GRAB instruction");
-            }
-            break;
-        case DROP:
-            if (arguments.length == 0) {
-                //pareil probleme de fichier
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for DROP instruction");
-            }
-            break;
-        case NOOP:
-            if (arguments.length == 0) {
-                // Do nothing
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for NOOP instruction");
-            }
-            break;
-        case TEST: //TEST a(R/N) = b(R/N)  avec < et > aussi 
-            if (arguments.length == 3) { // 3 arguments 1 pour a 1 pour b 1 pour l'operateur
-                valueA = Integer.parseInt(arguments[0]);
-                valueB = Integer.parseInt(arguments[2]);
-                if(arguments[1].equals("=")){
-                    registreT = (valueA == valueB);
-                }else if(arguments[1].equals("<")){
-                    registreT = (valueA < valueB);
-                }else if(arguments[1].equals(">")){
-                    registreT = (valueA > valueB);
+    public void grab(String theFile){
+        if(this.hasAFile()){
+            System.err.println("Fatal error: CANNOT GRAB A SECOND FILE");
+        }else{
+            int idFile = Integer.parseInt(theFile);
+            if(getCurrentSalle().getTheFile() != null){
+                if(idFile == getCurrentSalle().getTheFile().getId()){
+                    this.file = getCurrentSalle().getTheFile();
+                    getCurrentSalle().getTheFile().setPosition(this.position); //la position d'un fichier pris par le robot est la position du robot 
                 }else{
-                    throw new IllegalArgumentException("the opperand " + arguments[1] + "is not suppoerted");
+                    System.err.println("Fatal error: FILE ID NOT FOUND");
                 }
-                //reste a gerer If a and b are different types the result is always false.
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for TEST instruction");
+            }else{
+                System.err.println("Fatal error: FILE ID NOT FOUND");
             }
-            break;
-        case KILL:
-            if (arguments.length == 0) {
-                //a mon avis faut l'implmenetr dans monde car ca consiste a tuer l'autre robot
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for KILL instruction");
-            }
-            break;
-        case MODE:
-            if (arguments.length == 0) {
-                //le manuel dit ca Toggle the M register between the local and global channels.
-                //mais j'ai pas compris ce que ca fait 
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for MODE instruction");
-            }
-            break;
-        case TEST_MRD:
-            if (arguments.length == 0) {
-                if (canReadFromM()) { //a voir mardi
-                    registreT = 1;
-                } else {
-                    registreT = 0;
+        }
+    }
+
+    public void drop(String theFile){
+        int idFile = Integer.parseInt(theFile);
+        if(!this.hasAFile() || idFile != this.file.getId()){
+            System.err.println("Fatal error: NO FILE IS HELD");
+        }else{
+            //intervention de Abdulkarim pour drop le fichier sur un champ libre au hasard dans la currentSalle
+        }
+    }
+
+    public void test(String a, String operation, String b){
+        int valueA, valueB;
+        switch(a){
+            case "F":
+                valueA = getRegistreF();
+                break;
+            case "M":
+                valueA = getRegistreM();
+                break;
+            case "T":
+                valueA = getRegistreT();
+                break;
+            case "X":
+                valueA = getRegistreX();
+                break;
+            default :
+                valueA = Integer.parseInt(a);
+                break;
+        }
+        switch(b){
+            case "F":
+                valueB = getRegistreF();
+                break;
+            case "M":
+                valueB = getRegistreM();
+                break;
+            case "T":
+                valueB = getRegistreT();
+                break;
+            case "X":
+                valueB = getRegistreX();
+                break;
+            default :
+                valueB = Integer.parseInt(b);
+                break;
+        }
+        switch (operation) {
+            case "=":
+                if(valueA == valueB){
+                    setRegistreT(1);
+                }else{
+                    setRegistreT(0);
                 }
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for TEST_MRD instruction");
-            }
-            break;
-        case VOID_M:
-            if (arguments.length == 0) {
-                //pareil a revoir 
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for VOID_M instruction");
-            }
-            break;
-        case SEEK:
-            if (arguments.length == 1) {
-                //pareil
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for SEEK instruction");
-            }
-            break;
-        case MAKE:
-            if (instruction.getArguments().length == 1) {
-                //probleme de fichier le robot doit creer et grap un nv fichier 
-                //les attribust actuelle ne permettent pas ca 
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for MAKE instruction");
-            }
-            break;
-        case WIPE:
-            if (arguments.length == 0) {
-                //probleme de fichier 
-                //les attribust actuelle ne permettent pas ca 
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for WIPE instruction");
-            }
-            break;
-        case VOID_F:
-            if (instruction.getArguments().length == 0) {
-                //probleme de fichier le robot doit creer et grap un nv fichier 
-                //les attribust actuelle ne permettent pas ca 
-            } else {
-                throw new IllegalArgumentException("Invalid number of arguments for VOID_F instruction");
-            }
-            break;
-        default:
-            throw new IllegalArgumentException("Unknown instruction type: " + instruction.getInstructionType());
+                break;
+            case ">":
+                if(valueA < valueB){
+                    setRegistreT(1);
+                }else{
+                    setRegistreT(0);
+                }
+                break;
+                case "<":
+                if(valueA < valueB){
+                    setRegistreT(1);
+                }else{
+                    setRegistreT(0);
+                }
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    public void kill(){
+        setEstMort(true);
+        getCurrentSalle().libererChamp(position); //faut liberer l'espace d'un robot qui est mort
+    }
+
+    public void mode(String m){
+        //pas comprise je demande au prof
+    }
+
+    public void test_mrd(){
+        // je ne peux pas l'implmenter avant la tache de abdoulaye
+    }
+
+    public void void_m(){
+        //abdoulaye
+    }
+
+    public void seek(String n){
+        //abdoulaye
+    }
+
+    public void make(){
+        //abdoulkarim
+    }
+
+    public void wipe(){
+        if(!hasAFile()){
+            System.err.println("Fatal error: NO FILE IS HELD");
+        }else{
+            this.file.libererChamp();// un fichier supprimé est un fichier qui n'est pas sur la salle
+        }
+    }
+
+    public void void_f(){
+        //abdulaye
+    }
 }
-}
-}
-/**
- * voila le complication: que j'ai trouvé sur les instructions
- *  -JUMP FJMP : je sais pas trop comment faire ca 
- *  - LINK : la logique du code actuel ne permet pas de faire ca 
- *  - TEST_EOF GRAB DROP : a mon avis on doit ajouter des attributs fichiers dans robots
- *  - KILL : a implemnetr dans mondeca cosnsiste a tuer l'autre robot
- *  - Mode : le manuel dit ca Toggle the M register between the local and global channels. mais j'ai pas compris ce que ca fait 
- *   - TSET_MRD VOID_M SEEK: pareil
- *   - MAKE WIPE VOID F: probleme de fichier le robot doit creer et grap un nv fichier  les attribust actuelle ne permettent pas ca 
- *  
- * En gros c'est un probleme d'attributs(fichier que tient le robot)  il manque des attributs dans cette classe
- * Je vais essayer de regler ca au plus vite
- */
