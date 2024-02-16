@@ -1,21 +1,30 @@
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Salle {
     private Map<Coordonnees, Champ> contenu; // Représentation de ce qui se trouve dans la salle
     private Map<Integer, String> portes; // Représentation des portes numérotées
+    private List<Link> liensSortant; //entre 0 et 3 liens Sortant pour chaque salle
+    private Link lienEntrant; //1 lien entrant pour chaque Salle sauf pour la premiere
+    private Fichier theFile; //le fichier present dans cette salle
 
     // Constructeur
-    public Salle() {
+    public Salle(Link lienEntrant) {
         this.contenu = new HashMap<>();
         initialiserContenu();
         this.portes = new HashMap<>();
+        liensSortant = new ArrayList<>(3) ;
+        this.lienEntrant = lienEntrant;
+        theFile = null;
     }
 
     private void initialiserContenu() {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                contenu.put(new Coordonnees(i, j), new Champ(TypeCellule.VIDE));
+                contenu.put(new Coordonnees(i, j, this), new Champ(TypeCellule.VIDE));
             }
         }
     }
@@ -56,4 +65,34 @@ public class Salle {
     public void setPortes(Map<Integer, String> portes) {
         this.portes = portes;
     }
+
+    //methode pour gerer les liens
+    public Link getLienEntrant() {
+        return lienEntrant;
+    }
+    
+    public void setLienEntrant(Link lienEntrant) {
+        this.lienEntrant = lienEntrant;
+    }
+
+    public void ajouterLienSortant(Link lien){
+        this.liensSortant.add(lien);
+    }
+
+    public List<Link> getLiensSortant() {
+        return liensSortant;
+    }
+
+    public void setLiensSortant(List<Link> liensSortant) {
+        this.liensSortant = liensSortant;
+    }
+
+    public Fichier getTheFile() {
+        return theFile;
+    }
+
+    public void setTheFile(Fichier theFile) {
+        this.theFile = theFile;
+    }
+    
 }
