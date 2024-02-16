@@ -1,47 +1,42 @@
 public class Link {
-    private int idLien;
-    private char typePorteDepart;
-    private char typePorteArrivee;
+    private final int id;
+    private final Salle salleAvant;
+    private final Salle salleApres;
 
-    public Link(int idLien, char typePorteDepart, char typePorteArrivee) {
-        this.idLien = idLien;
-        if (typePorteDepart != 'I' && typePorteDepart != '1') {
-            throw new IllegalArgumentException("Le type de porte au départ doit être 'I' ou '1'");
-        }
-        if (typePorteArrivee != 'I' && typePorteArrivee != '1') {
-            throw new IllegalArgumentException("Le type de porte à l'arrivée doit être 'I' ou '1'");
-        }
-        this.typePorteDepart = typePorteDepart;
-        this.typePorteArrivee = typePorteArrivee;
+    public Link(int id, Salle salle1, Salle salle2) {
+        this.id = id;
+        this.salleAvant = salle1;
+        this.salleApres = salle2;
+
+        // Définir la réciprocité du lien entre les salles
+        salleAvant.ajouterLienSortant(this);
+        salleApres.setLienEntrant(this);
     }
 
-    public int getIdLien() {
-        return idLien;
+    public int getId() {
+        return id;
     }
 
-    public void setIdLien(int idLien) {
-        this.idLien = idLien;
+    public Salle getSalleAvant() {
+        return salleAvant;
     }
 
-    public char getTypePorteDepart() {
-        return typePorteDepart;
-    }
-
-    public void setTypePorteDepart(char typePorteDepart) {
-        if (typePorteDepart != 'I' && typePorteDepart != '1') {
-            throw new IllegalArgumentException("Le type de porte au départ doit être 'I' ou '1'");
-        }
-        this.typePorteDepart = typePorteDepart;
-    }
-
-    public char getTypePorteArrivee() {
-        return typePorteArrivee;
-    }
-
-    public void setTypePorteArrivee(char typePorteArrivee) {
-        if (typePorteArrivee != 'I' && typePorteArrivee != '1') {
-            throw new IllegalArgumentException("Le type de porte à l'arrivée doit être 'I' ou '1'");
-        }
-        this.typePorteArrivee = typePorteArrivee;
+    public Salle getSalleApres() {
+        return salleApres;
     }
 }
+/* 
+    
+     * Méthode pour ajouter un lien à une salle.
+     * Cette méthode est appelée lors de la création du lien et sert à établir la réciprocité.
+     * @param lien Le lien à ajouter à la salle
+     *
+    private void ajouterLien(Link lien) {
+        if (this.equals(lien.getSalleAvant())) {
+            this.salleAvant.ajouterLienSortant(lien);
+        } else if (this.equals(lien.getSalleApres())) {
+            this.salleApres.ajouterLienSortant(lien);
+        }
+    }
+}
+*/
