@@ -54,7 +54,7 @@ public class JeuTextuel {
         System.out.println("Saisissez le code assembleur,\nn'oubliez pas d'utiliser l'instruction HALT pour terminer votre code ASBM.\n(entrez 'Menu' pour retourner au menu)\n");
         while (niveauEnCours && executionEnCours) {
 
-            // INTERFACE CODE ASSEMBLEUR //
+            // INTERFACE TERMINAL CODE ASSEMBLEUR //
 
             Scanner code = new Scanner(System.in);
             while ((!lastLign.equalsIgnoreCase("HALT")) && (!lastLign.equalsIgnoreCase("Menu"))) {
@@ -62,7 +62,7 @@ public class JeuTextuel {
                 asmbCode += lastLign + "\n";
             }
 
-            // PARTIE EXECUTION DU CODE ASSEMBLEUR
+            // PARTIE EXECUTION DU CODE ASSEMBLEUR //
 
             if (lastLign.equalsIgnoreCase("Menu")) niveauEnCours = false;
             System.out.println("(1) Exécuter pas à pas les instructions\n(2) Exécuter toutes les instructions directement");
