@@ -25,14 +25,14 @@ public class JeuTextuel {
                     jeuEnCours = false;
                     break;
                 case "1":
-                    lancerNiveau("src/main/ressources/niveaux/Niveau0.txt");
+                    lancerNiveau("src/levels/Niveau1.txt");
                     break;
                 case "2":
-                    lancerNiveau("niveau/niveau1.txt");
+                    lancerNiveau("");
                     System.out.print("Niveau 1\n");
                     break;
                 case "3":
-                    lancerNiveau("niveau/niveau2.txt");
+                    lancerNiveau("");
                     System.out.print("Niveau 2\n");
                     break;
                 default:
