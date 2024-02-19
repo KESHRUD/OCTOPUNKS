@@ -3,7 +3,6 @@ public enum TypeCellule {
     EXA1('E');
     EXA2('X');
     FICHIER('F');
-    CIBLE('@');
     MUR('#');
     ENTREE('I');
     ARRIERE('1');
@@ -37,7 +36,6 @@ public enum TypeCellule {
             case 'E' -> EXA1;
             case 'X' -> EXA2;
             case 'F' -> FICHIER;
-            case '@' -> CIBLE;
             case '#' -> MUR;
             case 'I' -> ENTREE;
             case '1' -> ARRIERE;
