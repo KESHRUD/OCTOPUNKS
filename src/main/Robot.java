@@ -4,7 +4,7 @@ public class Robot {
     private int registreT;
     private int registreF;
     private int registreM;//ptr de fichier contient l'id du fichier
-    private Fichier file; //le fichier que le robot peut tenir
+    private leFichier file; //le fichier que le robot peut tenir
     private boolean estMort; //si le robot est mort ou pas (est sur la salle)
 
 
@@ -54,11 +54,11 @@ public class Robot {
 
     // Getters et setters
 
-    public Fichier getFile(){
+    public leFichier getFile(){
         return file;
     }
 
-    public void setFile(Fichier newFile){
+    public void setFile(leFichier newFile){
         this.file = newFile;
         setRegistreM(newFile.getId());
     }
