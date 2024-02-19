@@ -1,5 +1,3 @@
-package fichiers;
-
 import java.util.LinkedList;
 
 public class Pile extends Fichier {
@@ -35,5 +33,19 @@ public class Pile extends Fichier {
     public void vider() {
         pile.clear();
         System.out.println("La pile a été vidée.");
+    }
+
+    @Override
+    public void voidF() {
+        lire();
+    }
+
+    @Override
+    public boolean testEOF() {
+        return estVide();
+    }
+
+    public static Pile makeLIFO() {
+        return new Pile();
     }
 }
