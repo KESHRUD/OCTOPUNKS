@@ -1,11 +1,11 @@
 public enum TypeCellule {
-    VIDE(' '),
-    EXA('E'),
-    FICHIER('F'),
-    REGISTRE('R'),
-    CIBLE('@'),
-    MUR('#'),
-    ENTREE('I'),
+    VIDE(' ');
+    EXA1('E');
+    EXA2('X');
+    FICHIER('F');
+    CIBLE('@');
+    MUR('#');
+    ENTREE('I');
     ARRIERE('1');
     LINK('|');
 
@@ -34,9 +34,9 @@ public enum TypeCellule {
     public static TypeCellule fromSymbol(char c) {
         return switch (c) {
             case ' ' -> VIDE;
-            case 'E' -> EXA;
+            case 'E' -> EXA1;
+            case 'X' -> EXA2;
             case 'F' -> FICHIER;
-            case 'R' -> REGISTRE;
             case '@' -> CIBLE;
             case '#' -> MUR;
             case 'I' -> ENTREE;
