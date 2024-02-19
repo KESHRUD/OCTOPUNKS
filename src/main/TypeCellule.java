@@ -4,7 +4,7 @@ public enum TypeCellule {
     EXA2('X'),
     FICHIER('F'),
     MUR('#'),
-    ENTREE('I');
+    ENTREE('I'),
     ARRIERE('1'),
     LINK('|');
 
