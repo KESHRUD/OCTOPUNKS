@@ -6,7 +6,7 @@ public enum TypeCellule {
     MUR('#'),
     ENTREE('I');
     ARRIERE('1'),
-    LINK('|'),
+    LINK('|');
 
     private final char symbol;
 
