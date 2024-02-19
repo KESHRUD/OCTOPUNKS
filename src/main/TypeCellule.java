@@ -1,12 +1,12 @@
 public enum TypeCellule {
-    VIDE(' ');
-    EXA1('E');
-    EXA2('X');
-    FICHIER('F');
-    MUR('#');
+    VIDE(' '),
+    EXA1('E'),
+    EXA2('X'),
+    FICHIER('F'),
+    MUR('#'),
     ENTREE('I');
-    ARRIERE('1');
-    LINK('|');
+    ARRIERE('1'),
+    LINK('|'),
 
     private final char symbol;
 
