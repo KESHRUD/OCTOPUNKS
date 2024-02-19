@@ -9,7 +9,7 @@ public class Salle {
     private Map<Integer, String> portes; // Représentation des portes numérotées
     private List<Link> liensSortant; //entre 0 et 3 liens Sortant pour chaque salle
     private Link lienEntrant; //1 lien entrant pour chaque Salle sauf pour la premiere
-    private Fichier theFile; //le fichier present dans cette salle
+    private leFichier theFile; //le fichier present dans cette salle
 
     // Constructeur
     public Salle(Link lienEntrant) {
@@ -105,11 +105,11 @@ public class Salle {
         }
     }
 
-    public Fichier getTheFile() {
+    public leFichier getTheFile() {
         return theFile;
     }
 
-    public void setTheFile(Fichier theFile) {
+    public void setTheFile(leFichier theFile) {
         this.theFile = theFile;
     }
     
