@@ -27,16 +27,6 @@ public class Robot {
         position.setX(deltaX);
         position.setY(deltaY);
     }
-    
-    // Méthode pour vérifier si le robot a atteint la condition de victoire
-    public boolean checkVictoryCondition(Monde monde, Robot autreRobot) {
-        // Vérifier si les robots sont sur des cases opposées
-        return (position.getX() == 0 && autreRobot.getPositionX() == 4 && position.getY() == autreRobot.getPositionY()) ||
-        (position.getX() == 4 && autreRobot.getPositionX() == 0 && getPositionY() == autreRobot.getPositionY()) ||
-        (position.getY() == 0 && autreRobot.getPositionY() == 4 && getPositionX() == autreRobot.getPositionX()) ||
-        (getPositionY() == 4 && autreRobot.getPositionY() == 0 && getPositionX() == autreRobot.getPositionX());
-    }
-    
     public boolean EstMort() {
          return estMort;
      }
