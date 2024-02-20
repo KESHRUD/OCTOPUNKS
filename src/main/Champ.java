@@ -19,7 +19,7 @@ public class Champ {
 
     // Méthode estOccupe pour le type EXA
     public boolean estOccupeEXA() {
-        return occupe && type == TypeCellule.EXA;
+        return occupe && (type == TypeCellule.EXA1 || type == TypeCellule.EXA2);
     }
 
     // Méthode estOccupe pour le type FICHIER
@@ -27,13 +27,10 @@ public class Champ {
         return occupe && type == TypeCellule.FICHIER;
     }
 
-    // Méthode estOccupe pour le type REGISTRE
-    public boolean estOccupeREGISTRE() {
-        return occupe && type == TypeCellule.REGISTRE;
-    }
+   
 
     public void occuper(String contenu) {
-        if (type == TypeCellule.EXA || type == TypeCellule.FICHIER || type == TypeCellule.REGISTRE) {
+        if (type == TypeCellule.EXA1 || type == TypeCellule.FICHIER || type == TypeCellule.EXA2) {
             this.occupe = true;
             this.contenu = contenu;
         } else {
