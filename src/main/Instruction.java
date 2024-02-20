@@ -31,10 +31,10 @@ public class Instruction {
         System.out.println();
     }
 
-    /*public void execute(Monde monde, Robot robot) {
+    public void execute(Monde monde, Robot robot) {
         switch (instructionType) {
             case COPY:
-                monde.copy(robot, arguments[0]);
+                robot.copy(robot, arguments[0]);
                 break;
             case ADDI:
                 robot.add(arguments[0]);
