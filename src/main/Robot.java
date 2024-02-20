@@ -1,19 +1,30 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Robot {
     private Coordonnees position; //position x y et salle
     private int registreX;//les 4 registres pour chaque robot
     private int registreT;
-    private int registreF;
-    private int registreM;//ptr de fichier contient l'id du fichier
+    private int registreF;//ptr de fichier contient l'id du fichier
+    private int registreM;
     private leFichier file; //le fichier que le robot peut tenir
     private boolean estMort; //si le robot est mort ou pas (est sur la salle)
-
-
+    private List<Instruction> lesInstructions; //liste des instructions que chaque robot va executer
+    private int  index; //pour naviguer dans la liste d'instruction
+    
     
     // Constructeur
     public Robot(Coordonnees position) {
-        this.position = position;
         file = null;
         estMort = false;
+        registreF = 0; 
+        registreM = 0;
+        registreT = 0;
+        registreX = 0;
+        index = 0; //premiere instruction a éxecuter;
+        this.position = position;
+        position.getSalle().occuperChamp(position, TypeCellule.EXA1); //le robot doit occuper une salle
+        lesInstructions = new ArrayList<>();
     }
     
     //methode pour verifier si le robot tient un fichier
@@ -23,9 +34,14 @@ public class Robot {
     
     // Méthode pour déplacer le robot en fonction des instructions
     public void move(int deltaX, int deltaY) {
-        // Mise à jour de la position du robot
-        position.setX(deltaX);
-        position.setY(deltaY);
+        // Mise à jour de la position du robot en verifiant si le mouvement est possible donc x et y entre 0 et 4
+        if(position.getX() + deltaX < 0 || position.getX() + deltaX > 4 ||
+           position.getY() + deltaY < 0 || position.getY() + deltaY > 4 ){
+               System.err.println("le mouvement est impossible");
+        }else{
+            setPositionX(deltaX);
+            setPositionY(deltaY);    
+        }
     }
     public boolean EstMort() {
          return estMort;
@@ -37,22 +53,29 @@ public class Robot {
     public Salle getCurrentSalle() {
         return position.getSalle();
     }
-
+    
     public void setCurrentSalle(Salle currentSalle) {
         this.position.setCurrentSalle(currentSalle);
     }
-
+    
     // Getters et setters
-
+    
     public leFichier getFile(){
         return file;
     }
-
+    
     public void setFile(leFichier newFile){
         this.file = newFile;
         setRegistreM(newFile.getId());
     }
+    
+    public List<Instruction> getLesInstructions() {
+        return lesInstructions;
+    }
 
+    public void setLesInstructions(List<Instruction> lesInstructions) {
+        this.lesInstructions = lesInstructions;
+    }
     public int getPositionX() {
         return position.getX();
     }
@@ -355,15 +378,25 @@ public class Robot {
     public void swizzle(String input, String mask, String dest){
         //a completer
     }
+
+
+
     //JUMP dest(L
     public void jump(String lines){
-        //a completer faut que je recupere d'abord une arraylist d'instruction
+        int n = Integer.parseInt(lines);
+        if((index + n) < 0 && (index + n) > lesInstructions.size()){
+            System.err.println("nombre d'instructions a sauter invalide");
+        }else{
+            index = index + n;
+        }
     }
 
     //JUMP dest(L
     public void conditionalJump(String lines){
         if(registreT == 0){
             jump(lines);
+        }else{
+            index++;//sinon on passe a l'instruction suivante
         }
     }
 
@@ -389,6 +422,8 @@ public class Robot {
         // a completer
     }
 
+    
+
     public void grab(String theFile){
         if(this.hasAFile()){
             System.err.println("Fatal error: CANNOT GRAB A SECOND FILE");
@@ -407,9 +442,8 @@ public class Robot {
         }
     }
 
-    public void drop(String theFile){
-        int idFile = Integer.parseInt(theFile);
-        if(!this.hasAFile() || idFile != this.file.getId()){
+    public void drop(){
+        if(!this.hasAFile()){
             System.err.println("Fatal error: NO FILE IS HELD");
         }else{
             //intervention de Abdulkarim pour drop le fichier sur un champ libre au hasard dans la currentSalle
@@ -485,8 +519,8 @@ public class Robot {
         getCurrentSalle().libererChamp(position); //faut liberer l'espace d'un robot qui est mort
     }
 
-    public void mode(String m){
-        //pas comprise je demande au prof
+    public void mode(){
+        //a implmenter par abdoulkarim
     }
 
     public void test_mrd(){
@@ -501,9 +535,21 @@ public class Robot {
         //abdoulaye
     }
 
+    // crée une fichier de type arrayList
     public void make(){
-        //abdoulkarim
+        this.file = new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2);
     }
+
+    //crée un fochier de type file
+    public void make_fifo(){
+        this.file = new leFichier(500,new Coordonnees(4, 3, getCurrentSalle()) , 1);
+    }
+
+    //crée un fichier de type pile
+    public void make_lifo(){
+        this.file = new leFichier(700,new Coordonnees(4, 4, getCurrentSalle()) , 0);
+    }
+
 
     public void wipe(){
         if(!hasAFile()){
@@ -515,5 +561,219 @@ public class Robot {
 
     public void void_f(){
         //abdulaye
+    }
+
+    //permet d'executer l'instruction d'indice i
+    public void executeInstruction(){
+        if(index < 0 && index >= this.lesInstructions.size()){
+            System.err.println("l'indice des instruction est en dehors de l'intervalle");
+        }else{
+            String[] arguments = lesInstructions.get(index).getArguments();
+            switch (lesInstructions.get(index).getInstructionType()) {
+                case COPY:
+                    if(arguments.length == 2){
+                        this.copy(arguments[0],arguments[1]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case ADDI:
+                    if(arguments.length == 3){
+                        this.add(arguments[0], arguments[1], arguments[2]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case MULI:
+                    if(arguments.length == 3){
+                        this.multiply(arguments[0], arguments[1], arguments[2]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case SUBI:
+                    if(arguments.length == 3){
+                        this.substract(arguments[0], arguments[1], arguments[2]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case DIVI:
+                    if(arguments.length == 3){
+                        this.divide(arguments[0], arguments[1], arguments[2]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case MODI:
+                    if(arguments.length == 3){
+                        this.modulo(arguments[0], arguments[1], arguments[2]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case SWIZ:
+                    if(arguments.length == 3){
+                        this.swizzle(arguments[0], arguments[1], arguments[2]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case JUMP:
+                    if(arguments.length == 1){
+                        this.jump(arguments[0]);
+                        //seule instruction ou ya pas de index++ vu que c'est inclus dans la methode(voir jump)
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case FJMP:
+                    if(arguments.length == 1){
+                        this.conditionalJump(arguments[0]);
+                        //seule instruction ou ya pas de index++ vu que c'est inclus dans la  methode(voir jump)
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case LINK:
+                    if(arguments.length == 1){
+                        this.link(arguments[0]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                    case TEST_EOF:
+                    if(arguments.length == 0){
+                        this.testEndOfFile();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case GRAB:
+                    if(arguments.length == 1){
+                        this.grab(arguments[0]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case DROP:
+                    if(arguments.length == 1){
+                        this.drop();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case NOOP:
+                    if(arguments.length == 0){
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case TEST:
+                    if(arguments.length == 3){
+                        this.test(arguments[0], arguments[1], arguments[2]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case KILL:
+                    if(arguments.length == 0){
+                        this.kill();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case MODE:
+                    if(arguments.length == 0){
+                        this.mode();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case TEST_MRD:
+                    if(arguments.length == 0){
+                        this.test_mrd();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case VOID_M:
+                    if(arguments.length == 0){
+                        this.void_m();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case VOID_F:
+                    if(arguments.length == 0){
+                        this.void_f();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case SEEK:
+                    if(arguments.length == 1){
+                        this.seek(arguments[0]);
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case MAKE:
+                    if(arguments.length == 0){
+                        this.make();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case MAKEFIFO:
+                    if(arguments.length == 0){
+                        this.make_fifo();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case MAKELIFO:
+                    if(arguments.length == 0){
+                        this.make_lifo();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                case WIPE:
+                    if(arguments.length == 0){
+                        this.wipe();
+                        index++;
+                    }else{
+                        System.err.println("nombre d'arguments invalable");
+                    }
+                    break;
+                default:
+                    System.err.println("type d'instruction invalide");
+                    break;
+            }
+        }
+
     }
 }
