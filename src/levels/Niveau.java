@@ -20,7 +20,7 @@ public class Niveau {
             salle2 = new Salle(new Link(800, salle2, salle1, true)); // salle2 avec lien entrant 1 et lien sortant I
             salle3 = new Salle(new Link(1, salle3, salle2, true)); // salle3 avec lien entrant 1
             robot1 = new Robot(new Coordonnees(0, 0, salle1)); // robot1 dans salle1
-            robot2 = new Robot(new Coordonnees(4, 4, salle1)); // robot2 dans salle1
+            robot2 = new Robot(new Coordonnees(0, 1, salle1)); // robot2 dans salle1
             pile = new Pile();
             file = new File();
             tableauDynamique = new TableauDynamique();
