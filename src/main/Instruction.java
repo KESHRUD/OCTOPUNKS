@@ -129,6 +129,8 @@ public class Instruction {
         VOID_M,
         SEEK,
         MAKE,
+        MAKEFIFO,
+        MAKELIFO,
         WIPE,
         VOID_F,
         HALT
