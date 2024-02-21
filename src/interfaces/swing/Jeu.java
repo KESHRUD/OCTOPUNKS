@@ -1,36 +1,53 @@
-import javax.swing.JPanel;
+import java.awt.event.KeyListener;
 
-public class Jeu extends JPanel
+import javax.swing.*;
+import java.awt.event.*;
+
+public class Jeu extends JPanel implements KeyListener
 {
     private Octopunks octopunks;
 
-    private ZoneAssembleur zoneAssembleur;
-    private ZoneCommandes zoneCommandes;
-    private ZoneMemoire zoneMemoire;
+    protected ZoneAssembleur zoneAssembleur;
+    protected ZoneCommandes zoneCommandes;
+    protected ZoneMemoire zoneMemoire;
+    private JScrollPane scrollBar;
 
 
     public Jeu(Octopunks octopunks)
     {
         if(octopunks == null)
         {
-            throw new NullPointerException("Octopunks est null.");
+            throw new NullPointerException("Octopunks est null dans la classe Jeu.");
         }
         this.octopunks = octopunks;
-        this.zoneAssembleur = new ZoneAssembleur();
-        this.zoneCommandes = new ZoneCommandes(this.zoneAssembleur);
-        this.zoneMemoire = new ZoneMemoire(octopunks,this);
+        this.zoneAssembleur = new ZoneAssembleur(this.octopunks);
+        this.zoneCommandes = new ZoneCommandes(this.octopunks, this.zoneAssembleur);
+        this.zoneMemoire = new ZoneMemoire(this.octopunks,this);
 
-        this.setBounds(0,0,(int)octopunks.getDimension().getWidth(),(int)octopunks.getDimension().getHeight());
+        this.setBounds(0,0,(int)octopunks.getDimension().getWidth(),(int)this.octopunks.getDimension().getHeight());
 
-        reglageCommandes(zoneCommandes);
-        reglageZoneAsm(this.zoneAssembleur);
+        reglageCommandes();
+        reglageZoneAsm();
 
         this.add(this.zoneCommandes);
         this.add(this.zoneAssembleur);     
         this.add(this.zoneMemoire);
 
-        this.setSize(octopunks.getDimension());
+        this.addKeyListener(this);
+        this.setSize(this.octopunks.getDimension());
         this.setLayout(null);
+
+        //this.scrollBar = new JScrollPane(this);
+        //this.setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
+    }
+
+    public JScrollPane getScrollBar()
+    {
+        if(this.scrollBar == null)
+        {
+            throw new NullPointerException("La scrollbar est null.");
+        }
+        return this.scrollBar;
     }
 
     public ZoneAssembleur getZoneAssembleur()
@@ -60,19 +77,31 @@ public class Jeu extends JPanel
         return this.zoneMemoire;
     }
 
-    private void reglageZoneAsm(ZoneAssembleur zoneAssembleur)
+    private void reglageZoneAsm()
     {
-        zoneAssembleur.setLocation((int)octopunks.getDimension().getWidth()-zoneAssembleur.getWidth(),0);
-        zoneAssembleur.setSize(zoneAssembleur.getWidth(), zoneAssembleur.getHeight());
+        this.zoneAssembleur.setSize(this.zoneAssembleur.getWidth(), this.zoneAssembleur.getHeight());
+        this.zoneAssembleur.setLocation((int)this.octopunks.getDimension().getWidth()-this.zoneAssembleur.getWidth(),0);
     }
 
-    private void reglageCommandes(ZoneCommandes zoneCommandes)
+    private void reglageCommandes()
     {
-        zoneCommandes.setLocation((int)octopunks.getDimension().getWidth()-zoneCommandes.getWidth(), (int)octopunks.getDimension().getHeight()-zoneCommandes.getHeight());
+        this.zoneCommandes.setLocation((int)this.octopunks.getDimension().getWidth()-this.zoneCommandes.getWidth(), (int)octopunks.getDimension().getHeight()-zoneCommandes.getHeight());
+    }
 
-        // DÉBOGAGE
-        System.out.println("Largeur fenetre : " + (int)octopunks.getDimension().getWidth());
-        System.out.println("Hauteur fenetre : " + (int)octopunks.getDimension().getHeight());
-        System.out.println("Position zone boutons : " + ((int)octopunks.getDimension().getHeight() - (int)zoneCommandes.getHeight()));
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        System.out.println("La touche " + e.getKeyCode() + " est appuyée !");
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("La touche " + e.getKeyCode() + " est pressée !");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        System.out.println("La touche " + e.getKeyCode() + " est relâchée !");
     }
 }
