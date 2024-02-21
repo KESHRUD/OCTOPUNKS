@@ -1,17 +1,15 @@
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ZoneMemoire extends JPanel
 {
-
-    public ZoneMemoire(Octopunks octopunks)
+    private int x;
+    private int y;
+    
+    public ZoneMemoire(Octopunks octopunks, Jeu jeu)
     {
-        this.setSize(200,200);
+        this.setSize((int)(octopunks.getDimension().getWidth()-jeu.getZoneCommandes().getWidth()),jeu.getZoneCommandes().getHeight());
         this.setLocation(0,(int)octopunks.getDimension().getHeight()-getHeight());
         this.setBackground(Color.PINK);
         this.setLayout(null);
