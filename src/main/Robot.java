@@ -524,7 +524,7 @@ public class Robot {
     }
 
     public void test_mrd(){
-        // je ne peux pas l'implmenter avant la tache de abdoulaye
+        // a implenter par abdulkarim
     }
 
     public void void_m(){
@@ -556,11 +556,23 @@ public class Robot {
             System.err.println("Fatal error: NO FILE IS HELD");
         }else{
             this.file.libererChamp();// un fichier supprimé est un fichier qui n'est pas sur la salle
+            this.file = null;
         }
     }
 
     public void void_f(){
         //abdulaye
+    }
+
+    //ca tue le robot et drop le fichier tenu par le rebot sur la meme place
+    public void halt(){
+        if(this.hasAFile()){
+            this.file.setPosition(this.position); //le fichier va etre deposer sur la meme position que le robot
+            setEstMort(true); //le robot meurt
+        }else{
+            setEstMort(estMort);
+            getCurrentSalle().libererChamp(position);
+        }
     }
 
     //permet d'executer l'instruction d'indice i
@@ -775,5 +787,11 @@ public class Robot {
             }
         }
 
+    }
+    //methode pour executer toute les instruction a la fois 
+    public void executeAllInstruction(){
+        while(index < lesInstructions.size()){
+            executeInstruction();
+        }
     }
 }
