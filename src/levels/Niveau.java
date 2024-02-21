@@ -58,4 +58,13 @@ public class Niveau {
 
         return victoire && salle3.getContenu().values().stream().anyMatch(champ -> champ.getType() == TypeCellule.FICHIER) && victoireRobotsOpposes;
     }
+
+    //getter pour les 2 robots
+    public Robot getRobot1() {
+        return robot1;
+    }
+
+    public Robot getRobot2() {
+        return robot2;
+    }
 }
