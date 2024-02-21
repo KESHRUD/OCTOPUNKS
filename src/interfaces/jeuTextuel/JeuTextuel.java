@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class JeuTextuel {
+
+    Scanner console = new Scanner(System.in);
+
     public JeuTextuel() {
         boolean jeuEnCours = true;
         String menu;
 
         System.out.println("Bienvenue sur Octopunks !\n");
-        Scanner console = new Scanner(System.in);
         while (jeuEnCours) {
             System.out.println(" _______________________");
             System.out.print("| Choisissez un niveau  |\n| -(1) Niveau 0\t\t|\n| -(2) Niveau 1\t\t|\n| -(3) Niveau 2\t\t|\n| -(0) Quitter\t\t|\n");
@@ -40,12 +42,13 @@ public class JeuTextuel {
                     break;
             }
         }
+        console.close();
     }
 
     public void lancerNiveau(String cheminNiveau) {
         boolean executionEnCours = true;
-        int i = 0,j = 0;
         boolean niveauEnCours = true;
+        int j = 0;
         String asmbCode = "";
         String lastLign = "";
         afficheNiveau(cheminNiveau);
@@ -56,36 +59,41 @@ public class JeuTextuel {
 
             // INTERFACE TERMINAL CODE ASSEMBLEUR //
 
-            Scanner code = new Scanner(System.in);
             while ((!lastLign.equalsIgnoreCase("HALT")) && (!lastLign.equalsIgnoreCase("Menu"))) {
-                lastLign = code.nextLine();
+                lastLign = console.nextLine();
                 asmbCode += lastLign + "\n";
             }
 
             // PARTIE EXECUTION DU CODE ASSEMBLEUR //
 
-            if (lastLign.equalsIgnoreCase("Menu")) niveauEnCours = false;
+            if (lastLign.equalsIgnoreCase("Menu")) {
+                niveauEnCours = false;
+                break;
+            }
             System.out.println("(1) Exécuter pas à pas les instructions\n(2) Exécuter toutes les instructions directement");
-            String choix = code.nextLine();
             ArrayList<Instruction> codeAssembleur = parse(asmbCode);
-            if (choix.equals("1")) {
-                System.out.println("Exécuter pas à pas votre code Assembleur en appuyant sur 'Entrée'");
-                while (i < codeAssembleur.size()) {
-                    lastLign = code.nextLine(); // Permet d'attendre que l'utilisateur appuie sur ENTREE
-                    codeAssembleur.get(i).printInstruction();
+            String choix = console.nextLine();
+
+            switch (choix) {
+                case "1" : 
+                    executerPasAPas(codeAssembleur, cheminNiveau);
+                    executionEnCours = false;
+                    break;
+
+                case "2":
+                    System.out.println("Exécution du code assembleur :");
+                    while (j < codeAssembleur.size()) {
+                        codeAssembleur.get(j).printInstruction();
+                        j++;
+                    }
                     afficheNiveau(cheminNiveau);
-                    i++;
-                }
+                    executionEnCours = false;
+                    break;
+                
+                default :
+                    System.out.println("Entrez le bon caractère !!");
+                    break;
             }
-            else {
-                System.out.println("Exécution du code assembleur :");
-                while (j < codeAssembleur.size()) {
-                    codeAssembleur.get(j).printInstruction();
-                    j++;
-                }
-                afficheNiveau(cheminNiveau);
-            }
-            executionEnCours = false;
         }
     }
 
@@ -139,6 +147,14 @@ public class JeuTextuel {
         return listeInstruction;
     }
 
+    public void executerPasAPas(ArrayList<Instruction> codeAssembleur, String cheminNiveau){
+        System.out.println("Exécuter pas à pas votre code Assembleur en appuyant sur 'Entrée'");
+        for (int i = 0; i < codeAssembleur.size(); i++){
+            console.nextLine(); // Permet d'attendre que l'utilisateur appuie sur ENTREE
+            codeAssembleur.get(i).printInstruction();
+            afficheNiveau(cheminNiveau);
+        }   
+    }
 
     public static void main(String[] var0) {
         new JeuTextuel();
