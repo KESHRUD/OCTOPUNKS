@@ -1,11 +1,7 @@
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Color;
-
+import java.awt.event.*;
+import java.awt.*;
 
 
 /**
@@ -26,14 +22,16 @@ public class ZoneCommandes extends JPanel
     private int boutonWidth = 60;
     private int boutonHeight = boutonWidth;
 
-    public ZoneCommandes()
+    public ZoneCommandes(Octopunks octopunks, ZoneAssembleur zoneAssembleur)
     {
-        this.setBounds(800,500,200,250);
+        this.setSize(zoneAssembleur.getWidth(), (int)octopunks.getDimension().getHeight()/3);
+        this.setLocation(800,500);
         this.setBackground(Color.GREEN);
         this.setLayout(null);
 
         this.commandesLabel = new JLabel("Commandes");
-        this.commandesLabel.setBounds(60, 15, 100, 20);
+        this.commandesLabel.setSize(100,20);
+        this.commandesLabel.setLocation(60, 15);
         this.add(this.commandesLabel);
 
         this.boutonPas = new JButton("Pas");
@@ -42,8 +40,7 @@ public class ZoneCommandes extends JPanel
         this.boutonPas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("On fait un pas.");
-
+                zoneAssembleur.disableModification();
             }
         });
         this.add(this.boutonPas);
@@ -55,10 +52,10 @@ public class ZoneCommandes extends JPanel
         this.boutonStop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("STOOOP");
+                zoneAssembleur.enableModification();
             }
         });
-        this.add(boutonStop);
+        this.add(this.boutonStop);
 
 
         // Initialisation du bouton pour l'exécution automatique
@@ -68,10 +65,9 @@ public class ZoneCommandes extends JPanel
         this.boutonAutomatique.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("Mode automatique.");
+                zoneAssembleur.disableModification();
             }
         });
         this.add(this.boutonAutomatique);
-
     }
 }
