@@ -11,17 +11,21 @@ import java.awt.*;
  */
 public class Menu extends JPanel
 {
+   private Octopunks octopunks;
+
    private JButton boutonJouer;
 
    public Menu(Octopunks octopunks)
    {
+      if(octopunks == null)
+      {
+         throw new NullPointerException("Octopunks est null dans la class Menu.");
+      }
+      this.octopunks = octopunks;
+
       this.setBounds(0,0,(int)octopunks.getDimension().getWidth(),(int)octopunks.getDimension().getHeight());
       this.setLayout(null);
       this.setBackground(Color.RED);
-
-      System.out.println("Hauteur : " + octopunks.getDimension().getHeight());
-      System.out.println("Largeur : " + octopunks.getDimension().getWidth());
-
 
       JLabel titre = new JLabel("Octopunks Version Finale");
       titre.setSize(400,200);
@@ -37,7 +41,7 @@ public class Menu extends JPanel
       
       boutonJouer.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            octopunks.changerPage("Gameplay");
+            octopunks.changerPage("Choix du niveau");
          }
      });
       this.add(boutonJouer);
