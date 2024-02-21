@@ -1,10 +1,6 @@
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 
-import java.awt.Color;
+import java.awt.*;
 
 
 public class ZoneAssembleur extends JPanel
@@ -15,29 +11,37 @@ public class ZoneAssembleur extends JPanel
 
     private JTextArea zoneTexte1;
     private JTextArea zoneTexte2;
-
+    private Font police;
 
     /**
      * On crée la zone qui concerne les entrées de code assembleur.
-    */
-    public ZoneAssembleur()
+     */
+    public ZoneAssembleur(Octopunks octopunks)
     {
-        this.setBounds(770,100,400,600);
-        this.setBackground(Color.RED);
         this.setLayout(null);
+
+        this.setSize((int)octopunks.getDimension().getWidth()/4,(int)octopunks.getDimension().getHeight()*2/3);
+        this.setLocation(100,100);
+        this.setBackground(Color.RED);
 
         labelAssembleur = new JLabel("Instructions assembleur");
         labelAssembleur.setBounds(30,30,160,10);
         this.add(labelAssembleur);
 
+        this.police = new Font(Font.SANS_SERIF, Font.ROMAN_BASELINE, 25);
+
         zoneTexte1 = new JTextArea();
-        zoneTexte1.setBounds(10,60,375,225);
+        zoneTexte1.setSize(this.getWidth()-25,(int)(this.getHeight()*0.4));
+        zoneTexte1.setLocation(10,60);
+        zoneTexte1.setFont(this.police);
         scrollBar1 = new JScrollPane(zoneTexte1);
         scrollBar1.setBounds(zoneTexte1.getX(), zoneTexte1.getY(), zoneTexte1.getWidth(), zoneTexte1.getHeight());
         this.add(scrollBar1);
 
         zoneTexte2 = new JTextArea();
-        zoneTexte2.setBounds(zoneTexte1.getX(),zoneTexte1.getHeight()+zoneTexte1.getY()+20,375,225);
+        zoneTexte2.setSize(zoneTexte1.getSize());
+        zoneTexte2.setLocation(zoneTexte1.getX(),zoneTexte1.getHeight()+zoneTexte1.getY()+20);
+        zoneTexte2.setFont(this.police);
         scrollBar2 = new JScrollPane(zoneTexte2);
         scrollBar2.setBounds(zoneTexte2.getX(), zoneTexte2.getY(), zoneTexte2.getWidth(), zoneTexte2.getHeight());
         this.add(scrollBar2);
@@ -47,18 +51,20 @@ public class ZoneAssembleur extends JPanel
      * Permet de bloquer la modification d'une zone de saisie de code assembleur
      * @param zoneTexte la zone de saisie du code assembleur
      */
-    public void disableModification(JTextArea zoneTexte)
+    public void disableModification()
     {
-        zoneTexte.setEditable(false);
+        this.zoneTexte1.setEditable(false);
+        this.zoneTexte2.setEditable(false);
     }
 
     /**
      * Permet d'autoriser la modification d'une zone de saisie de code assembleur
      * @param zoneTexte la zone de saisie du code assembleur
      */
-    public void enableModification(JTextArea zoneTexte)
+    public void enableModification()
     {
-        zoneTexte.setEditable(true);
+        this.zoneTexte1.setEditable(true);
+        this.zoneTexte2.setEditable(true);
     }
 
 
@@ -72,5 +78,15 @@ public class ZoneAssembleur extends JPanel
     public String getAssembleur(JTextArea zoneTexte)
     {
         return zoneTexte.getText();
+    }
+
+
+    /**
+     * On veut pouvoir enregistrer le code assembleur des deux zone de saisie.
+     * Il faut qu'on puisse les charger au lancement du programme.
+     */
+    public void saveAssembleur()
+    {
+        // Compléter
     }
 }
