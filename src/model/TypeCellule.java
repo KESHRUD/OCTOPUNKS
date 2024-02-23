@@ -1,3 +1,5 @@
+package src.model;
+
 public enum TypeCellule {
     VIDE(' '),
     EXA1('E'),
