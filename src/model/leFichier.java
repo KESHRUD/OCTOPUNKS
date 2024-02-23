@@ -2,7 +2,7 @@ package src.model;
 
 public class leFichier {
     private int id; //200 par exemple dans le premier niveau de exapunks
-    private Fichier fichier; //le type de fichier
+    private TypeFichier fichier; //le type de fichier
     private Coordonnees position; //le fichier aussi a une position
 
 
