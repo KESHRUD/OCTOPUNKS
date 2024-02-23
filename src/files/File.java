@@ -3,7 +3,7 @@ package src.files;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Random;
+
 
 public class File<E> extends TypeFichier<E> {
     private LinkedList<E> f;
@@ -14,18 +14,7 @@ public class File<E> extends TypeFichier<E> {
         this.drop();
     }
 
-    /** Creer un file avec des valeurs aléatoires */
-    public static File<Integer> makeFIFO(int length) {
-        File<Integer> file = new File<Integer>();
-        Random rand = new Random();
-
-        for (int i = 0; i < length; i++) {
-            file.enqueue(rand.nextInt(100)); // Choisir la plage de nombres aléatoires selon vos besoins
-        }
-
-        return file;
-    }
-
+    
     /** Renvoie la file */
     public LinkedList<E> getFile() {
         return f;
@@ -76,4 +65,5 @@ public class File<E> extends TypeFichier<E> {
     public ListIterator<E> getIterator(int index) {
         return f.listIterator(index);
     }
+
 }
