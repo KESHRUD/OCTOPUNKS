@@ -1,3 +1,6 @@
+package src.model;
+
+
 public class Champ {
     private TypeCellule type;
     private boolean occupe; // Indique si le champ est occupé
