@@ -1,3 +1,5 @@
+package src.model;
+
 public class leFichier {
     private int id; //200 par exemple dans le premier niveau de exapunks
     private Fichier fichier; //le type de fichier
