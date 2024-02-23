@@ -1,7 +1,7 @@
+package src.controller;
 
-package src.interfaces.jeuTextuel;
-
-import src.main.Instruction;
+import levels.Niveau;
+import src.model.Instruction;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class JeuTextuel {
                     jeuEnCours = false;
                     break;
                 case "1":
-                    lancerNiveau("src/levels/Niveau1.txt");
+                    lancerNiveau("levels/Niveau1.txt");
                     break;
                 case "2":
                     lancerNiveau("");
@@ -47,9 +47,9 @@ public class JeuTextuel {
     }
 
     public void lancerNiveau(String cheminNiveau) {
+        Niveau niveau1 = new Niveau(cheminNiveau);
         boolean executionEnCours = true;
         boolean niveauEnCours = true;
-        int j = 0;
         String asmbCode = "";
         String lastLign = "";
         afficheNiveau(cheminNiveau);
@@ -74,20 +74,19 @@ public class JeuTextuel {
             System.out.println("(1) Exécuter pas à pas les instructions\n(2) Exécuter toutes les instructions directement");
             ArrayList<Instruction> codeAssembleur = parse(asmbCode);
             String choix = console.nextLine();
-
+            niveau1.getRobot1().setLesInstructions(codeAssembleur);
             switch (choix) {
-                case "1" : 
-                    executerPasAPas(codeAssembleur, cheminNiveau);
-                    executionEnCours = false;
+                case "1" :
+                    for (Instruction instruction : codeAssembleur){
+                        console.nextLine();
+                        instruction.printInstruction();
+                        niveau1.getRobot1().executeInstruction();
+                        executionEnCours = false;
+                    }
                     break;
-
                 case "2":
                     System.out.println("Exécution du code assembleur :");
-                    while (j < codeAssembleur.size()) {
-                        codeAssembleur.get(j).printInstruction();
-                        j++;
-                    }
-                    afficheNiveau(cheminNiveau);
+                    niveau1.getRobot1().executeAllInstruction();
                     executionEnCours = false;
                     break;
                 
@@ -148,14 +147,16 @@ public class JeuTextuel {
         return listeInstruction;
     }
 
-    public void executerPasAPas(ArrayList<Instruction> codeAssembleur, String cheminNiveau){
+    /* 
+    public void executerPasAPas(ArrayList<Instruction> codeAssembleur, String cheminNiveau, Niveau niveau){
         System.out.println("Exécuter pas à pas votre code Assembleur en appuyant sur 'Entrée'");
-        for (int i = 0; i < codeAssembleur.size(); i++){
+        for (Instruction instruction : codeAssembleur) {
             console.nextLine(); // Permet d'attendre que l'utilisateur appuie sur ENTREE
-            codeAssembleur.get(i).printInstruction();
+            instruction.printInstruction();
+            niveau.getRobot1().executeInstruction();
             afficheNiveau(cheminNiveau);
         }   
-    }
+    }*/
 
     public static void main(String[] var0) {
         new JeuTextuel();
