@@ -1,3 +1,5 @@
+package src.model;
+
 
 public class Link {
     private final int id;
