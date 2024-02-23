@@ -1,3 +1,6 @@
+package src.files;
+
+
 public abstract class TypeFichier<E> {
     public abstract void add(E elt); //Ajoute un élément
     public abstract void remove(); //Supprime un élément
