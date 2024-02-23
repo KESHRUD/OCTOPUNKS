@@ -1,5 +1,9 @@
+package src.model;
+
+
 import java.util.ArrayList;
 import java.util.List;
+
 public class Monde {
     private Niveau level1;
     private List<Instruction> InstruExa1;
