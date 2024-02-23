@@ -1,19 +1,20 @@
 package src.model;
+import src.files.*;
 
 public class leFichier {
     private int id; //200 par exemple dans le premier niveau de exapunks
-    private TypeFichier fichier; //le type de fichier
+    private TypeFichier<Integer> fichier; //le type de fichier
     private Coordonnees position; //le fichier aussi a une position
 
 
     // Constructeur
     public leFichier(int id, Coordonnees laPosition, int type ){ //0 pour pile 1 pour file 2 pour arrayList
         if(type == 0){
-            fichier = new Pile();
+            fichier = new Pile<Integer>();
         }else if(type == 1){
-            fichier = new File();
+            fichier = new File<Integer>();
         }else if (type == 2){
-            fichier = new TableauDynamique();
+            fichier = new TableauDynamique<Integer>();
         }else{
             System.err.println("type de fichier inconnu");
         }
@@ -33,11 +34,11 @@ public class leFichier {
     }
     
     //getter pour l etype de fichier
-    public Fichier getFichier() {
+    public TypeFichier<Integer> getFichier() {
         return fichier;
     }
     //setter pour le type de fichier
-    public void setFichier(Fichier fichier) {
+    public void setFichier(TypeFichier<Integer> fichier) {
         this.fichier = fichier;
     }
     //getter pour les position
@@ -52,11 +53,11 @@ public class leFichier {
         occuperChamp(newPosition);//occuper la novelle position
     }
 
-    public Fichier randFile(){
+    public TypeFichier<Integer> randFile(){
         //cette methode doit etre implmenetr par abdoulkarim
         //de facon a ce que a chaque fois qu'on "MAKE" un fichier
         //le type de fichier est random 
-        return new File(); //juste un exemple pour ne pas avoir d'erreur
+        return new File<Integer>(); //juste un exemple pour ne pas avoir d'erreur
     }
 
     public void libererChamp(){

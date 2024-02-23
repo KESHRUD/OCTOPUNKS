@@ -88,23 +88,6 @@ public class Salle {
         this.liensSortant = liensSortant;
     }
     
-    /* Méthode pour ajouter un lien à une salle.
-     * Cette méthode est appelée lors de la création du lien et sert à établir la réciprocité.
-     * @param lien Le lien à ajouter à la salle
-     */
-    private void ajouterLien(Link lien) {
-        if (this.equals(lien.getSalleAvant())) {
-            this.salleAvant.ajouterLienSortant(lien);
-            if (lien.isBidirectionnel()) {
-                this.salleApres.setLienEntrant(lien);
-            }
-        } else if (this.equals(lien.getSalleApres())) {
-            this.salleApres.ajouterLienSortant(lien);
-            if (lien.isBidirectionnel()) {
-                this.salleAvant.setLienEntrant(lien);
-            }
-        }
-    }
 
     public leFichier getTheFile() {
         return theFile;

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class JeuTextuel {
 
     Scanner console = new Scanner(System.in);

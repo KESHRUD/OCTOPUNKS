@@ -1,4 +1,4 @@
-package src.files;
+package src.model;
 
 import java.util.Objects;
 

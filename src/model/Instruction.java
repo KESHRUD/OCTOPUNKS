@@ -59,6 +59,6 @@ public class Instruction {
         MAKELIFO,
         WIPE,
         VOID_F,
-        HALT
+        HALT,
     }
 }
