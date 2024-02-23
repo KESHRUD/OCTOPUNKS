@@ -1,3 +1,5 @@
+package src.files;
+
 
 public class InstructionFichier<E> {
     private E register = null;
