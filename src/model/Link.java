@@ -14,7 +14,7 @@ public class Link {
         this.bidirectionnel = bidirectionnel;
 
         // Définir la réciprocité du lien entre les salles si bidirectionnel est vrai
-        if (bidirectionnel) {
+        if (bidirectionnel && salleAvant != null) {
             salleAvant.ajouterLienSortant(this);
             salleApres.setLienEntrant(this);
         }
