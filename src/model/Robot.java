@@ -17,7 +17,7 @@ public class Robot {
     
     // Constructeur
     public Robot(Coordonnees position) {
-        file = null;
+        //file = null;
         estMort = false;
         registreF = 0; 
         registreM = 0;
@@ -424,13 +424,23 @@ public class Robot {
         // a completer
     }
 
-    
 
     public void grab(String theFile){
         if(this.hasAFile()){
             System.err.println("Fatal error: CANNOT GRAB A SECOND FILE");
         }else{
             int idFile = Integer.parseInt(theFile);
+            /*for(leFichier unFichier: getCurrentSalle().getContenu2()){
+                while(this.file == null){
+                    if(idFile == unFichier.getId()){
+                        this.file = unFichier; //on grab le fichier
+                        unFichier.setPosition(this.position);
+                    }
+                }
+            }
+            if(this.file == null){
+                throw new IllegalArgumentException("Fatal error : File Id not found");
+            }*/
             if(getCurrentSalle().getTheFile() != null){
                 if(idFile == getCurrentSalle().getTheFile().getId()){
                     this.file = getCurrentSalle().getTheFile();
@@ -539,17 +549,18 @@ public class Robot {
 
     // crée une fichier de type arrayList
     public void make(){
-        this.file = new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2);
+       // getCurrentSalle().getContenu2().add(new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2));
+        this.getCurrentSalle().setTheFile(new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2));
     }
 
     //crée un fochier de type file
     public void make_fifo(){
-        this.file = new leFichier(500,new Coordonnees(4, 3, getCurrentSalle()) , 1);
+        this.getCurrentSalle().setTheFile(new leFichier(500,new Coordonnees(4, 3, getCurrentSalle()) , 1));
     }
 
     //crée un fichier de type pile
     public void make_lifo(){
-        this.file = new leFichier(700,new Coordonnees(4, 4, getCurrentSalle()) , 0);
+        this.getCurrentSalle().setTheFile(new leFichier(700,new Coordonnees(4, 4, getCurrentSalle()) , 0));
     }
 
 
@@ -786,6 +797,7 @@ public class Robot {
                     break;
                 case HALT:
                     this.halt();
+                    break;
                 default:
                     System.err.println("type d'instruction invalide");
                     break;

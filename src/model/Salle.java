@@ -6,20 +6,29 @@ import java.util.List;
 import java.util.Map;
 
 public class Salle {
+    private List<leFichier> contenu2;
     private Map<Coordonnees, Champ> contenu; // Représentation de ce qui se trouve dans la salle
     private Map<Integer, String> portes; // Représentation des portes numérotées
     private List<Link> liensSortant; //entre 0 et 3 liens Sortant pour chaque salle
     private Link lienEntrant; //1 lien entrant pour chaque Salle sauf pour la premiere
     private leFichier theFile; //le fichier present dans cette salle
-
+    
     // Constructeur
     public Salle(Link lienEntrant) {
+        this.contenu2 = new ArrayList<>();
         this.contenu = new HashMap<>();
         initialiserContenu();
         this.portes = new HashMap<>();
         liensSortant = new ArrayList<>(3) ;
         this.lienEntrant = lienEntrant;
         theFile = null;
+    }
+    public List<leFichier> getContenu2() {
+        return contenu2;
+    }
+
+    public void setContenu2(List<leFichier> contenu2) {
+        this.contenu2 = contenu2;
     }
 
     private void initialiserContenu() {

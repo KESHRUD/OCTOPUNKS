@@ -4,6 +4,8 @@ package src.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import levels.Niveau;
+
 public class Monde {
     private Niveau level1;
     private List<Instruction> InstruExa1;

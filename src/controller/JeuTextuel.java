@@ -1,12 +1,18 @@
 package src.controller;
 
-import levels.Niveau;
-import src.model.Instruction;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
+
+import levels.Niveau;
+import src.model.Champ;
+import src.model.Coordonnees;
+import src.model.Instruction;
+import src.model.Salle;
+import src.model.TypeCellule;
 
 
 public class JeuTextuel {
@@ -96,6 +102,11 @@ public class JeuTextuel {
                     break;
             }
         }
+        if (verifierFichierDansSalle3(200, niveau1.getSalle3())) {
+            System.out.println("Fichier trouvé dans la salle 3 ! Vous avez terminé le niveau !");
+        } else {
+            System.out.println("Le fichier n'est pas dans la salle 3 !");
+        }
     }
 
     private void afficheNiveau(String cheminNiveau) {
@@ -158,8 +169,22 @@ public class JeuTextuel {
             afficheNiveau(cheminNiveau);
         }   
     }*/
-
+    
+    public boolean verifierFichierDansSalle3(int idFichier, Salle salle) {
+        for (Map.Entry<Coordonnees, Champ> champ : salle.getContenu().entrySet()) {
+            Coordonnees coordonnees = champ.getKey();
+            Champ contenu = champ.getValue();
+            if (contenu.getType() == TypeCellule.FICHIER && coordonnees.getSalle().equals(salle) && coordonnees.getSalle().getTheFile().getId() == idFichier) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
     public static void main(String[] var0) {
         new JeuTextuel();
+        
     }
+
 }

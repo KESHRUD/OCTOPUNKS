@@ -1,17 +1,37 @@
 package levels;
 
-import src.model.*;
-import src.files.*;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import src.files.File;
+import src.files.Pile;
+import src.files.TableauDynamique;
+import src.model.Champ;
+import src.model.Coordonnees;
+import src.model.Link;
+import src.model.Robot;
+import src.model.Salle;
+import src.model.TypeCellule;
+import src.model.leFichier;
+
 
 public class Niveau {
     private Salle salle1;
+    public Salle getSalle1() {
+        return salle1;
+    }
+
     private Salle salle2;
+    public Salle getSalle2() {
+        return salle2;
+    }
+
     private Salle salle3;
+    public Salle getSalle3() {
+        return salle3;
+    }
+
     private Robot robot1;
     private Robot robot2;
     private Pile<Integer> pile;
