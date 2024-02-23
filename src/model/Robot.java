@@ -678,6 +678,7 @@ public class Robot {
                         index++;
                     }else{
                         System.err.println("nombre d'arguments invalable");
+                        break;
                     }
                     break;
                 case DROP:
@@ -783,6 +784,8 @@ public class Robot {
                         System.err.println("nombre d'arguments invalable");
                     }
                     break;
+                case HALT:
+                    this.halt();
                 default:
                     System.err.println("type d'instruction invalide");
                     break;
