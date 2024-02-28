@@ -8,6 +8,10 @@ import java.util.Scanner;
 
 import levels.Niveau;
 import src.model.Instruction;
+import src.model.Salle;
+import src.model.Coordonnees;
+import src.model.Champ;
+
 
 
 
