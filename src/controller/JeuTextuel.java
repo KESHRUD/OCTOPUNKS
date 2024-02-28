@@ -47,9 +47,7 @@ public class JeuTextuel {
                     lancerNiveau("");
                     System.out.print("Niveau 2\n");
                     break;
-                default:
-                    System.out.print("Entrez le bon caractère !!\n");
-                    break;
+                default: System.out.print("Entrez le bon caractère !!\n");
             }
         }
         console.close();
@@ -97,9 +95,7 @@ public class JeuTextuel {
                     executionEnCours = false;
                     break;
                 
-                default :
-                    System.out.println("Entrez le bon caractère !!");
-                    break;
+                default : System.out.println("Entrez le bon caractère !!");
             }
         }
         if (verifierFichierDansSalle3(200, niveau1.getSalle3())) {
