@@ -17,7 +17,9 @@ import src.model.TypeCellule;
 
 public class JeuTextuel {
 
-    Scanner console = new Scanner(System.in);
+    private Scanner console = new Scanner(System.in);
+    private String asmbCode = "";
+    private String lastLign = "";
 
     public JeuTextuel() {
         boolean jeuEnCours = true;
@@ -54,42 +56,40 @@ public class JeuTextuel {
     }
 
     public void lancerNiveau(String cheminNiveau) {
+        
+        // AFFICHAGE NIVEAU TEXTUEL
+
         Niveau niveau1 = new Niveau(cheminNiveau);
         boolean executionEnCours = true;
         boolean niveauEnCours = true;
-        String asmbCode = "";
-        String lastLign = "";
         afficheNiveau(cheminNiveau);
         System.out.println("Le but de ce niveau est de vous familiariser avec Octopunks");
         System.out.println("Pour terminer le niveau vous devrez faire en sorte que le robot\namène l'objet dans la 3e grille !");
         System.out.println("Saisissez le code assembleur,\nn'oubliez pas d'utiliser l'instruction HALT pour terminer votre code ASBM.\n(entrez 'Menu' pour retourner au menu)\n");
         while (niveauEnCours && executionEnCours) {
 
-            // INTERFACE TERMINAL CODE ASSEMBLEUR //
 
-            while ((!lastLign.equalsIgnoreCase("HALT")) && (!lastLign.equalsIgnoreCase("Menu"))) {
-                lastLign = console.nextLine();
-                asmbCode += lastLign + "\n";
-            }
+            // RECUPERATION CODE ASSEMBLEUR 
+    
+            System.out.println("Code Assembleur du 1er ROBOT :");
+            niveau1.getRobot1().setLesInstructions(parse(ecrireASMB()));
+            
+            System.out.println("Code Assembleur du 2e ROBOT :");
+            niveau1.getRobot2().setLesInstructions(parse(ecrireASMB()));
 
-            // PARTIE EXECUTION DU CODE ASSEMBLEUR //
-
-            if (lastLign.equalsIgnoreCase("Menu")) {
-                niveauEnCours = false;
-                break;
-            }
             System.out.println("(1) Exécuter pas à pas les instructions\n(2) Exécuter toutes les instructions directement");
-            ArrayList<Instruction> codeAssembleur = parse(asmbCode);
             String choix = console.nextLine();
-            niveau1.getRobot1().setLesInstructions(codeAssembleur);
+
+            // EXECUTION CODE ASSEMBLEUR
+
             switch (choix) {
                 case "1" :
-                    for (Instruction instruction : codeAssembleur){
+                    for (Instruction instruction : niveau1.getRobot1().getLesInstructions()){
                         console.nextLine();
                         instruction.printInstruction();
                         niveau1.getRobot1().executeInstruction();
-                        executionEnCours = false;
                     }
+                    executionEnCours = false;
                     break;
                 case "2":
                     System.out.println("Exécution du code assembleur :");
@@ -159,6 +159,24 @@ public class JeuTextuel {
         return listeInstruction;
     }
 
+    /*
+     * Fonction permettant de récupérer du code Assembleur depuis le terminal
+     * @return  un String qui pourra être parser et convertis en liste d'instruction
+     * 
+     */
+    public String ecrireASMB(){
+        asmbCode = "";
+        lastLign = "";
+        while ((!lastLign.equalsIgnoreCase("HALT")) && (!lastLign.equalsIgnoreCase("Menu"))) {
+            lastLign = console.nextLine();
+
+            if (lastLign.equalsIgnoreCase("Menu"))
+                break;
+
+            asmbCode += lastLign + "\n";
+        }
+        return asmbCode;
+    }
     /* 
     public void executerPasAPas(ArrayList<Instruction> codeAssembleur, String cheminNiveau, Niveau niveau){
         System.out.println("Exécuter pas à pas votre code Assembleur en appuyant sur 'Entrée'");
