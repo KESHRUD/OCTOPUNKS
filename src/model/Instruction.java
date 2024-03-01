@@ -61,4 +61,18 @@ public class Instruction {
         VOID_F,
         HALT;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Instruction)) return false;
+        Instruction instruction = (Instruction) o;
+        return instructionType == instruction.instructionType && Arrays.equals(arguments, instruction.arguments);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(instructionType);
+        result = 31 * result + Arrays.hashCode(arguments);
+        return result;
+    }
 }
