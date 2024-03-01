@@ -29,6 +29,13 @@ public class Robot {
         lesInstructions = new ArrayList<>();
     }
     
+    public Coordonnees getPosition() {
+        return position;
+    }
+
+    public void setPosition(Coordonnees position) {
+        this.position = position;
+    }
     //methode pour verifier si le robot tient un fichier
     public boolean hasAFile(){
         return (this.file != null);
@@ -416,6 +423,7 @@ public class Robot {
                 }
             }
             setEstMort(true);//le robot doit mourir dans ce cas
+            System.err.println("lien pas trouvé");
         }
     }
 
@@ -444,12 +452,12 @@ public class Robot {
             if(getCurrentSalle().getTheFile() != null){
                 if(idFile == getCurrentSalle().getTheFile().getId()){
                     this.file = getCurrentSalle().getTheFile();
-                    getCurrentSalle().getTheFile().setPosition(this.position); //la position d'un fichier pris par le robot est la position du robot 
+                    this.file.setPosition(this.getPosition()); //la position d'un fichier pris par le robot est la position du robot 
                 }else{
-                    System.err.println("Fatal error: FILE ID NOT FOUND");
+                    System.err.println("Fatal error1: FILE ID NOT FOUND");
                 }
             }else{
-                System.err.println("Fatal error: FILE ID NOT FOUND");
+                System.err.println("Fatal error2: FILE ID NOT FOUND");
             }
         }
     }
@@ -459,6 +467,7 @@ public class Robot {
             System.err.println("Fatal error: NO FILE IS HELD");
         }else{
             //intervention de Abdulkarim pour drop le fichier sur un champ libre au hasard dans la currentSalle
+            this.getFile().setPosition(new Coordonnees(this.getPositionX()+1, this.getPositionY() + 1, getCurrentSalle()));
         }
     }
 
@@ -811,4 +820,6 @@ public class Robot {
             executeInstruction();
         }
     }
+
+    
 }
