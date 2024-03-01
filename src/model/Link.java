@@ -35,22 +35,17 @@ public class Link {
     public boolean isBidirectionnel() {
         return bidirectionnel;
     }
-
-    /* Méthode pour ajouter un lien à une salle.
-     * Cette méthode est appelée lors de la création du lien et sert à établir la réciprocité.
-     * @param lien Le lien à ajouter à la salle
-     */
-    private void ajouterLien(Link lien) {
-        if (this.equals(lien.getSalleAvant())) {
-            this.salleAvant.ajouterLienSortant(lien);
-            if (lien.isBidirectionnel()) {
-                this.salleApres.setLienEntrant(lien);
-            }
-        } else if (this.equals(lien.getSalleApres())) {
-            this.salleApres.ajouterLienSortant(lien);
-            if (lien.isBidirectionnel()) {
-                this.salleAvant.setLienEntrant(lien);
-            }
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Link)) return false;
+        Link link = (Link) o;
+        return id == link.id && salleAvant.equals(link.salleAvant) && salleApres.equals(link.salleApres) && bidirectionnel == link.bidirectionnel;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, salleAvant, salleApres, bidirectionnel);
+    }
+    
 }
