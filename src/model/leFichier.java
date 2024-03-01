@@ -1,5 +1,10 @@
 package src.model;
-import src.files.*;
+import java.util.Objects;
+
+import src.files.File;
+import src.files.Pile;
+import src.files.TableauDynamique;
+import src.files.TypeFichier;
 
 public class leFichier {
     private int id; //200 par exemple dans le premier niveau de exapunks
@@ -18,11 +23,18 @@ public class leFichier {
         }else{
             System.err.println("type de fichier inconnu");
         }
-        this.id = id;
+        if(id != 0){
+            this.id = id;
+        }
+        else{
+            throw new IllegalArgumentException("file id is null");
+        }
         position = laPosition;
         occuperChamp(laPosition);
     }
-    
+    public void setFileOfSalle(){
+        getPosition().getSalle().setTheFile(this);
+    }
     //getter pour id
     public int getId() {
         return id;
@@ -53,12 +65,6 @@ public class leFichier {
         occuperChamp(newPosition);//occuper la novelle position
     }
 
-    public TypeFichier<Integer> randFile(){
-        //cette methode doit etre implmenetr par abdoulkarim
-        //de facon a ce que a chaque fois qu'on "MAKE" un fichier
-        //le type de fichier est random 
-        return new File<Integer>(); //juste un exemple pour ne pas avoir d'erreur
-    }
 
     public void libererChamp(){
         position.getSalle().libererChamp(position);
@@ -67,4 +73,17 @@ public class leFichier {
     public void occuperChamp(Coordonnees laPosition){
         laPosition.getSalle().occuperChamp(laPosition, TypeCellule.FICHIER);
     }
+
+    @Override
+public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof leFichier)) return false;
+    leFichier leFichier = (leFichier) o;
+    return id == leFichier.id && Objects.equals(fichier, leFichier.fichier) && Objects.equals(position, leFichier.position);
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(id, fichier, position);
+}
 }
