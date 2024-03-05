@@ -1,7 +1,9 @@
-import javax.swing.*;
+package src.view;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 
 /**
@@ -10,6 +12,7 @@ import java.awt.event.*;
  * On y ajoutera les panels qui correspondent aux différentes
  * sections du jeu (menu, choix du niveau, interface de jeu).
  */
+@SuppressWarnings("unused")
 public class Octopunks extends JFrame
 {
    /**
@@ -22,19 +25,19 @@ public class Octopunks extends JFrame
    private JPanel contenu;
 
    private BarreDeMenu barreDeMenu;
-   protected Menu menu;
-   protected ChoixNiveau choixNiveau;
-   protected Jeu jeu;
+   private Menu menu;
+   private ChoixNiveau choixNiveau;
+   private Jeu jeu;
 
    private int niveau;
 
    /**
     * Lance le jeu. On va devoir changer de page en cliquant sur le
     * bouton correspondant.
+    * @throws IOException 
     */
-   public Octopunks()
+   public Octopunks() throws IOException
    {
-
       this.dimension = Toolkit.getDefaultToolkit().getScreenSize();
       //System.out.println(dimension.toString());
       this.setTitle("Octopunks");
@@ -54,7 +57,6 @@ public class Octopunks extends JFrame
        * - la page de jeu
        */
       this.barreDeMenu = new BarreDeMenu(this);
-      this.setJMenuBar(this.barreDeMenu);
 
       this.menu = new Menu(this);
       this.choixNiveau = new ChoixNiveau(this);
@@ -69,18 +71,21 @@ public class Octopunks extends JFrame
       this.add(this.contenu);
 
       // Ajout de la barre de menu à la fenêtre
-      //this.setJMenuBar(this.barreDeMenu);
+      this.setJMenuBar(this.barreDeMenu);
 
-      this.lesPages.show(this.contenu, "Menu");
-
-
+      this.lesPages.show(this.contenu, "Jeu");
       
       GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
       //Est ce que le mode plein ecran est disponible ?
-      if (device.isFullScreenSupported()) {
-         device.setFullScreenWindow(this);
-      } else {
+      if (device.isFullScreenSupported())
+      {
+         //device.setFullScreenWindow(this);
+         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+      }
+      else
+      {
          System.out.println("Le mode plein ecran n'est pas disponible");
+         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
       }
 
       /**
@@ -91,7 +96,6 @@ public class Octopunks extends JFrame
        * - on centre la fenêtre (même si c'est inutile)
        * - on rend la fenêtre visible
        */ 
-      this.setExtendedState(JFrame.MAXIMIZED_BOTH);
       this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       this.setResizable(true);
       this.setLocationRelativeTo(null);
@@ -184,6 +188,12 @@ public class Octopunks extends JFrame
 
    public static void main(String[] args)
    {
-      SwingUtilities.invokeLater(Octopunks::new);
+      SwingUtilities.invokeLater(() -> {
+         try {
+            new Octopunks();
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      });
    }
 }
