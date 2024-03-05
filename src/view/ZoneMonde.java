@@ -37,41 +37,41 @@ public class ZoneMonde extends JPanel
         int height = 30;
         switch(typeCellule)
         {
-            case EXA1 :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("Exapunks_robot.png"))));
+            case EXA1 :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png"))));
                             pic.setBounds(x,y,width,height);            
                             this.add(pic);
-                            pic = new JLabel(new ImageIcon(ImageIO.read(new File("Vide.png"))));
+                            pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
                             pic.setBounds(x,y,width,height);
                             this.add(pic);
                             break;
             
-            case EXA2 :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("Exapunks_robot.png"))));
+            case EXA2 :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png"))));
                             pic.setBounds(x,y,width,height);            
                             this.add(pic);
                             break;
             
-            case MUR :      pic = new JLabel(new ImageIcon(ImageIO.read(new File("mur.png"))));
+            case MUR :      pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/mur.png"))));
                             pic.setSize(width,height);
                             pic.setLocation(x,y);           
                             this.add(pic);
                             break;
 
-            case ENTREE :   this.caseEntree = new JLabel(new ImageIcon(ImageIO.read(new File("Carre_jaune.png"))));
+            case ENTREE :   this.caseEntree = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_jaune.png"))));
                             caseEntree.setBounds(x,y,width,height);           
                             this.add(caseEntree);
                             break;
 
-            case ARRIERE :  pic = new JLabel(new ImageIcon(ImageIO.read(new File("Carre_vert.png"))));
+            case ARRIERE :  pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_vert.png"))));
                             pic.setBounds(x,y,width,height);            
                             this.add(pic);
                             break;
 
-            case LINK :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("Lien.png"))));
+            case LINK :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Lien.png"))));
                             pic.setBounds(x,y,width,height);
                             this.add(pic);
                             break;
 
-            default :       pic = new JLabel(new ImageIcon(ImageIO.read(new File("Vide.png"))));
+            default :       pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
                             pic.setBounds(x,y,width,height);
                             this.add(pic);
                             break;
