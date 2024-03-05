@@ -1,3 +1,5 @@
+package src.view;
+
 import javax.swing.*;
 
 import java.awt.event.*;
@@ -14,6 +16,10 @@ public class ZoneCommandes extends JPanel
     private JButton boutonPas;
     private JButton boutonStop;
     private JButton boutonAutomatique;
+    private JLabel affichageVitesse;
+    private int vitesse;
+    private JButton boutonAccelerer;
+    private JButton boutonRalentir;
 
     /**
      * Le modèle de bouton standard est un carré de 60px * 60px,
@@ -22,12 +28,13 @@ public class ZoneCommandes extends JPanel
     private int boutonWidth = 60;
     private int boutonHeight = boutonWidth;
 
-    public ZoneCommandes(Octopunks octopunks, ZoneAssembleur zoneAssembleur)
+    public ZoneCommandes(Octopunks octopunks, Jeu jeu)
     {
-        this.setSize(zoneAssembleur.getWidth(), (int)octopunks.getDimension().getHeight()/3);
-        this.setLocation(800,500);
-        this.setBackground(Color.GREEN);
         this.setLayout(null);
+        this.setSize(jeu.zoneAssembleur.getWidth(), (int)octopunks.getDimension().getHeight()/3);
+
+        this.setLocation((int)(jeu.zoneAssembleur.getX()),(int)(jeu.zoneAssembleur.getHeight()));
+        this.setBackground(Color.darkGray);
 
         this.commandesLabel = new JLabel("Commandes");
         this.commandesLabel.setSize(100,20);
@@ -40,7 +47,9 @@ public class ZoneCommandes extends JPanel
         this.boutonPas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                zoneAssembleur.disableModification();
+                jeu.getZoneAssembleur().disableModification();
+                jeu.robot1.setPositionX(10);
+                jeu.robot1.setPositionY(10);
             }
         });
         this.add(this.boutonPas);
@@ -52,7 +61,8 @@ public class ZoneCommandes extends JPanel
         this.boutonStop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                zoneAssembleur.enableModification();
+
+                jeu.zoneAssembleur.enableModification();
             }
         });
         this.add(this.boutonStop);
@@ -65,9 +75,39 @@ public class ZoneCommandes extends JPanel
         this.boutonAutomatique.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                zoneAssembleur.disableModification();
+                jeu.zoneAssembleur.disableModification();
             }
         });
         this.add(this.boutonAutomatique);
+
+        this.boutonAccelerer = new JButton("+");
+        this.boutonAccelerer.setSize(boutonWidth,boutonHeight);
+        this.boutonAccelerer.setLocation(this.boutonStop.getX()+this.boutonStop.getWidth()+30,this.boutonStop.getY());
+        this.boutonAccelerer.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                // CPT
+            }
+        });
+        this.add(this.boutonAccelerer);
+
+        this.boutonRalentir = new JButton("-");
+        this.boutonRalentir.setSize(boutonWidth,boutonHeight);
+
+        this.boutonRalentir.setLocation(this.boutonAccelerer.getX(),this.boutonAutomatique.getY());
+        this.boutonRalentir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                // CPT
+            }
+        });
+        this.add(this.boutonRalentir);
+
+        this.vitesse = 10;
+
+        this.affichageVitesse = new JLabel("Vitesse : "+this.vitesse);
+        this.affichageVitesse.setSize(100,20);
+        this.affichageVitesse.setLocation(this.commandesLabel.getX()+this.commandesLabel.getWidth(), this.commandesLabel.getY());
+        this.add(this.affichageVitesse);
     }
 }
