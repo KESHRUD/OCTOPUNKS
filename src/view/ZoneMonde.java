@@ -7,6 +7,7 @@ import src.model.TypeCellule;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -16,9 +17,11 @@ import javax.swing.JPanel;
 public class ZoneMonde extends JPanel
 {
     private JLabel caseEntree;
+    private Jeu jeu;
 
     public ZoneMonde(Octopunks octopunks, Jeu jeu) throws IOException
     {
+        this.jeu = jeu;
         this.setLayout(null);
 
         this.setSize((int)octopunks.getDimension().getWidth()*3/4, (int)octopunks.getDimension().getHeight()*5/6);
@@ -33,20 +36,25 @@ public class ZoneMonde extends JPanel
     public void afficherCellule(TypeCellule typeCellule, int x, int y) throws IOException
     {
         JLabel pic;
-        int width = 30;
-        int height = 30;
+        int width = 20;
+        int height = 20;
         switch(typeCellule)
         {
-            case EXA1 :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png"))));
+            case EXA1 :     pic = new JLabel(jeu.robot1.getImageIcon());
                             pic.setBounds(x,y,width,height);            
                             this.add(pic);
+
                             pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
                             pic.setBounds(x,y,width,height);
                             this.add(pic);
                             break;
             
-            case EXA2 :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png"))));
+            case EXA2 :     pic = new JLabel(jeu.robot2.getImageIcon());
                             pic.setBounds(x,y,width,height);            
+                            this.add(pic);
+
+                            pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
+                            pic.setBounds(x,y,width,height);
                             this.add(pic);
                             break;
             
@@ -67,6 +75,11 @@ public class ZoneMonde extends JPanel
                             break;
 
             case LINK :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Lien.png"))));
+                            pic.setBounds(x,y,width,height);
+                            this.add(pic);
+                            break;
+            
+            case ENTRE_SALLE :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Entree_salle.png"))));
                             pic.setBounds(x,y,width,height);
                             this.add(pic);
                             break;
@@ -95,53 +108,28 @@ public class ZoneMonde extends JPanel
 
             while ((ligneFichier = fichierBuffer.readLine()) != null)
             {
-                System.out.println("Ligne "+nbLignes++);
+                nbLignes++;
+                
+                System.out.println("Ligne "+nbLignes);
                 int i = 0;
-                if(nbLignes == 8 || nbLignes == 16)
+
+                for (i = 0; i < ligneFichier.length(); i++)
                 {
-                    for (i = 0; i < ligneFichier.length(); i++)
-                    {
-                        //System.out.println("Ligne "+i +" : "+ ligneFichier.length() + "carac");
-
-                        char symbol = ligneFichier.charAt(i);
-                        if(symbol != ' ')
-                        {
-                            TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
-                            afficherCellule(typeCellule,x,y);
-                        }
-                        x+=40;
-                    }
+                        
+                    char symbol = ligneFichier.charAt(i);
+                    TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
+                    
+                    afficherCellule(typeCellule,x,y);
+                    x+=30;
                 }
-                else
-                {
-                    for (i = 0; i < ligneFichier.length(); i++)
-                    {
-                        //System.out.println("Ligne "+i +" : "+ ligneFichier.length() + "carac");
-
-                        char symbol = ligneFichier.charAt(i);
-                        TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
-                        afficherCellule(typeCellule,x,y);
-                        x+=40;
-
-                            // DEBUG
-                            if(symbol != ' ')
-                        {
-                            // System.out.println("Pas espace");
-                        }
-                        else
-                        {
-                            // System.out.println("Espace");
-                        }
-                    }
-                    x = 20;
-                    y += 40;
-                }
+                x = 20;
+                y += 30;
             }
-            fichierBuffer.close();
-        } catch (IOException e)
+        fichierBuffer.close();
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
     }
-
 }
