@@ -1,9 +1,13 @@
 package src.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
-public class Robot {
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+public class Robot
+{
     private Coordonnees position; //position x y et salle
     private int registreX;//les 4 registres pour chaque robot
     private int registreT;
@@ -12,11 +16,12 @@ public class Robot {
     private leFichier file; //le fichier que le robot peut tenir
     private boolean estMort; //si le robot est mort ou pas (est sur la salle)
     private List<Instruction> lesInstructions; //liste des instructions que chaque robot va executer
-    private int  index; //pour naviguer dans la liste d'instruction
-    
+    private int index; //pour naviguer dans la liste d'instruction
+    protected ImageIcon imageRobot; // l'image du robot
+
     
     // Constructeur
-    public Robot(Coordonnees position) {
+    public Robot(Coordonnees position) throws IOException {
         //file = null;
         estMort = false;
         registreF = 0; 
@@ -27,6 +32,8 @@ public class Robot {
         this.position = position;
         position.getSalle().occuperChamp(position, TypeCellule.EXA1); //le robot doit occuper une salle
         lesInstructions = new ArrayList<>();
+
+        //this.imageRobot = new ImageIcon(ImageIO.read(new File("Exapunks_robot.png")));
     }
     
     public Coordonnees getPosition() {
@@ -91,6 +98,7 @@ public class Robot {
 
     public void setPositionX(int positionX) {
         this.position.setX(positionX);
+        //this.imageRobot.setX
     }
 
     public int getPositionY() {
@@ -134,6 +142,7 @@ public class Robot {
     public void setRegistreM(int registreM) {
         this.registreM = registreM;
     }
+
     public void setRegisterValue(String registre , int value){
         switch(registre){
             case "F":
