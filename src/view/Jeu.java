@@ -4,10 +4,19 @@ import src.model.Coordonnees;
 import src.model.Robot;
 import src.model.Salle;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.io.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import java.io.IOException;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 public class Jeu extends JPanel implements KeyListener
 {
