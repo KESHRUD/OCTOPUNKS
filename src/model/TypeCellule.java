@@ -8,7 +8,8 @@ public enum TypeCellule {
     MUR('#'),
     ENTREE('I'),
     ARRIERE('1'),
-    LINK('|');
+    LINK('|'),
+    ENTRE_SALLE('V');
 
     private final char symbol;
 
@@ -42,6 +43,7 @@ public enum TypeCellule {
             case 'I' -> ENTREE;
             case '1' -> ARRIERE;
             case '|' -> LINK;
+            case 'V' -> ENTRE_SALLE;
             default -> throw new IllegalArgumentException("Le caractère " + c + " n'est pas reconnu!");
         };
     }
