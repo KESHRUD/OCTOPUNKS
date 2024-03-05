@@ -41,9 +41,9 @@ public class Niveau {
 
     public Niveau(String nomFichier) {
         try (BufferedReader br = new BufferedReader(new FileReader(nomFichier))) { 
-            salle1 = new Salle(new Link(800, salle1, salle2, false)); // salle1 avec lien sortant I
-            salle2 = new Salle(new Link(900, salle2, salle1, true)); // salle2 avec lien entrant 1 et lien sortant I
-            salle3 = new Salle(new Link(1, salle3, salle2, false)); // salle3 avec lien entrant 1
+            salle1 = new Salle(2,new Link(800, salle1, salle2, false)); // salle1 avec lien sortant I
+            salle2 = new Salle(2,new Link(900, salle2, salle1, true)); // salle2 avec lien entrant 1 et lien sortant I
+            salle3 = new Salle(2,new Link(1, salle3, salle2, false)); // salle3 avec lien entrant 1
             robot1 = new Robot(new Coordonnees(0, 0, salle1)); // robot1 dans salle1
             robot2 = new Robot(new Coordonnees(0, 1, salle1)); // robot2 dans salle1
             robot1.make();
