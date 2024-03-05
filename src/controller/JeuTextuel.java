@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 import levels.Niveau;
 import src.model.Instruction;
 import src.model.Salle;
+import src.model.TypeCellule;
 import src.model.Coordonnees;
 import src.model.Champ;
 

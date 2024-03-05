@@ -8,7 +8,9 @@ import levels.Niveau;
 
 public class Monde {
     private Niveau level1;
+    @SuppressWarnings("unused")
     private List<Instruction> InstruExa1;
+    @SuppressWarnings("unused")
     private List<Instruction> InstruExa2;
     public Monde(){
         level1 = new Niveau("Niveau1.txt");

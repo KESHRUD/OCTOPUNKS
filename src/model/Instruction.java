@@ -1,5 +1,8 @@
 package src.model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Instruction {
     private final InstructionType instructionType;
     private String[] arguments;

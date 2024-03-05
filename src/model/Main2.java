@@ -1,11 +1,13 @@
 package src.model;
 
+import java.io.IOException;
+
 public class Main2 {
     static Salle salle1;
     static Salle salle2;
     static Salle salle3;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         salle1 = new Salle(1, null);
         salle2 = new Salle(2, null);
         salle3 = new Salle(3, null);

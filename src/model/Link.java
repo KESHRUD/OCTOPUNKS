@@ -1,5 +1,6 @@
 package src.model;
 
+import java.util.Objects;
 
 public class Link {
     private final int id;
