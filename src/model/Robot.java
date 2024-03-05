@@ -1,10 +1,12 @@
 package src.model;
 
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
 public class Robot
 {
@@ -33,7 +35,7 @@ public class Robot
         position.getSalle().occuperChamp(position, TypeCellule.EXA1); //le robot doit occuper une salle
         lesInstructions = new ArrayList<>();
 
-        //this.imageRobot = new ImageIcon(ImageIO.read(new File("Exapunks_robot.png")));
+        this.imageRobot = new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png")));
     }
     
     public Coordonnees getPosition() {
@@ -98,7 +100,6 @@ public class Robot
 
     public void setPositionX(int positionX) {
         this.position.setX(positionX);
-        //this.imageRobot.setX
     }
 
     public int getPositionY() {
@@ -830,5 +831,9 @@ public class Robot
         }
     }
 
+    public ImageIcon getImageIcon()
+    {
+        return this.imageRobot;
+    }
     
 }
