@@ -1,7 +1,13 @@
-import java.awt.event.KeyListener;
+package src.view;
+
+import src.model.Coordonnees;
+import src.model.Robot;
+import src.model.Salle;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
+import java.awt.*;
 
 public class Jeu extends JPanel implements KeyListener
 {
@@ -10,36 +16,48 @@ public class Jeu extends JPanel implements KeyListener
     protected ZoneAssembleur zoneAssembleur;
     protected ZoneCommandes zoneCommandes;
     protected ZoneMemoire zoneMemoire;
+    protected ZoneMonde zoneMonde;
     private JScrollPane scrollBar;
+    protected Double vitesseExecution;
+
+    protected Robot robot1;
+    protected Robot robot2;
 
 
-    public Jeu(Octopunks octopunks)
+    public Jeu(Octopunks octopunks) throws IOException
     {
         if(octopunks == null)
         {
             throw new NullPointerException("Octopunks est null dans la classe Jeu.");
         }
         this.octopunks = octopunks;
-        this.zoneAssembleur = new ZoneAssembleur(this.octopunks);
-        this.zoneCommandes = new ZoneCommandes(this.octopunks, this.zoneAssembleur);
-        this.zoneMemoire = new ZoneMemoire(this.octopunks,this);
 
-        this.setBounds(0,0,(int)octopunks.getDimension().getWidth(),(int)this.octopunks.getDimension().getHeight());
+        this.robot1 = new Robot(new Coordonnees(0, 0, new Salle(1)));
+        this.robot2 = new Robot(new Coordonnees(0, 0, new Salle(1)));
 
-        reglageCommandes();
-        reglageZoneAsm();
+        this.zoneAssembleur = new ZoneAssembleur(octopunks);
+        this.zoneCommandes = new ZoneCommandes(octopunks, this);
+        this.zoneMemoire = new ZoneMemoire(octopunks,this);
+        this.zoneMonde = new ZoneMonde(octopunks, this);
 
+        this.vitesseExecution = 1.0;
+        this.setSize((int)octopunks.getDimension().getWidth(),(int)octopunks.getDimension().getHeight());
+        this.setLocation(0,0);
+        
+        
+        /**
+         * On ajoute les différentes zones dans le panel.
+         */
+        this.add(this.zoneAssembleur);
         this.add(this.zoneCommandes);
-        this.add(this.zoneAssembleur);     
         this.add(this.zoneMemoire);
+        this.add(this.zoneMonde);
 
         this.addKeyListener(this);
         this.setSize(this.octopunks.getDimension());
         this.setLayout(null);
-
-        //this.scrollBar = new JScrollPane(this);
-        //this.setBounds(this.getX(), this.getY(), this.getWidth(), this.getHeight());
     }
+
 
     public JScrollPane getScrollBar()
     {
@@ -48,6 +66,11 @@ public class Jeu extends JPanel implements KeyListener
             throw new NullPointerException("La scrollbar est null.");
         }
         return this.scrollBar;
+    }
+
+    public Double getVitesseExecution()
+    {
+        return this.vitesseExecution;
     }
 
     public ZoneAssembleur getZoneAssembleur()
@@ -77,17 +100,6 @@ public class Jeu extends JPanel implements KeyListener
         return this.zoneMemoire;
     }
 
-    private void reglageZoneAsm()
-    {
-        this.zoneAssembleur.setSize(this.zoneAssembleur.getWidth(), this.zoneAssembleur.getHeight());
-        this.zoneAssembleur.setLocation((int)this.octopunks.getDimension().getWidth()-this.zoneAssembleur.getWidth(),0);
-    }
-
-    private void reglageCommandes()
-    {
-        this.zoneCommandes.setLocation((int)this.octopunks.getDimension().getWidth()-this.zoneCommandes.getWidth(), (int)octopunks.getDimension().getHeight()-zoneCommandes.getHeight());
-    }
-
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -103,5 +115,17 @@ public class Jeu extends JPanel implements KeyListener
     @Override
     public void keyReleased(KeyEvent e) {
         System.out.println("La touche " + e.getKeyCode() + " est relâchée !");
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        Color couleurGauche = Color.RED;
+        Color couleurDroite = Color.BLACK;
+        GradientPaint gp = new GradientPaint(0, 0, couleurGauche, this.getWidth(), this.getHeight(), couleurDroite);
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
     }
 }
