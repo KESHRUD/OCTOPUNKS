@@ -400,10 +400,79 @@ public class Robot
         setRegisterValue(dest, mod);
     }
 
+    
     //SWIZ input(R/N) mask(R/N) dest(R)
-    public void swizzle(String input, String mask, String dest){
-        //a completer
+    public  void swizzle(String input, String mask, String dest) {
+        int inputValue = 0;
+
+        switch (input) {
+            case "F":
+                inputValue = getRegistreF();
+                break;
+            case "X":
+                inputValue = getRegistreX();
+                break;
+            case "T":
+                inputValue = getRegistreT();
+                break;
+            case "M":
+                inputValue = getRegistreM();
+                break;
+            default:
+                try {
+                    inputValue = Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.out.println("Erreur : input non valide.");
+                    return;
+                }
+        }
+
+        // Initialiser un tab pour stocker les chiffres de dest
+        int[] destDigits = new int[String.valueOf(inputValue).length()];
+
+        // Parcourir chaque chiffre du mask et maj le tabl
+        int maskCopy = Integer.parseInt(mask);
+        int index = destDigits.length - 1;
+
+        while (maskCopy > 0) {
+            int digitValue = maskCopy % 10;
+
+            if (digitValue == 0 || (digitValue >= 5 && digitValue <= 9)) {
+                destDigits[index] = 0;
+            } else {
+                int inputDigit = getDigit(inputValue, digitValue - 1); // -1 car l'index commence à 0
+                destDigits[index] = inputDigit;
+            }
+
+            maskCopy /= 10;
+            index--;
+        }
+
+        // Construire le résultat à partir du tableau destDigits
+        int result = 0;
+        for (int i = 0; i < destDigits.length; i++) {
+            result = result * 10 + destDigits[i];
+        }
+
+        // Gérer le signe 
+        if (mask.charAt(0) == '1') {
+            result = Math.abs(result);
+            if (inputValue < 0) {
+                result = -result;
+            }
+        }
+
+        // Mettre à jour la valeur dans le registre correspondant
+
+        setRegisterValue(dest, inputValue);
     }
+
+    private  int getDigit(int number, int position) {
+        // Récupérer le chiffre à la position spécifiée
+        int divisor = (int) Math.pow(10, position);
+        return (number / divisor) % 10;
+    }
+
 
 
 
