@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 
 public class Robot
@@ -19,32 +20,40 @@ public class Robot
     private boolean estMort; //si le robot est mort ou pas (est sur la salle)
     private List<Instruction> lesInstructions; //liste des instructions que chaque robot va executer
     private int index; //pour naviguer dans la liste d'instruction
-    protected ImageIcon imageRobot; // l'image du robot
+    private ImageIcon imageRobot; // l'image du robot
+    protected JLabel robotLabel; //
 
     
     // Constructeur
     public Robot(Coordonnees position) throws IOException {
         //file = null;
-        estMort = false;
-        registreF = 0; 
-        registreM = 0;
-        registreT = 0;
-        registreX = 0;
-        index = 0; //premiere instruction a éxecuter;
+        this.estMort = false;
+        this.registreF = 0; 
+        this.registreM = 0;
+        this.registreT = 0;
+        this.registreX = 0;
+        this.index = 0; //premiere instruction a éxecuter;
         this.position = position;
-        position.getSalle().occuperChamp(position, TypeCellule.EXA1); //le robot doit occuper une salle
-        lesInstructions = new ArrayList<>();
+        this.position.getSalle().occuperChamp(position, TypeCellule.EXA1); //le robot doit occuper une salle
+        this.lesInstructions = new ArrayList<>();
 
         this.imageRobot = new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png")));
+        this.robotLabel = new JLabel(this.imageRobot);
     }
     
     public Coordonnees getPosition() {
-        return position;
+        return this.position;
     }
 
     public void setPosition(Coordonnees position) {
         this.position = position;
     }
+
+    public void setPositionLabel(int x, int y)
+    {
+        this.robotLabel.setLocation(x, y);
+    }
+
     //methode pour verifier si le robot tient un fichier
     public boolean hasAFile(){
         return (this.file != null);
@@ -62,14 +71,14 @@ public class Robot
         }
     }
     public boolean EstMort() {
-         return estMort;
+        return this.estMort;
      }
  
-     public void setEstMort(boolean estMort) {
-         this.estMort = estMort;
+    public void setEstMort(boolean estMort) {
+        this.estMort = estMort;
      }
     public Salle getCurrentSalle() {
-        return position.getSalle();
+        return this.position.getSalle();
     }
     
     public void setCurrentSalle(Salle currentSalle) {
@@ -79,7 +88,7 @@ public class Robot
     // Getters et setters
     
     public leFichier getFile(){
-        return file;
+        return this.file;
     }
     
     public void setFile(leFichier newFile){
@@ -88,14 +97,14 @@ public class Robot
     }
     
     public List<Instruction> getLesInstructions() {
-        return lesInstructions;
+        return this.lesInstructions;
     }
 
     public void setLesInstructions(List<Instruction> lesInstructions) {
         this.lesInstructions = lesInstructions;
     }
     public int getPositionX() {
-        return position.getX();
+        return this.position.getX();
     }
 
     public void setPositionX(int positionX) {
@@ -103,17 +112,15 @@ public class Robot
     }
 
     public int getPositionY() {
-        return position.getY();
+        return this.position.getY();
     }
 
     public void setPositionY(int positionY) {
         this.position.setY(positionY);
     }
 
-    
-
     public int getRegistreX() {
-        return registreX;
+        return this.registreX;
     }
 
     public void setRegistreX(int registreX) {
@@ -121,7 +128,7 @@ public class Robot
     }
 
     public int getRegistreT() {
-        return registreT;
+        return this.registreT;
     }
 
     public void setRegistreT(int registreT) {
@@ -129,7 +136,7 @@ public class Robot
     }
 
     public int getRegistreF() {
-        return registreF;
+        return this.registreF;
     }
 
     public void setRegistreF(int registreF) {
@@ -137,7 +144,7 @@ public class Robot
     }
 
     public int getRegistreM() {
-        return registreM;
+        return this.registreM;
     }
 
     public void setRegistreM(int registreM) {
@@ -833,7 +840,20 @@ public class Robot
 
     public ImageIcon getImageIcon()
     {
+        if(this.imageRobot == null) 
+        {
+            throw new NullPointerException("L'image du robot est null.");
+        }
         return this.imageRobot;
+    }
+
+    public JLabel getRobotLabel()
+    {
+        if(this.robotLabel == null) 
+        {
+            throw new NullPointerException("Le label du robot est null.");
+        }
+        return this.robotLabel;
     }
     
 }
