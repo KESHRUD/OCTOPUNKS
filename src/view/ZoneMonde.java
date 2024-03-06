@@ -16,8 +16,18 @@ import javax.swing.JPanel;
 
 public class ZoneMonde extends JPanel
 {
-    private JLabel caseEntree;
+    protected JLabel caseEntree;
     private Jeu jeu;
+
+    private int espaceEntreCases;
+
+    private int largeurMonde;
+    private int longueurMonde;
+
+    public Coordonnees[][] tableauCoordonneesCases;
+
+    protected int widthCellule;
+    protected int heightCellule;
 
     public ZoneMonde(Octopunks octopunks, Jeu jeu) throws IOException
     {
@@ -28,67 +38,74 @@ public class ZoneMonde extends JPanel
         this.setLocation(0,0);
         this.setBackground(Color.BLUE);
 
-
+        setDimensionsMonde();
 
         loadNiveau();
     }
 
     public void afficherCellule(TypeCellule typeCellule, int x, int y) throws IOException
     {
-        JLabel pic;
-        int width = 20;
-        int height = 20;
+        JLabel image;
+        this.widthCellule = 20;
+        this.heightCellule = 20;
         switch(typeCellule)
         {
-            case EXA1 :     pic = new JLabel(jeu.robot1.getImageIcon());
-                            pic.setBounds(x,y,width,height);            
-                            this.add(pic);
+            case EXA1 : image = jeu.robot1.getRobotLabel();
+                        image.setBounds(x,y,widthCellule,heightCellule);            
+                        this.add(image);
 
-                            pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
-                            pic.setBounds(x,y,width,height);
-                            this.add(pic);
-                            break;
+                        image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
+                        image.setSize(widthCellule,heightCellule);
+                        image.setLocation(x,y);           
+                        this.add(image);
+                        break;
             
-            case EXA2 :     pic = new JLabel(jeu.robot2.getImageIcon());
-                            pic.setBounds(x,y,width,height);            
-                            this.add(pic);
+            case EXA2 : image = jeu.robot2.getRobotLabel();
+                        image.setBounds(x,y,widthCellule,heightCellule);            
+                        this.add(image);
 
-                            pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
-                            pic.setBounds(x,y,width,height);
-                            this.add(pic);
-                            break;
+                        image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
+                        image.setSize(widthCellule,heightCellule);
+                        image.setLocation(x,y);           
+                        this.add(image);
+                        break;
             
-            case MUR :      pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/mur.png"))));
-                            pic.setSize(width,height);
-                            pic.setLocation(x,y);           
-                            this.add(pic);
-                            break;
+            case MUR :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/mur.png"))));
+                        image.setSize(widthCellule,heightCellule);
+                        image.setLocation(x,y);           
+                        this.add(image);                
+                        break;
 
             case ENTREE :   this.caseEntree = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_jaune.png"))));
-                            caseEntree.setBounds(x,y,width,height);           
+                            caseEntree.setBounds(x,y,widthCellule,heightCellule);           
                             this.add(caseEntree);
                             break;
 
-            case ARRIERE :  pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_vert.png"))));
-                            pic.setBounds(x,y,width,height);            
-                            this.add(pic);
+            case ARRIERE :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_vert.png"))));
+                            image.setSize(widthCellule,heightCellule);
+                            image.setLocation(x,y);           
+                            this.add(image);                
                             break;
 
-            case LINK :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Lien.png"))));
-                            pic.setBounds(x,y,width,height);
-                            this.add(pic);
-                            break;
+            case LINK : image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Lien.png"))));
+                        image.setSize(widthCellule,heightCellule);
+                        image.setLocation(x,y);           
+                        this.add(image);                
+                        break;
             
-            case ENTRE_SALLE :     pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Entree_salle.png"))));
-                            pic.setBounds(x,y,width,height);
-                            this.add(pic);
-                            break;
+            case ENTRE_SALLE :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Entree_salle.png"))));
+                                image.setSize(widthCellule,heightCellule);
+                                image.setLocation(x,y);           
+                                this.add(image);                        
+                                break;
 
-            default :       pic = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
-                            pic.setBounds(x,y,width,height);
-                            this.add(pic);
-                            break;
+            default :   image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
+                        image.setSize(widthCellule,heightCellule);
+                        image.setLocation(x,y);           
+                        this.add(image);                
+                        break;
         }
+        
     }
 
 
@@ -99,6 +116,7 @@ public class ZoneMonde extends JPanel
     {
         try {
             String fichierJeuTextuel = "levels/Niveau1.txt";
+
             BufferedReader fichierBuffer = new BufferedReader(new FileReader(fichierJeuTextuel));
             String ligneFichier;
             int x = 20;
@@ -110,15 +128,12 @@ public class ZoneMonde extends JPanel
             {
                 nbLignes++;
                 
-                System.out.println("Ligne "+nbLignes);
                 int i = 0;
 
                 for (i = 0; i < ligneFichier.length(); i++)
                 {
-                        
                     char symbol = ligneFichier.charAt(i);
                     TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
-                    
                     afficherCellule(typeCellule,x,y);
                     x+=30;
                 }
@@ -131,5 +146,57 @@ public class ZoneMonde extends JPanel
         {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Récupère les dimensions du monde.
+     * @throw NullPointerException si on n'arrive pas à créer un nouveau buffer sur le fichier.
+     */
+    public void setDimensionsMonde()
+    {
+        try {
+            String fichierJeuTextuel = "levels/Niveau1.txt";
+
+            BufferedReader fichierBuffer = new BufferedReader(new FileReader(fichierJeuTextuel));
+            String ligneFichier;
+            
+            int nbLignes = 0;
+            while ((ligneFichier = fichierBuffer.readLine()) != null)
+            {
+                nbLignes++;
+            }
+            fichierBuffer.close();
+            this.longueurMonde = nbLignes;
+            fichierBuffer = new BufferedReader(new FileReader(fichierJeuTextuel));
+            
+            if((ligneFichier = fichierBuffer.readLine()) == null)
+            {
+                fichierBuffer.close();
+                throw new NullPointerException("la ligne est null => largeur non initialisée.");
+            }
+
+            this.largeurMonde = ligneFichier.length();
+            fichierBuffer.close();       
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @return la largeur du monde.
+     */
+    public int getLargeurMonde()
+    {
+        return this.largeurMonde;
+    }
+
+    /**
+     * @return la longueur du monde.
+     */
+    public int getLongueurMonde()
+    {
+        return this.longueurMonde;
     }
 }
