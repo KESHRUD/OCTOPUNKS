@@ -48,8 +48,9 @@ public class ZoneCommandes extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 jeu.getZoneAssembleur().disableModification();
-                jeu.robot1.setPositionX(10);
-                jeu.robot1.setPositionY(10);
+                jeu.robot1.setPositionX(2);
+                jeu.robot1.setPositionLabel(jeu.zoneMonde.coordonneesCases[0][4].getX(), jeu.zoneMonde.coordonneesCases[1][0].getY());
+                jeu.zoneMemoire.update();
             }
         });
         this.add(this.boutonPas);
@@ -61,7 +62,6 @@ public class ZoneCommandes extends JPanel
         this.boutonStop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-
                 jeu.zoneAssembleur.enableModification();
             }
         });
@@ -79,6 +79,7 @@ public class ZoneCommandes extends JPanel
             }
         });
         this.add(this.boutonAutomatique);
+
 
         this.boutonAccelerer = new JButton("+");
         this.boutonAccelerer.setSize(boutonWidth,boutonHeight);

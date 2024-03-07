@@ -13,6 +13,7 @@ import java.awt.*;
  */
 public class Menu extends JPanel
 {
+   @SuppressWarnings("unused")
    private Octopunks octopunks;
 
    private JButton boutonJouer;

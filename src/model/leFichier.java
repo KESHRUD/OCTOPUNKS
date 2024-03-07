@@ -6,66 +6,67 @@ import src.files.Pile;
 import src.files.TableauDynamique;
 import src.files.TypeFichier;
 
-public class leFichier {
+public class leFichier
+{
     private int id; //200 par exemple dans le premier niveau de exapunks
     private TypeFichier<Integer> fichier; //le type de fichier
     private Coordonnees position; //le fichier aussi a une position
 
 
-    // Constructeur
-    public leFichier(int id, Coordonnees laPosition, int type ){ //0 pour pile 1 pour file 2 pour arrayList
-        if(type == 0){
-            fichier = new Pile<Integer>();
-        }else if(type == 1){
-            fichier = new File<Integer>();
-        }else if (type == 2){
-            fichier = new TableauDynamique<Integer>();
-        }else{
+    /**
+     * CONSTRUCTEUR
+     * @param id l'identifiant du fichier
+     * @param laPosition la position du fichier
+     * @param type le type du fichier
+     */
+    public leFichier(int id, Coordonnees laPosition, int type )
+    { //0 pour pile 1 pour file 2 pour arrayList
+        if(type == 0) {
+            this.fichier = new Pile<Integer>();
+        } else if(type == 1) {
+            this.fichier = new File<Integer>();
+        } else if (type == 2) {
+            this.fichier = new TableauDynamique<Integer>();
+        } else {
             System.err.println("type de fichier inconnu");
         }
-        if(id != 0){
+        if(id != 0) {
             this.id = id;
         }
-        else{
+        else {
             throw new IllegalArgumentException("file id is null");
         }
-        position = laPosition;
+        this.position = laPosition;
         occuperChamp(laPosition);
     }
-    public void setFileOfSalle(){
-        getPosition().getSalle().setTheFile(this);
+
+    /**
+     * Renvoie le fichier.
+     * @return la position u fichier
+     */
+    public TypeFichier<Integer> getFichier() {
+        return this.fichier;
     }
-    //getter pour id
+    
+    /**
+     * Renvoi l'identifiant du fichier.
+     * @return l'identifiant du fichier
+     */
     public int getId() {
         return id;
     }
-    
-    //setter pour id
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    //getter pour l etype de fichier
-    public TypeFichier<Integer> getFichier() {
-        return fichier;
-    }
-    //setter pour le type de fichier
-    public void setFichier(TypeFichier<Integer> fichier) {
-        this.fichier = fichier;
-    }
-    //getter pour les position
+
+    /**
+     * Renvoie la position du fichier.
+     * @return la position du fichier
+     */
     public Coordonnees getPosition() {
-        return position;
+        return this.position;
     }
 
-    //setter pour la position
-    public void setPosition(Coordonnees newPosition) {
-        this.position.getSalle().libererChamp(this.position);//liberer l'ancienne position
-        this.position = newPosition;
-        occuperChamp(newPosition);//occuper la novelle position
-    }
-
-
+    /**
+     * Permet de libérer
+     */
     public void libererChamp(){
         position.getSalle().libererChamp(position);
     }
@@ -74,16 +75,46 @@ public class leFichier {
         laPosition.getSalle().occuperChamp(laPosition, TypeCellule.FICHIER);
     }
 
-    @Override
-public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof leFichier)) return false;
-    leFichier leFichier = (leFichier) o;
-    return id == leFichier.id && Objects.equals(fichier, leFichier.fichier) && Objects.equals(position, leFichier.position);
-}
+    /**
+     * Permet d'affecter un fichier spécifié.
+     * @param fichier le fichier à affecter.
+     */
+    public void setFichier(TypeFichier<Integer> fichier) {
+        this.fichier = fichier;
+    }
 
-@Override
-public int hashCode() {
-    return Objects.hash(id, fichier, position);
-}
+    public void setFileOfSalle(){
+        getPosition().getSalle().setTheFile(this);
+    }
+
+    /**
+     * Permet d'affecter un nouvel identifiant.
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    /**
+     * Permet de modifier la position
+     * @param newPosition la nouvelle position
+     */
+    public void setPosition(Coordonnees newPosition) {
+        this.position.getSalle().libererChamp(this.position); //liberer l'ancienne position
+        this.position = newPosition;
+        occuperChamp(newPosition); //occuper la novelle position
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof leFichier)) return false;
+        leFichier leFichier = (leFichier) o;
+        return id == leFichier.id && Objects.equals(fichier, leFichier.fichier) && Objects.equals(position, leFichier.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fichier, position);
+    }
 }

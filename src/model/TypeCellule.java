@@ -1,6 +1,7 @@
 package src.model;
 
-public enum TypeCellule {
+public enum TypeCellule
+{
     VIDE(' '),
     EXA1('E'),
     EXA2('X'),
@@ -18,17 +19,7 @@ public enum TypeCellule {
     }
 
     /**
-     * Obtient le symbole de la cellule.
-     *
-     * @return le symbole de la cellule
-     */
-    public char getSymbol() {
-        return symbol;
-    }
-
-    /**
-     * Obtient le type de cellule correspondant à un caractère.
-     *
+     * Retourne le type de cellule correspondant à un caractère.
      * @param c le caractère à convertir en type de cellule
      * @return le type de cellule correspondant
      * @throws IllegalArgumentException si le caractère n'est pas reconnu
@@ -46,5 +37,12 @@ public enum TypeCellule {
             case 'V' -> ENTRE_SALLE;
             default -> throw new IllegalArgumentException("Le caractère " + c + " n'est pas reconnu!");
         };
+    }
+
+    /**
+     * @return le symbole de la cellule
+     */
+    public char getSymbol() {
+        return symbol;
     }
 }

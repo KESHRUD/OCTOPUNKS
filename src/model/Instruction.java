@@ -3,40 +3,11 @@ package src.model;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Instruction {
-    private final InstructionType instructionType;
-    private String[] arguments;
+public class Instruction
+{
 
-    public Instruction(InstructionType instructionType) {
-        this.instructionType = instructionType;
-    }
-
-    public Instruction(InstructionType instructionType, String... arguments) {
-        this.instructionType = instructionType;
-        this.arguments = arguments;
-    }
-
-    public InstructionType getInstructionType() {
-        return instructionType;
-    }
-
-    public String[] getArguments() {
-        return arguments;
-    }
-
-    public void printInstruction() {
-        System.out.print(instructionType);
-        if (arguments != null) {
-            for (String arg : arguments) {
-                System.out.print(" " + arg);
-            }
-        }
-        System.out.println();
-    }
-
-   
-
-    public enum InstructionType {
+    public enum InstructionType
+    {
         COPY,
         ADDI,
         MULI,
@@ -64,6 +35,47 @@ public class Instruction {
         VOID_F,
         HALT;
     }
+
+    private final InstructionType instructionType;
+    private String[] arguments;
+
+    
+    /**
+     * CONSTRUCTEUR
+     * @param instructionType
+     */
+    public Instruction(InstructionType instructionType) {
+        this.instructionType = instructionType;
+    }
+
+    /**
+     * CONSTRUCTEUR
+     * @param instructionType
+     * @param arguments
+     */
+    public Instruction(InstructionType instructionType, String... arguments) {
+        this.instructionType = instructionType;
+        this.arguments = arguments;
+    }
+
+    public String[] getArguments() {
+        return arguments;
+    }
+
+    public InstructionType getInstructionType() {
+        return instructionType;
+    }
+
+    public void printInstruction() {
+        System.out.print(instructionType);
+        if (arguments != null) {
+            for (String arg : arguments) {
+                System.out.print(" " + arg);
+            }
+        }
+        System.out.println();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

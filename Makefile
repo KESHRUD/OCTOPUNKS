@@ -6,6 +6,7 @@ all :
 	javac src/view/*.java
 
 clean :
+	rm -rf levels/*.class
 	rm -rf src/controller/*.class
 	rm -rf src/files/*.class
 	rm -rf src/model/*.class
@@ -29,3 +30,6 @@ tests :
 
 view :
 	javac src/view/*.java
+
+launch :
+	java src/view/Octopunks

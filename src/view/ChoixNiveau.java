@@ -18,6 +18,7 @@ public class ChoixNiveau extends JPanel
 
     private JLabel titreSection;
     private JPanel zoneChoixNiveau;
+    @SuppressWarnings("unused")
     private JButton bouton1, bouton2, bouton3, bouton4;
 
     /**

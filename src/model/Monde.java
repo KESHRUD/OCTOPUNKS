@@ -6,14 +6,19 @@ import java.util.List;
 
 import levels.Niveau;
 
-public class Monde {
+public class Monde
+{
     private Niveau level1;
     @SuppressWarnings("unused")
     private List<Instruction> InstruExa1;
     @SuppressWarnings("unused")
     private List<Instruction> InstruExa2;
-    public Monde(){
-        level1 = new Niveau("Niveau1.txt");
+
+    /**
+     * CONSTRUCTEUR
+     */
+    public Monde() {
+        this.level1 = new Niveau("Niveau1.txt");
         this.InstruExa1 = new ArrayList<>() ;
         this.InstruExa2 = new ArrayList<>();
     }
@@ -24,29 +29,46 @@ public class Monde {
      * on copies les deux listes dans chaque liste de chaque robot 
      */
 
-    public Robot geRobot1(){
+    
+    /**
+     * Exécute les instructions du robot 1
+     */
+    public void executeAutoExa1(){
+        this.getRobot1().executeAllInstruction();
+    }
+
+    /**
+     * Exécute les instructions du robot 2
+     */
+    public void executeAutoExa2(){
+        this.getRobot2().executeAllInstruction();
+    }
+
+    /**
+     * Exécute une instruction sur le robot 1
+     */
+    public void executePasExa1(){
+        this.getRobot1().executeInstruction();
+    }
+
+    /**
+     * Exécute une instruction sur le robot 2
+     */
+    public void executePasExa2(){
+        this.getRobot2().executeInstruction();
+    }
+
+    /**
+     * @return le robot 1
+     */
+    public Robot getRobot1(){
         return level1.getRobot1();
     }
 
-    public Robot geRobot2(){
+    /**
+     * @return le robot 1
+     */
+    public Robot getRobot2(){
         return level1.getRobot2();
     }
-
-    public void executePasExa1(){
-        this.geRobot1().executeInstruction();
-    }
-
-    public void executePasExa2(){
-        this.geRobot2().executeInstruction();
-    }
-
-    public void executeAutoExa1(){
-        this.geRobot1().executeAllInstruction();
-    }
-
-    public void executeAutoExa2(){
-        this.geRobot2().executeAllInstruction();
-    }
-
-
 }

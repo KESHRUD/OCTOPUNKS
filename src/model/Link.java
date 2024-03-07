@@ -8,6 +8,13 @@ public class Link {
     private final Salle salleApres;
     private final boolean bidirectionnel;
 
+    /**
+     * CONSTRUCTEUR
+     * @param id l'identifiant de la salle
+     * @param salle1 la salle 1
+     * @param salle2 la salle 2
+     * @param bidirectionnel le lien est bidectionnel ou non
+     */
     public Link(int id, Salle salle1, Salle salle2, boolean bidirectionnel) {
         this.id = id;
         this.salleAvant = salle1;
@@ -21,21 +28,34 @@ public class Link {
         }
     }
 
+    /**
+     * @return l'identifiant de la salle
+     */
     public int getId() {
-        return id;
+        return this.id;
     }
 
-    public Salle getSalleAvant() {
-        return salleAvant;
-    }
-
+    /**
+     * @return la salle après le lien
+     */
     public Salle getSalleApres() {
-        return salleApres;
+        return this.salleApres;
     }
-    
+
+    /**
+     * @return la salle avant le lien
+     */
+    public Salle getSalleAvant() {
+        return this.salleAvant;
+    }
+
+    /**
+     * @return true si le lien est bidirectionnel, false sinon
+     */
     public boolean isBidirectionnel() {
-        return bidirectionnel;
+        return this.bidirectionnel;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
