@@ -19,17 +19,7 @@ public class leFichier
      * @param laPosition la position du fichier
      * @param type le type du fichier
      */
-    public leFichier(int id, Coordonnees laPosition, int type )
-    { //0 pour pile 1 pour file 2 pour arrayList
-        if(type == 0) {
-            this.fichier = new Pile<Integer>();
-        } else if(type == 1) {
-            this.fichier = new File<Integer>();
-        } else if (type == 2) {
-            this.fichier = new TableauDynamique<Integer>();
-        } else {
-            System.err.println("type de fichier inconnu");
-        }
+   public leFichier(int id, Coordonnees laPosition) {
         if(id != 0) {
             this.id = id;
         }
