@@ -523,20 +523,67 @@ public class Robot
         getCurrentSalle().libererChamp(position); //faut liberer l'espace d'un robot qui est mort
     }
 
-    public void link(String a){
+        public void link(String a) {
         int valueA = Integer.parseInt(a);
-        if(valueA == -1){
-            if(getCurrentSalle().getLienEntrant() != null){ //dans le cas ou on fait LINK -1 dans la 1ere salle
-                setCurrentSalle(getCurrentSalle().getLienEntrant().getSalleAvant()); //la salle actuelle est la salle d'avant
+        if (valueA == -1) {
+            if (getCurrentSalle().getLienEntrant() != null) {
+                setCurrentSalle(getCurrentSalle().getLienEntrant().getSalleAvant());
+                setPositionX(1);
+                setPositionY(1);
+                
+                // Utilisation d'une boucle do-while pour garantir au moins une itération
+                do {
+                    while (getCurrentSalle().estOccupe(position)) {
+                        // Incrémentation de la position X
+                        setPositionX(getPositionX() + 1);
+                        
+                        // Vérification des limites et réinitialisation si nécessaire
+                        if (getPositionX() > 5) {
+                            setPositionX(1);
+                            setPositionY(getPositionY() + 1);
+                            
+                            // Vérification des limites et sortie si nécessaire
+                            if (getPositionY() > 5) {
+                                setEstMort(true);
+                                System.err.println("There is no free case in this Salle");
+                                return;
+                            }
+                        }
+                    }
+                } while (getCurrentSalle().estOccupe(position));
             }
-        }else{
-            for(Link unLien : getCurrentSalle().getLiensSortant()){
-                if(unLien.getId() == valueA){
+        } else {
+            for (Link unLien : getCurrentSalle().getLiensSortant()) {
+                if (unLien.getId() == valueA) {
                     setCurrentSalle(unLien.getSalleApres());
+                    setPositionX(1);
+                    setPositionY(1);
+    
+                    // Utilisation d'une boucle do-while pour garantir au moins une itération
+                    do {
+                        while (getCurrentSalle().estOccupe(position)) {
+                            // Incrémentation de la position X
+                            setPositionX(getPositionX() + 1);
+    
+                            // Vérification des limites et réinitialisation si nécessaire
+                            if (getPositionX() > 5) {
+                                setPositionX(1);
+                                setPositionY(getPositionY() + 1);
+    
+                                // Vérification des limites et sortie si nécessaire
+                                if (getPositionY() > 5) {
+                                    setEstMort(true);
+                                    System.err.println("There is no free case in this Salle");
+                                    return;
+                                }
+                            }
+                        }
+                    } while (getCurrentSalle().estOccupe(position));
+    
                     return;
                 }
             }
-            setEstMort(true);//le robot doit mourir dans ce cas
+            setEstMort(true);
             System.err.println("lien pas trouvé");
         }
     }
