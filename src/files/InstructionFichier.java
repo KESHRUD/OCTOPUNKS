@@ -53,7 +53,7 @@ public class InstructionFichier<E> {
         else {
             TableauDynamique<E> td = (TableauDynamique<E>) f;
 
-            if(td.size() == 0)
+            if(td.size()-1 == td.getIndex())
                 return true;
             return false;
         }
@@ -83,7 +83,7 @@ public class InstructionFichier<E> {
     
     /** Copie une valeur dans un registre */
     public E copy1() {
-        if(f == null || register == null)
+        if(f == null)
             throw new NullPointerException();
 
         if(f instanceof Pile<?>) {
@@ -127,37 +127,46 @@ public class InstructionFichier<E> {
 
     
     /** Deplace le curseur dans le fichier */ /* Condition d'arret ex seek 9999 */
-    public  void seek(int curs) {
-        if(f == null)
+    public  void seek(String curs) {
+        if(curs == null)
             throw new NullPointerException();
+
+        int curseur = Integer.parseInt(curs);
 
         if(f instanceof Pile<?>) {
             Pile<E> pile = (Pile<E>) f;
 
-            while (curs > 0) {
+            while (curseur > 0) {
                 pile.pop();
-                curs--;
+                curseur--;
+                if (pile.height() == 0)
+                    break;
             }
             
         }
         else if(f instanceof File<?>) {
             File<E> file = (File<E>) f;
             
-            while (curs > 0) {
+            while (curseur > 0) {
                 file.dequeue();
-                curs--;
+                curseur--;
+                if (file.length() == 0)
+                    break;
             }
             
         }
         else {
             TableauDynamique<E> td = (TableauDynamique<E>) f;
-            
-            while (curs > 0) {
+           
+            while (curseur > 0) {
                 td.nextIndex();
-                curs--;               
-                }
+                curseur--;
+                
+                if(td.getIndex() == (td.size()-1))
+                    break;
             }
         }
+    }
     
     /** Créer un nouveau fichier */
     public TypeFichier<E> make(String cmd) {
