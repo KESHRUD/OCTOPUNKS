@@ -1,5 +1,7 @@
 package src.model;
 
+import src.files.InstructionFichier;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,7 @@ public class Robot
     private int index; //pour naviguer dans la liste d'instruction
     private ImageIcon imageRobot; // l'image du robot
     protected JLabel robotLabel; // le label qui permet d'afficher l'image
+    private InstructionFichier<Integer> instruction;
 
     /**
      * CONSTRUCTEUR
@@ -42,15 +45,15 @@ public class Robot
 
         this.imageRobot = new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png")));
         this.robotLabel = new JLabel(this.imageRobot);
+        instruction = null;
     }
+
+    
     
     //ADDI a(R/N) b(R/N) dest(R)
     public void add(String a, String b, String dest){
         int valueA, valueB;
         switch(a){
-            case "F":
-                valueA = getRegistreF();
-                break;
             case "M":
                 valueA = getRegistreM();
                 break;
@@ -65,9 +68,6 @@ public class Robot
                 break;
         }
         switch(b){
-            case "F":
-                valueB = getRegistreF();
-                break;
             case "M":
                 valueB = getRegistreM();
                 break;
@@ -82,7 +82,7 @@ public class Robot
                 break;
         }
         int sum = valueA + valueB;
-        setRegisterValue(dest, sum);
+        setRegisterValue2(dest, sum);
     }
 
     //JUMP dest(L
@@ -95,11 +95,11 @@ public class Robot
     }
 
     //COPY source(R/N) dest(R)
-    public void copy(String src, String dest){
+   public void copy(String src, String dest){
         int value;
         switch(src){
             case "F":
-                value = getRegistreF();
+                value = instruction.copy1();
                 break;
             case "M":
                 value = getRegistreM();
@@ -120,9 +120,6 @@ public class Robot
     public void divide (String a , String b, String dest){
         int valueA, valueB;
         switch(a){
-            case "F":
-                valueA = getRegistreF();
-                break;
             case "M":
                 valueA = getRegistreM();
                 break;
@@ -137,9 +134,6 @@ public class Robot
                 break;
         }
         switch(b){
-            case "F":
-                valueB = getRegistreF();
-                break;
             case "M":
                 valueB = getRegistreM();
                 break;
@@ -157,7 +151,7 @@ public class Robot
             throw new IllegalArgumentException("division by zero is not allowed");
         }
         int quotient = valueA / valueB;
-        setRegisterValue(dest, quotient);
+        setRegisterValue2(dest, quotient);
     }
 
     public void drop(){
@@ -166,6 +160,7 @@ public class Robot
         }else{
             //intervention de Abdulkarim pour drop le fichier sur un champ libre au hasard dans la currentSalle
             this.getFile().setPosition(new Coordonnees(this.getPositionX()+1, this.getPositionY() + 1, getCurrentSalle()));
+             instruction = null;
         }
     }
 
@@ -357,7 +352,7 @@ public class Robot
                     break;
                 case MAKE:
                     if(arguments.length == 0){
-                        this.make();
+                        this.makeFichier("MAKE");
                         index++;
                     }else{
                         System.err.println("nombre d'arguments invalable");
@@ -365,7 +360,7 @@ public class Robot
                     break;
                 case MAKEFIFO:
                     if(arguments.length == 0){
-                        this.make_fifo();
+                        this.makeFichier("MAKEFIFO");
                         index++;
                     }else{
                         System.err.println("nombre d'arguments invalable");
@@ -373,7 +368,7 @@ public class Robot
                     break;
                 case MAKELIFO:
                     if(arguments.length == 0){
-                        this.make_lifo();
+                        this.makeFichier("MAKELIFO");
                         index++;
                     }else{
                         System.err.println("nombre d'arguments invalable");
@@ -482,6 +477,7 @@ public class Robot
                 if(idFile == getCurrentSalle().getTheFile().getId()){
                     this.file = getCurrentSalle().getTheFile();
                     this.file.setPosition(this.getPosition()); //la position d'un fichier pris par le robot est la position du robot 
+                    instruction = new InstructionFichier<Integer>(file.getFichier());
                 }else{
                     System.err.println("Fatal error1: FILE ID NOT FOUND");
                 }
@@ -546,31 +542,21 @@ public class Robot
     }
 
     // crée une fichier de type arrayList
-    public void make() {
-        // getCurrentSalle().getContenu2().add(new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2));
-        this.getCurrentSalle().setTheFile(new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2));
-    }
+    public leFichier makeFichier(String cmd) {
+        leFichier nvFichier = null;
+        nvFichier =  new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle())); /*Modifier la position du fichier*/
+        nvFichier.setFichier(instruction.make(cmd));
 
-    //crée un fochier de type file
-    public void make_fifo(){
-        this.getCurrentSalle().setTheFile(new leFichier(500,new Coordonnees(4, 3, getCurrentSalle()) , 1));
-    }
-
-    //crée un fichier de type pile
-    public void make_lifo(){
-        this.getCurrentSalle().setTheFile(new leFichier(700,new Coordonnees(4, 4, getCurrentSalle()) , 0));
+        return nvFichier;
     }
 
     public void mode(){
         //a implmenter par abdoulkarim
     }
 
-    public void modulo(String a , String b, String dest){
+   public void modulo(String a , String b, String dest){
         int valueA, valueB;
         switch(a){
-            case "F":
-                valueA = getRegistreF();
-                break;
             case "M":
                 valueA = getRegistreM();
                 break;
@@ -585,9 +571,6 @@ public class Robot
                 break;
         }
         switch(b){
-            case "F":
-                valueB = getRegistreF();
-                break;
             case "M":
                 valueB = getRegistreM();
                 break;
@@ -605,8 +588,9 @@ public class Robot
             throw new IllegalArgumentException("division by zero is not allowed");
         }
         int mod = valueA % valueB;
-        setRegisterValue(dest, mod);
+        setRegisterValue2(dest, mod);
     }
+
 
     // Méthode pour déplacer le robot en fonction des instructions
     public void move(int deltaX, int deltaY) {
@@ -623,9 +607,6 @@ public class Robot
     public void multiply(String a, String b, String dest){
         int valueA, valueB;
         switch(a){
-            case "F":
-                valueA = getRegistreF();
-                break;
             case "M":
                 valueA = getRegistreM();
                 break;
@@ -640,9 +621,6 @@ public class Robot
                 break;
         }
         switch(b){
-            case "F":
-                valueB = getRegistreF();
-                break;
             case "M":
                 valueB = getRegistreM();
                 break;
@@ -657,11 +635,11 @@ public class Robot
                 break;
         }
         int product = valueA * valueB;
-        setRegisterValue(dest, product);
+        setRegisterValue2(dest, product);
     }
 
     public void seek(String n){
-        //abdoulaye
+       instruction.seek(n);
     }
 
     public void setCurrentSalle(Salle currentSalle) {
@@ -737,6 +715,8 @@ public class Robot
      */
     public void setRegistreF(int registreF) {
         this.registreF = registreF;
+        instruction.setRegister(this.registreF);
+        instruction.copy2();
     }
 
     /**
@@ -778,7 +758,24 @@ public class Robot
                 setRegistreX(value);
                 break;
             default:
-            throw new IllegalArgumentException("erreur de registre donné en argument");
+                throw new IllegalArgumentException("erreur de registre donné en argument");
+        }
+    }
+
+    //version de setRegisterValue qui prend pas en charge le rigistre F pour les instructions arithmétiques
+    public void setRegisterValue2(String registre , int value){
+        switch(registre){
+            case "M":
+                setRegistreM(value);
+                break;
+            case "T":
+                setRegistreT(value);
+                break;
+            case "X":
+                setRegistreX(value);
+                break;
+            default:
+                throw new IllegalArgumentException("erreur de registre donné en argument");
         }
     }
 
@@ -786,9 +783,6 @@ public class Robot
     public void substract(String a, String b, String dest){
         int valueA, valueB;
         switch(a){
-            case "F":
-                valueA = getRegistreF();
-                break;
             case "M":
                 valueA = getRegistreM();
                 break;
@@ -803,9 +797,6 @@ public class Robot
                 break;
         }
         switch(b){
-            case "F":
-                valueB = getRegistreF();
-                break;
             case "M":
                 valueB = getRegistreM();
                 break;
@@ -820,7 +811,7 @@ public class Robot
                 break;
         }
         int diff = valueA - valueB;
-        setRegisterValue(dest, diff);
+        setRegisterValue2(dest, diff);
     }
 
     //SWIZ input(R/N) mask(R/N) dest(R)
@@ -828,9 +819,6 @@ public class Robot
         int inputValue = 0;
 
         switch (input) {
-            case "F":
-                inputValue = getRegistreF();
-                break;
             case "X":
                 inputValue = getRegistreX();
                 break;
@@ -886,15 +874,12 @@ public class Robot
 
         // Mettre à jour la valeur dans le registre correspondant
 
-        setRegisterValue(dest, inputValue);
+        setRegisterValue2(dest, result);
     }
 
     public void test(String a, String operation, String b){
         int valueA, valueB;
         switch(a){
-            case "F":
-                valueA = getRegistreF();
-                break;
             case "M":
                 valueA = getRegistreM();
                 break;
@@ -909,9 +894,6 @@ public class Robot
                 break;
         }
         switch(b){
-            case "F":
-                valueB = getRegistreF();
-                break;
             case "M":
                 valueB = getRegistreM();
                 break;
@@ -957,7 +939,12 @@ public class Robot
      * À COMPLÉTER
      */
     public void testEndOfFile(){
-        // a completer
+        if (instruction.test_eof()) {
+            setRegistreT(1);
+        }
+        else {
+            setRegistreT(0);
+        }
     }
 
     /**
@@ -971,7 +958,7 @@ public class Robot
      * À COMPLÉTER
      */
     public void void_f(){
-        //abdulaye
+        instruction.void_f();
     }
 
     /**
@@ -985,6 +972,7 @@ public class Robot
         if(!hasAFile()){
             System.err.println("Fatal error: NO FILE IS HELD");
         }else{
+            instruction.wipe();
             this.file.libererChamp();// un fichier supprimé est un fichier qui n'est pas sur la salle
             this.file = null;
         }
