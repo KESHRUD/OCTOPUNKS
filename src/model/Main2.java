@@ -19,7 +19,7 @@ public class Main2 {
         salle3.setLienEntrant(salle2.getLiensSortant().get(0));
 
         Robot exa = new Robot(new Coordonnees(1, 1, salle1));
-        leFichier file = new leFichier(200, new Coordonnees(1, 2, salle2), 0);
+        leFichier file = new leFichier(200, new Coordonnees(1, 2, salle2));
 
         System.out.println("exa1  x = " + exa.getPositionX() + " y = " + exa.getPositionY() + " salle : " + exa.getCurrentSalle().getId());
         System.out.println("200  x = " + file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());

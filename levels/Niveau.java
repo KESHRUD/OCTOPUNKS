@@ -46,7 +46,6 @@ public class Niveau {
             salle3 = new Salle(2,new Link(1, salle3, salle2, false)); // salle3 avec lien entrant 1
             robot1 = new Robot(new Coordonnees(0, 0, salle1)); // robot1 dans salle1
             robot2 = new Robot(new Coordonnees(0, 1, salle1)); // robot2 dans salle1
-            robot1.make();
             leFichier fichierTest = robot1.getFile();
             victoire = false;  // par défaut, il n'y a pas encore de victoire
             for (String line; (line = br.readLine()) != null; ) {
