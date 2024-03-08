@@ -72,7 +72,6 @@ public class ZoneMonde extends JPanel
         infoCoordonnees();
     }
 
-    
     /**
      * Permet d'afficher une cellule
      * @param typeCellule le type de la cellule
