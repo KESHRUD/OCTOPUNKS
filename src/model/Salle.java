@@ -25,9 +25,9 @@ public class Salle
         this.contenu = new HashMap<>();
         initialiserContenu();
         this.portes = new HashMap<>();
-        liensSortant = new ArrayList<>(3) ;
+        this.liensSortant = new ArrayList<>(3) ;
         this.lienEntrant = lienEntrant;
-        theFile = null;
+        this.theFile = null;
     }
 
     /**

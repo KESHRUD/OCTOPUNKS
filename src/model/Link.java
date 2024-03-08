@@ -2,7 +2,8 @@ package src.model;
 
 import java.util.Objects;
 
-public class Link {
+public class Link
+{
     private final int id;
     private final Salle salleAvant;
     private final Salle salleApres;

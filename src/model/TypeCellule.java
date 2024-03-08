@@ -10,7 +10,7 @@ public enum TypeCellule
     ENTREE('I'),
     ARRIERE('1'),
     LINK('|'),
-    ENTRE_SALLE('V');
+    ENTRE_DEUX_SALLES('V');
 
     private final char symbol;
 
@@ -34,7 +34,7 @@ public enum TypeCellule
             case 'I' -> ENTREE;
             case '1' -> ARRIERE;
             case '|' -> LINK;
-            case 'V' -> ENTRE_SALLE;
+            case 'V' -> ENTRE_DEUX_SALLES;
             default -> throw new IllegalArgumentException("Le caractère " + c + " n'est pas reconnu!");
         };
     }

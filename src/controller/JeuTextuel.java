@@ -16,13 +16,16 @@ import src.model.Champ;
 
 
 
-
-public class JeuTextuel {
+public class JeuTextuel
+{
 
     private Scanner console = new Scanner(System.in);
     private String asmbCode = "";
     private String lastLign = "";
 
+    /**
+     * CONSTRUCTEUR
+     */
     public JeuTextuel() {
         boolean jeuEnCours = true;
         String menu;
@@ -55,8 +58,49 @@ public class JeuTextuel {
         console.close();
     }
 
-    public void lancerNiveau(String cheminNiveau) {
-        
+
+    private void afficheNiveau(String cheminNiveau)
+    {
+        try {
+            // LECTURE DU FICHIER DU NIVEAU POUR L'AFFICHER //
+            FileReader fichierNiveau = new FileReader(cheminNiveau);
+            BufferedReader niveau = new BufferedReader(fichierNiveau);
+            String ligne = niveau.readLine();
+            while (ligne != null) {
+                System.out.println(ligne);
+                ligne = niveau.readLine();
+            }
+            niveau.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Fonction permettant de récupérer du code Assembleur depuis le terminal
+     * @return un String qui pourra être parsé et converti en liste d'instructions
+     */
+    public String ecrireASMB()
+    {
+        asmbCode = "";
+        lastLign = "";
+        while ((!lastLign.equalsIgnoreCase("HALT")) && (!lastLign.equalsIgnoreCase("Menu"))) {
+            lastLign = console.nextLine();
+
+            if (lastLign.equalsIgnoreCase("Menu"))
+                break;
+
+            asmbCode += lastLign + "\n";
+        }
+        return asmbCode;
+    }
+
+    /**
+     * Lance le niveau.
+     * @param cheminNiveau le path vers le fichier qui contient le niveau
+     */
+    public void lancerNiveau(String cheminNiveau)
+    {
         // AFFICHAGE NIVEAU TEXTUEL
 
         Niveau niveau1 = new Niveau(cheminNiveau);
@@ -107,34 +151,21 @@ public class JeuTextuel {
         }
     }
 
-    private void afficheNiveau(String cheminNiveau) {
-        try {
-            // LECTURE DU FICHIER DU NIVEAU POUR L'AFFICHER //
-            FileReader fichierNiveau = new FileReader(cheminNiveau);
-            BufferedReader niveau = new BufferedReader(fichierNiveau);
-            String ligne = niveau.readLine();
-            while (ligne != null) {
-                System.out.println(ligne);
-                ligne = niveau.readLine();
-            }
-            niveau.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /* Fonction permettant de lire le code assembleur
-     * et de retouner une listes d'objet de type instructions avec leur paramètres
-     *
-     * @param listASMB Chaine de caractère constituée des instructions Assembleur
-     * @return Une liste contenant chaque instruction assembleur et ses paramètres
+    
+    /**
+     * Fonction permettant de lire le code assembleur
+     * et de retouner une listes d'objet de type instructions avec leurs paramètres
+     * @param listASMB une chaîne de caractères constituée des instructions Assembleur
+     * @return Une liste contenant chaque instruction assembleur et ses paramètres;
      *         null si le texte est vide
      */
-    public ArrayList<Instruction> parse(String listeASBM) {
+    public ArrayList<Instruction> parse(String listeASBM)
+    {
         if (listeASBM.isBlank()) return null;
         ArrayList<Instruction> listeInstruction = new ArrayList<>();
         String[] liste = listeASBM.split("\n");
-        for (String instruction : liste) {
+        for (String instruction : liste)
+        {
             String[] code = instruction.split(" ");
             switch (code.length) {
                 case 1:
@@ -157,24 +188,7 @@ public class JeuTextuel {
         return listeInstruction;
     }
 
-    /*
-     * Fonction permettant de récupérer du code Assembleur depuis le terminal
-     * @return  un String qui pourra être parser et convertis en liste d'instruction
-     * 
-     */
-    public String ecrireASMB(){
-        asmbCode = "";
-        lastLign = "";
-        while ((!lastLign.equalsIgnoreCase("HALT")) && (!lastLign.equalsIgnoreCase("Menu"))) {
-            lastLign = console.nextLine();
-
-            if (lastLign.equalsIgnoreCase("Menu"))
-                break;
-
-            asmbCode += lastLign + "\n";
-        }
-        return asmbCode;
-    }
+    
     /* 
     public void executerPasAPas(ArrayList<Instruction> codeAssembleur, String cheminNiveau, Niveau niveau){
         System.out.println("Exécuter pas à pas votre code Assembleur en appuyant sur 'Entrée'");
@@ -186,11 +200,14 @@ public class JeuTextuel {
         }   
     }*/
     
-    public boolean verifierFichierDansSalle3(int idFichier, Salle salle) {
-        for (Map.Entry<Coordonnees, Champ> champ : salle.getContenu().entrySet()) {
+    public boolean verifierFichierDansSalle3(int idFichier, Salle salle)
+    {
+        for (Map.Entry<Coordonnees, Champ> champ : salle.getContenu().entrySet())
+        {
             Coordonnees coordonnees = champ.getKey();
             Champ contenu = champ.getValue();
-            if (contenu.getType() == TypeCellule.FICHIER && coordonnees.getSalle().equals(salle) && coordonnees.getSalle().getTheFile().getId() == idFichier) {
+            if (contenu.getType() == TypeCellule.FICHIER && coordonnees.getSalle().equals(salle) && coordonnees.getSalle().getTheFile().getId() == idFichier)
+            {
                 return true;
             }
         }
@@ -198,9 +215,9 @@ public class JeuTextuel {
     }
     
     
-    public static void main(String[] var0) {
-        new JeuTextuel();
-        
+    public static void main(String[] var0)
+    {
+        new JeuTextuel();   
     }
 
 }

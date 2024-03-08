@@ -2,7 +2,10 @@ package src.view;
 
 import javax.swing.*;
 
+import src.model.Instruction;
+
 import java.awt.*;
+import java.util.ArrayList;
 
 
 public class ZoneAssembleur extends JPanel
@@ -11,8 +14,8 @@ public class ZoneAssembleur extends JPanel
     private JScrollPane scrollBar1;
     private JScrollPane scrollBar2;
 
-    private JTextArea zoneTexte1;
-    private JTextArea zoneTexte2;
+    private JTextArea zoneTexteRobot1;
+    private JTextArea zoneTexteRobot2;
     private Font police;
 
     private JLabel FR1;
@@ -39,43 +42,43 @@ public class ZoneAssembleur extends JPanel
 
         this.police = new Font(Font.SANS_SERIF, Font.ROMAN_BASELINE, 25);
 
-        zoneTexte1 = new JTextArea();
-        zoneTexte1.setSize(this.getWidth()*8/10,(int)(this.getHeight()*0.4));
-        zoneTexte1.setLocation(10,60);
-        zoneTexte1.setFont(this.police);
-        zoneTexte1.setBackground(Color.BLACK);
-        zoneTexte1.setForeground(Color.GREEN);
-        scrollBar1 = new JScrollPane(zoneTexte1);
-        scrollBar1.setBounds(zoneTexte1.getX(), zoneTexte1.getY(), zoneTexte1.getWidth(), zoneTexte1.getHeight());
+        zoneTexteRobot1 = new JTextArea();
+        zoneTexteRobot1.setSize(this.getWidth()*8/10,(int)(this.getHeight()*0.4));
+        zoneTexteRobot1.setLocation(10,60);
+        zoneTexteRobot1.setFont(this.police);
+        zoneTexteRobot1.setBackground(Color.BLACK);
+        zoneTexteRobot1.setForeground(Color.GREEN);
+        scrollBar1 = new JScrollPane(zoneTexteRobot1);
+        scrollBar1.setBounds(zoneTexteRobot1.getX(), zoneTexteRobot1.getY(), zoneTexteRobot1.getWidth(), zoneTexteRobot1.getHeight());
         this.add(scrollBar1);
 
-        zoneTexte2 = new JTextArea();
-        zoneTexte2.setSize(zoneTexte1.getSize());
-        zoneTexte2.setLocation(zoneTexte1.getX(),zoneTexte1.getHeight()+zoneTexte1.getY()+20);
-        zoneTexte2.setFont(this.police);
-        zoneTexte2.setBackground(Color.BLACK);
-        zoneTexte2.setForeground(Color.GREEN);
-        scrollBar2 = new JScrollPane(zoneTexte2);
-        scrollBar2.setBounds(zoneTexte2.getX(), zoneTexte2.getY(), zoneTexte2.getWidth(), zoneTexte2.getHeight());
+        zoneTexteRobot2 = new JTextArea();
+        zoneTexteRobot2.setSize(zoneTexteRobot1.getSize());
+        zoneTexteRobot2.setLocation(zoneTexteRobot1.getX(),zoneTexteRobot1.getHeight()+zoneTexteRobot1.getY()+20);
+        zoneTexteRobot2.setFont(this.police);
+        zoneTexteRobot2.setBackground(Color.BLACK);
+        zoneTexteRobot2.setForeground(Color.GREEN);
+        scrollBar2 = new JScrollPane(zoneTexteRobot2);
+        scrollBar2.setBounds(zoneTexteRobot2.getX(), zoneTexteRobot2.getY(), zoneTexteRobot2.getWidth(), zoneTexteRobot2.getHeight());
         this.add(scrollBar2);
 
 
         // 4 REGISTRES À AJOUTER X,M,T,F
 
         this.FR1 = new JLabel("FR1");
-        this.FR1.setBounds(this.zoneTexte1.getWidth()+25,50,40,10);
+        this.FR1.setBounds(this.zoneTexteRobot1.getWidth()+25,50,40,10);
         this.add(this.FR1);
 
         this.MR1 = new JLabel("MR1");
-        this.MR1.setBounds(this.zoneTexte1.getWidth()+25,this.FR1.getY()*2,40,10);
+        this.MR1.setBounds(this.zoneTexteRobot1.getWidth()+25,this.FR1.getY()*2,40,10);
         this.add(this.MR1);
     
         this.TR1 = new JLabel("TR1");
-        this.TR1.setBounds(this.zoneTexte1.getWidth()+25,this.FR1.getY()*3,40,10);
+        this.TR1.setBounds(this.zoneTexteRobot1.getWidth()+25,this.FR1.getY()*3,40,10);
         this.add(this.TR1);
 
         this.XR1 = new JLabel("XR1");
-        this.XR1.setBounds(this.zoneTexte1.getWidth()+25,this.FR1.getY()*4,40,10);
+        this.XR1.setBounds(this.zoneTexteRobot1.getWidth()+25,this.FR1.getY()*4,40,10);
         this.add(this.XR1);
 
     }
@@ -86,8 +89,8 @@ public class ZoneAssembleur extends JPanel
      */
     public void disableModification()
     {
-        this.zoneTexte1.setEditable(false);
-        this.zoneTexte2.setEditable(false);
+        this.zoneTexteRobot1.setEditable(false);
+        this.zoneTexteRobot2.setEditable(false);
     }
 
     /**
@@ -96,25 +99,72 @@ public class ZoneAssembleur extends JPanel
      */
     public void enableModification()
     {
-        this.zoneTexte1.setEditable(true);
-        this.zoneTexte2.setEditable(true);
+        this.zoneTexteRobot1.setEditable(true);
+        this.zoneTexteRobot2.setEditable(true);
     }
 
 
     /**
-     * Renvoie le contenu de la zone de code assembleur passée en paramètre.
-     * @param zoneTexte la zone de saisie du code assembleur
-     * @return le code assembleur
+     * Renvoie le ccode assembleur du robot 1.
+     * @return le code assembleur du robot 1
      * Je modifierai petut-être pour lever une exception si la zone assembleur est vide
      * (dépendra des besoins des autres membres du groupe).
      */
-    public String getAssembleur(JTextArea zoneTexte)
+    public String getAssembleurRobot1()
     {
-        return zoneTexte.getText();
+        return zoneTexteRobot1.getText();
+    }
+
+    /**
+     * Renvoie le ccode assembleur du robot 2.
+     * @return le code assembleur du robot 2
+     * Je modifierai petut-être pour lever une exception si la zone assembleur est vide
+     * (dépendra des besoins des autres membres du groupe).
+     */
+    public String getAssembleurRobot2()
+    {
+        return zoneTexteRobot2.getText();
+    }
+
+        /**
+     * Fonction permettant de lire le code assembleur
+     * et de retouner une listes d'objet de type instructions avec leurs paramètres
+     * @param listASMB une chaîne de caractères constituée des instructions Assembleur
+     * @return Une liste contenant chaque instruction assembleur et ses paramètres;
+     *         null si le texte est vide
+     */
+    public ArrayList<Instruction> parse(String listeASBM)
+    {
+        if (listeASBM.isBlank()) return null;
+        ArrayList<Instruction> listeInstruction = new ArrayList<>();
+        String[] liste = listeASBM.split("\n");
+        for (String instruction : liste)
+        {
+            String[] code = instruction.split(" ");
+            switch (code.length) {
+                case 1:
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0])));
+                    break;
+                case 2:
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0]), code[1]));
+                    break;
+                case 3:
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0]), code[1], code[2]));
+                    break;
+                case 4:
+                    listeInstruction.add(new Instruction(Instruction.InstructionType.valueOf(code[0]), code[1], code[2], code[3]));
+                    break;
+                default:
+                    System.out.println("Erreur nombres d'arguments");
+                    break;
+            }
+        }
+        return listeInstruction;
     }
 
 
     /**
+     * SUPPLÉMENTAIRE
      * On veut pouvoir enregistrer le code assembleur des deux zone de saisie.
      * Il faut qu'on puisse les charger au lancement du programme.
      */

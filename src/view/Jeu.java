@@ -27,6 +27,7 @@ public class Jeu extends JPanel implements KeyListener
     protected ZoneMemoire zoneMemoire;
     protected ZoneMonde zoneMonde;
     private JScrollPane scrollBar;
+    
     protected Double vitesseExecution;
 
     protected Robot robot1;

@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 
 public class ZoneMonde extends JPanel
 {
+    private int dimensionsSalle = 5;
+
     private Jeu jeu;
 
     protected int widthCellule;
@@ -27,7 +29,6 @@ public class ZoneMonde extends JPanel
      * L'espace entre chaque cellule
      */
     private int espaceEntreCases;
-
     protected JLabel caseEntree;
 
     private int largeurMonde;
@@ -36,7 +37,7 @@ public class ZoneMonde extends JPanel
     /**
      * Contient les coordonnées graphiques de chaque cellule
      */
-    protected Coordonnees[][] coordonneesCases;
+    protected Coordonnees[][][] coordonneesCases;
 
     /**
      * CONSTRUCTEUR
@@ -59,6 +60,9 @@ public class ZoneMonde extends JPanel
         setDimensionsMonde();
 
         loadNiveau();
+
+        infoCoordonnees();
+
     }
 
     /**
@@ -118,7 +122,7 @@ public class ZoneMonde extends JPanel
                         this.add(image);                
                         break;
             
-            case ENTRE_SALLE :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Entree_salle.png"))));
+            case ENTRE_DEUX_SALLES :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Entree_salle.png"))));
                                 image.setSize(widthCellule,heightCellule);
                                 image.setLocation(xGraphique,yGraphique);
                                 this.add(image);
@@ -133,6 +137,7 @@ public class ZoneMonde extends JPanel
         
     }
 
+
     /**
      * Permet d'afficher le niveau dans la page de jeu.
      */
@@ -141,30 +146,55 @@ public class ZoneMonde extends JPanel
         try {
             String fichierJeuTextuel = "levels/Niveau1.txt";
             
-            this.coordonneesCases = new Coordonnees[getLongueurMonde()][getLargeurMonde()];
+            this.coordonneesCases = new Coordonnees[getLongueurMonde()][getLargeurMonde()][3];
 
             BufferedReader fichierBuffer = new BufferedReader(new FileReader(fichierJeuTextuel));
             String ligneFichier;
-            int x = 20;
-            int y = 20;
+            
+            int xGraphique = 20;
+            int yGraphique = 20;
 
             int ligne = 0;
 
+            int numSalle = 0;
+            Salle salle = new Salle(numSalle);
+
+            int x = 0;
+            int y = 0;
+
             while ((ligneFichier = fichierBuffer.readLine()) != null)
             {
-                int i = 0;
+                int colonne = 0;
+                x = 0;
 
-                for (i = 0; i < ligneFichier.length(); i++)
+                for (colonne = 0; colonne < ligneFichier.length(); colonne++)
                 {
-                    char symbol = ligneFichier.charAt(i);
-                    TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
-                    this.coordonneesCases[ligne][i] = new Coordonnees(x, y, null);;
-                    afficherCellule(typeCellule,x,y);
-                    x+=espaceEntreCases;
+                    if((ligneFichier.charAt(colonne)) == 'V')
+                    {
+                        numSalle++;
+                        salle = new Salle(numSalle);
+
+                        x = 0;
+                        y = 0;
+                        break;
+                    }
+                    else
+                    {
+                        char symbol = ligneFichier.charAt(colonne);
+                        TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
+    
+                        this.coordonneesCases[ligne][colonne][numSalle] = new Coordonnees(x, y, salle);
+                        afficherCellule(typeCellule,xGraphique,yGraphique);
+                        xGraphique+=espaceEntreCases;
+                        x++;
+                    }
                 }
-                x = 20;
-                y += espaceEntreCases;
+
+                xGraphique = 20;
+                yGraphique += espaceEntreCases;
+                
                 ligne++;
+                y++;
             }
         fichierBuffer.close();
         }
@@ -174,6 +204,7 @@ public class ZoneMonde extends JPanel
         }
     }
 
+
     /**
      * @return la largeur du monde.
      */
@@ -182,6 +213,7 @@ public class ZoneMonde extends JPanel
         return this.largeurMonde;
     }
 
+
     /**
      * @return la longueur du monde.
      */
@@ -189,6 +221,30 @@ public class ZoneMonde extends JPanel
     {
         return this.longueurMonde;
     }
+
+
+    public void infoCoordonnees()
+    {
+        int ligne = 0;
+        int colonne = 0;
+        int id = 0;
+        for(id = 0; id < 3; id++)
+        {
+            for(ligne = 0; ligne < 7; ligne++)
+            {
+                for(colonne = 0; colonne < 7; colonne ++)
+                {
+                    //System.out.println("Ligne "+ligne+" colonne "+colonne+" salle"+id);
+                    System.out.print("I ");
+                }
+                System.out.println();
+            }
+            System.out.println();
+            System.out.println();
+        }
+        
+    }
+
 
     /**
      * Récupère les dimensions du monde.
@@ -227,8 +283,11 @@ public class ZoneMonde extends JPanel
     }
 
 
-    public void linkGraphique(int xGraphique, int yGraphique)
+    public void linkGraphique()
     {
-        jeu.robot1.getPositionX();
+        Robot robot = jeu.robot1;
+        int xGraphique = robot.getPositionX();
+        int yGraphique = robot.getPositionY();
+        //robot.setPositionLabel();
     }
 }

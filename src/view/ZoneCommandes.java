@@ -25,14 +25,12 @@ public class ZoneCommandes extends JPanel
      * Le modèle de bouton standard est un carré de 60px * 60px,
      * puis on ajuste en fonction de nos envies.
      */
-    private int boutonWidth = 60;
-    private int boutonHeight = boutonWidth;
+    private int boutonSize = 60;
 
     public ZoneCommandes(Octopunks octopunks, Jeu jeu)
     {
         this.setLayout(null);
         this.setSize(jeu.zoneAssembleur.getWidth(), (int)octopunks.getDimension().getHeight()/3);
-
         this.setLocation((int)(jeu.zoneAssembleur.getX()),(int)(jeu.zoneAssembleur.getHeight()));
         this.setBackground(Color.darkGray);
 
@@ -41,23 +39,40 @@ public class ZoneCommandes extends JPanel
         this.commandesLabel.setLocation(60, 15);
         this.add(this.commandesLabel);
 
+
         this.boutonPas = new JButton("Pas");
-        
-        this.boutonPas.setBounds(40,80,boutonWidth,boutonHeight);
+        this.boutonPas.setBounds(40,80,boutonSize,boutonSize);
         this.boutonPas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
                 jeu.getZoneAssembleur().disableModification();
                 jeu.robot1.setPositionX(2);
-                jeu.robot1.setPositionLabel(jeu.zoneMonde.coordonneesCases[0][4].getX(), jeu.zoneMonde.coordonneesCases[1][0].getY());
+                jeu.robot1.setPositionY(2);
+                jeu.robot1.setPositionLabel(jeu.zoneMonde.coordonneesCases[1][1][0].getXGraphique()+1, jeu.zoneMonde.coordonneesCases[1][0][0].getY()+1);
                 jeu.zoneMemoire.update();
             }
         });
         this.add(this.boutonPas);
 
+
+        // Initialisation du bouton pour l'exécution automatique
+        this.boutonAutomatique = new JButton("Automatique");
+        this.boutonAutomatique.setBounds(40,150,boutonSize*2,boutonSize);
+        
+        this.boutonAutomatique.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                jeu.zoneAssembleur.disableModification();
+                jeu.robot1.setLesInstructions(jeu.zoneAssembleur.parse(jeu.zoneAssembleur.getAssembleurRobot1()));
+                jeu.robot2.setLesInstructions(jeu.zoneAssembleur.parse(jeu.zoneAssembleur.getAssembleurRobot2()));
+            }
+        });
+        this.add(this.boutonAutomatique);
+
+
         // Initialisation du bouton STOP
         this.boutonStop = new JButton("STOP");
-        this.boutonStop.setBounds(100,80,boutonWidth,boutonHeight);
+        this.boutonStop.setBounds(100,80,boutonSize,boutonSize);
         
         this.boutonStop.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
@@ -68,21 +83,8 @@ public class ZoneCommandes extends JPanel
         this.add(this.boutonStop);
 
 
-        // Initialisation du bouton pour l'exécution automatique
-        this.boutonAutomatique = new JButton("Automatique");
-        this.boutonAutomatique.setBounds(40,150,boutonWidth*2,boutonHeight);
-        
-        this.boutonAutomatique.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                jeu.zoneAssembleur.disableModification();
-            }
-        });
-        this.add(this.boutonAutomatique);
-
-
         this.boutonAccelerer = new JButton("+");
-        this.boutonAccelerer.setSize(boutonWidth,boutonHeight);
+        this.boutonAccelerer.setSize(boutonSize,boutonSize);
         this.boutonAccelerer.setLocation(this.boutonStop.getX()+this.boutonStop.getWidth()+30,this.boutonStop.getY());
         this.boutonAccelerer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
@@ -93,7 +95,7 @@ public class ZoneCommandes extends JPanel
         this.add(this.boutonAccelerer);
 
         this.boutonRalentir = new JButton("-");
-        this.boutonRalentir.setSize(boutonWidth,boutonHeight);
+        this.boutonRalentir.setSize(boutonSize,boutonSize);
 
         this.boutonRalentir.setLocation(this.boutonAccelerer.getX(),this.boutonAutomatique.getY());
         this.boutonRalentir.addActionListener(new ActionListener() {
