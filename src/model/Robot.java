@@ -352,7 +352,7 @@ public class Robot
                     break;
                 case MAKE:
                     if(arguments.length == 0){
-                        this.make();
+                        this.makeFichier("MAKE");
                         index++;
                     }else{
                         System.err.println("nombre d'arguments invalable");
@@ -360,7 +360,7 @@ public class Robot
                     break;
                 case MAKEFIFO:
                     if(arguments.length == 0){
-                        this.make_fifo();
+                        this.makeFichier("MAKEFIFO");
                         index++;
                     }else{
                         System.err.println("nombre d'arguments invalable");
@@ -368,7 +368,7 @@ public class Robot
                     break;
                 case MAKELIFO:
                     if(arguments.length == 0){
-                        this.make_lifo();
+                        this.makeFichier("MAKELIFO");
                         index++;
                     }else{
                         System.err.println("nombre d'arguments invalable");
@@ -542,19 +542,12 @@ public class Robot
     }
 
     // crée une fichier de type arrayList
-    public void make() {
-        // getCurrentSalle().getContenu2().add(new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2));
-        this.getCurrentSalle().setTheFile(new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle()), 2));
-    }
+    public leFichier makeFichier(String cmd) {
+        leFichier nvFichier = null;
+        nvFichier =  new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle())); /*Modifier la position du fichier*/
+        nvFichier.setFichier(instruction.make(cmd));
 
-    //crée un fochier de type file
-    public void make_fifo(){
-        this.getCurrentSalle().setTheFile(new leFichier(500,new Coordonnees(4, 3, getCurrentSalle()) , 1));
-    }
-
-    //crée un fichier de type pile
-    public void make_lifo(){
-        this.getCurrentSalle().setTheFile(new leFichier(700,new Coordonnees(4, 4, getCurrentSalle()) , 0));
+        return nvFichier;
     }
 
     public void mode(){
