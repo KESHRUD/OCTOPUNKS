@@ -1,5 +1,7 @@
 package src.model;
 
+import src.files.InstructionFichier;
+
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
