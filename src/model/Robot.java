@@ -1,15 +1,15 @@
 package src.model;
 
-import src.files.InstructionFichier;
-
-import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.imageio.ImageIO;
+
+import src.files.InstructionFichier;
 
 public class Robot
 {
@@ -48,6 +48,7 @@ public class Robot
         instruction = null;
     }
 
+    
     
     //ADDI a(R/N) b(R/N) dest(R)
     public void add(String a, String b, String dest){
@@ -153,15 +154,35 @@ public class Robot
         setRegisterValue2(dest, quotient);
     }
 
-    public void drop(){
-        if(!this.hasAFile()){
-            System.err.println("Fatal error: NO FILE IS HELD");
-        }else{
-            //intervention de Abdulkarim pour drop le fichier sur un champ libre au hasard dans la currentSalle
-            this.getFile().setPosition(new Coordonnees(this.getPositionX()+1, this.getPositionY() + 1, getCurrentSalle()));
-             instruction = null;
+    public void drop() {
+        if (!this.hasAFile()) {
+            throw new RuntimeException("Fatal error: NO FILE IS HELD");
+        } else {
+            // Recherche d'une position libre dans la salle
+            int x = 1;
+            int y = 1;
+    
+            while (getCurrentSalle().estOccupe(new Coordonnees(x, y, getCurrentSalle()))) {
+                // Incrémentation des coordonnées X et réinitialisation si nécessaire
+                x++;
+                if (x > 5) {
+                    x = 1;
+                    y++;
+                    // Sortie si aucune position libre n'est trouvée
+                    if (y > 5) {
+                        throw new RuntimeException("There is no free case in this Salle");
+                    }
+                }
+            }
+    
+            // Définition de la position du fichier à la première position libre trouvée
+            this.getFile().setPosition(new Coordonnees(x, y, getCurrentSalle()));
+    
+            // Réinitialisation de l'instruction à null
+            instruction = null;
         }
     }
+    
 
     public boolean EstMort() {
         return this.estMort;
@@ -431,37 +452,22 @@ public class Robot
         return this.position.getY();
     }
 
-    /**
-     * @return le registre F du robot
-     */
     public int getRegistreF() {
         return this.registreF;
     }
 
-    /**
-     * @return le registre M du robot
-     */
     public int getRegistreM() {
         return this.registreM;
     }
 
-    /**
-     * @return le registre T du robot
-     */
     public int getRegistreT() {
         return this.registreT;
     }
 
-    /**
-     * @return le registre X du robot
-     */
     public int getRegistreX() {
         return this.registreX;
     }
 
-    /**
-     * @return le label contenant l'image du robot
-     */
     public JLabel getRobotLabel()
     {
         if(this.robotLabel == null) 
@@ -476,7 +482,7 @@ public class Robot
             System.err.println("Fatal error: CANNOT GRAB A SECOND FILE");
         }else{
             int idFile = Integer.parseInt(theFile);
-            /*for(leFichier unFichier: getCurrentSalle().getContenu2()){
+            for(leFichier unFichier: getCurrentSalle().getSalleFiles()){
                 while(this.file == null){
                     if(idFile == unFichier.getId()){
                         this.file = unFichier; //on grab le fichier
@@ -486,8 +492,8 @@ public class Robot
             }
             if(this.file == null){
                 throw new IllegalArgumentException("Fatal error : File Id not found");
-            }*/
-            if(getCurrentSalle().getTheFile() != null){
+            }
+            /*if(getCurrentSalle().getTheFile() != null){
                 if(idFile == getCurrentSalle().getTheFile().getId()){
                     this.file = getCurrentSalle().getTheFile();
                     this.file.setPosition(this.getPosition()); //la position d'un fichier pris par le robot est la position du robot 
@@ -497,7 +503,7 @@ public class Robot
                 }
             }else{
                 System.err.println("Fatal error2: FILE ID NOT FOUND");
-            }
+            }*/
         }
     }
     
@@ -537,7 +543,7 @@ public class Robot
         getCurrentSalle().libererChamp(position); //faut liberer l'espace d'un robot qui est mort
     }
 
-    public void link(String a) {
+        public void link(String a) {
         int valueA = Integer.parseInt(a);
         if (valueA == -1) {
             if (getCurrentSalle().getLienEntrant() != null) {
@@ -593,7 +599,8 @@ public class Robot
                             }
                         }
                     } while (getCurrentSalle().estOccupe(position));
-    
+
+                    getCurrentSalle().occuperChamp(position, TypeCellule.FICHIER);
                     return;
                 }
             }
@@ -605,11 +612,31 @@ public class Robot
     // crée une fichier de type arrayList
     public leFichier makeFichier(String cmd) {
         leFichier nvFichier = null;
-        nvFichier =  new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle())); /*Modifier la position du fichier*/
+    
+        int x = 1;
+        int y = 1;
+    
+        while (getCurrentSalle().estOccupe(new Coordonnees(x, y, getCurrentSalle()))) {
+            // Incrémentation des coordonnées X et réinitialisation si nécessaire
+            x++;
+            if (x > 5) {
+                x = 1;
+                y++;
+                // Sortie si aucune position libre n'est trouvée
+                if (y > 5) {
+                    System.err.println("There is no free case in this Salle");
+                    return null; // Ou lancez une exception appropriée si nécessaire
+                }
+            }
+        }
+    
+        // Utilisation des coordonnées trouvées pour créer le fichier
+        nvFichier = new leFichier(1000, new Coordonnees(x, y, getCurrentSalle()));
         nvFichier.setFichier(instruction.make(cmd));
-
+    
         return nvFichier;
     }
+    
 
     public void mode(){
         //a implmenter par abdoulkarim
@@ -656,20 +683,13 @@ public class Robot
     // Méthode pour déplacer le robot en fonction des instructions
     public void move(int deltaX, int deltaY) {
         // Mise à jour de la position du robot en verifiant si le mouvement est possible donc x et y entre 0 et 4
-        if(position.getX() + deltaX < 1 || position.getX() + deltaX > 5 ||
-           position.getY() + deltaY < 1 || position.getY() + deltaY > 5 ) {
-            // System.err.println("Le mouvement est impossible.");
-            System.err.println("le mouvement est impossible : x = "+getPositionX() + " et deltaX = "+deltaX +" ; y = " + getPositionY() +" et deltaY = "+deltaY);
-        } else {
-            setPositionX(deltaX+getPositionX());
-            setPositionY(deltaY+getPositionY());
-            System.out.println("x : "+getPositionX()+" y : "+getPositionY()+" - Salle : "+getCurrentSalle().getId());
+        if(position.getX() + deltaX < 0 || position.getX() + deltaX > 4 ||
+           position.getY() + deltaY < 0 || position.getY() + deltaY > 4 ){
+               System.err.println("le mouvement est impossible");
+        }else{
+            setPositionX(deltaX);
+            setPositionY(deltaY);    
         }
-    }
-
-    public void moveGraphique(Coordonnees coordonnees)
-    {
-        setPositionLabel(coordonnees.getXGraphique(), coordonnees.getYGraphique());
     }
 
     public void multiply(String a, String b, String dest){
@@ -744,7 +764,9 @@ public class Robot
      * @param position la noubvelle position du robot
      */
     public void setPosition(Coordonnees position) {
+        getCurrentSalle().libererChamp(this.position);
         this.position = position;
+        getCurrentSalle().occuperChamp(position, TypeCellule.EXA1);
     }
 
     /**
@@ -752,9 +774,13 @@ public class Robot
      * @param xGraphique la nouvelle position graphique x de l'image
      * @param yGraphique la nouvelle position graphique y de l'image 
      */
-    public void setPositionLabel(int xGraphique, int yGraphique)
+    public void setPositionLabel(Coordonnees coordonnees)
     {
-        this.robotLabel.setLocation(xGraphique, yGraphique);
+        if(coordonnees == null)
+        {
+            throw new NullPointerException("Les coordonnées sont null.");
+        }
+        this.robotLabel.setLocation(coordonnees.getXGraphique(), coordonnees.getYGraphique());
     }
 
     /**
@@ -767,8 +793,6 @@ public class Robot
 
     /**
      * Permet de modifier la position y du robot.
-     * Si la valeur passée en paramètre est > 5,
-     * on modifie à 5. 
      * @param positionY la nouvelle position y du robot
      */
     public void setPositionY(int positionY) {
