@@ -28,6 +28,7 @@ public class leFichier
         }
         this.position = laPosition;
         occuperChamp(laPosition);
+       laPosition.getSalle().setTheFile(this);
     }
 
     /**
