@@ -19,8 +19,6 @@ import javax.swing.JPanel;
 
 public class ZoneMonde extends JPanel
 {
-    private int dimensionsSalle = 5;
-
     private Jeu jeu;
 
     protected int widthCellule;
@@ -31,18 +29,19 @@ public class ZoneMonde extends JPanel
     private int espaceEntreCases;
     protected JLabel caseEntree;
 
+    // INUTILE, MAIS PEUT SERVIR
     private int largeurMonde;
     private int longueurMonde;
 
-
+    // Contiennent respectivement les coordonnées graphiques des salles 1, 2 et 3.
     protected Coordonnees[][] salle1_coordonnesGraphiques;
     protected Coordonnees[][] salle2_coordonnesGraphiques;
     protected Coordonnees[][] salle3_coordonnesGraphiques;
 
     /**
-     * Contient les coordonnées graphiques de chaque cellule
+     * Contient les coordonnées graphiques de chaque cellule.
      */
-    protected Coordonnees[][] coordonneesCases;
+    private Coordonnees[][] coordonneesCases;
 
     /**
      * CONSTRUCTEUR
@@ -64,12 +63,10 @@ public class ZoneMonde extends JPanel
 
         setDimensionsMonde();
 
-
         loadNiveau();
 
         setSousTableauxCoordonneesSalles();
 
-        infoCoordonnees();
     }
 
     /**
@@ -144,63 +141,111 @@ public class ZoneMonde extends JPanel
         
     }
 
-    public Coordonnees getCoordonnees(int x, int y)
+    private Coordonnees getCoordonnees(int x, int y)
     {
-        if(y>=getLongueurMonde())
+        if(x < 0 || x > 4)
         {
-            y = getLongueurMonde()-1;
+            throw new IllegalArgumentException();
         }
-        if(x >= getLargeurMonde())
+        if(y < 0 || y > 4)
         {
-            x = getLargeurMonde();
+            throw new IllegalArgumentException();
         }
         return this.coordonneesCases[y][x];
     }
 
     /**
+     * @param x la position x du robot
+     * @param y la position y du robot
+     * @return les coordonnées graphiques de la salle 1 pour un x et un y donnés
+     */
+    public Coordonnees getCoordonneesGraphiquesSalle1(int x, int y)
+    {
+        if(x < 0)
+        {
+            x = 0;
+        } else if(x > 4)
+        {
+            x = 4;
+        }
+        if(y < 0)
+        {
+            y = 0;
+        } else if(y > 4)
+        {
+            y = 4;
+        }
+        return this.salle1_coordonnesGraphiques[y][x];
+    }
+
+    /**
+     * @param x la position x du robot
+     * @param y la position y du robot
+     * @return les coordonnées graphiques de la salle 2 pour un x et un y donnés
+     */
+    public Coordonnees getCoordonneesGraphiquesSalle2(int x, int y)
+    {
+        if(x < 0)
+        {
+            x = 0;
+        } else if(x > 4)
+        {
+            x = 4;
+        }
+        if(y < 0)
+        {
+            y = 0;
+        } else if(y > 4)
+        {
+            y = 4;
+        }
+        return this.salle2_coordonnesGraphiques[y][x];
+    }
+
+    /**
+     * @param x la position x du robot
+     * @param y la position y du robot
+     * @return les coordonnées graphiques de la salle 3 pour un x et un y donnés
+     */
+    public Coordonnees getCoordonneesGraphiquesSalle3(int x, int y)
+    {
+        if(x < 0)
+        {
+            x = 0;
+        } else if(x > 4)
+        {
+            x = 4;
+        }
+        if(y < 0)
+        {
+            y = 0;
+        } else if(y > 4)
+        {
+            y = 4;
+        }
+        return this.salle3_coordonnesGraphiques[y][x];
+    }
+
+    /**
      * @return la largeur du monde.
      */
-    public int getLargeurMonde()
+    private int getLargeurMonde()
     {
         return this.largeurMonde;
     }
 
-
     /**
      * @return la longueur du monde.
      */
-    public int getLongueurMonde()
+    private int getLongueurMonde()
     {
         return this.longueurMonde;
-    }
-
-
-    public void infoCoordonnees()
-    {
-        int ligne = 0;
-        int colonne = 0;
-        int id = 0;
-        for(id = 0; id < 3; id++)
-        {
-            for(ligne = 0; ligne < getLongueurMonde(); ligne++)
-            {
-                for(colonne = 0; colonne < getLargeurMonde(); colonne ++)
-                {
-                    //System.out.println("Ligne "+ligne+" colonne "+colonne+" salle"+id);
-                    System.out.print("I ");
-                }
-                System.out.println();
-            }
-            System.out.println();
-            System.out.println();
-        }
-        
     }
 
     /**
      * Permet d'afficher le niveau dans la page de jeu.
      */
-    public void loadNiveau()
+    private void loadNiveau()
     {
         try {
             String fichierJeuTextuel = "levels/Niveau1.txt";
@@ -235,7 +280,6 @@ public class ZoneMonde extends JPanel
                     this.coordonneesCases[ligne][colonne] = new Coordonnees(x, y, xGraphique, yGraphique, salle);
                     afficherCellule(typeCellule,xGraphique,yGraphique);
                     xGraphique+=espaceEntreCases;
-                    //System.out.println("x : "+x+" et y : "+y+" - carac : "+symbol);
                     x++;
                 }
                 xGraphique = 20;
@@ -256,7 +300,7 @@ public class ZoneMonde extends JPanel
      * Récupère les dimensions du monde.
      * @throw NullPointerException si on n'arrive pas à créer un nouveau buffer sur le fichier.
      */
-    public void setDimensionsMonde()
+    private void setDimensionsMonde()
     {
         try {
             String fichierJeuTextuel = "levels/Niveau1.txt";
@@ -288,27 +332,37 @@ public class ZoneMonde extends JPanel
         }
     }
 
-    public void setSousTableauxCoordonneesSalles()
+    /**
+     * Permet d'initialiser 3 sous-tableaux afin de pouvoir se déplacer dans chaque
+     * salle plus facilement.
+     */
+    private void setSousTableauxCoordonneesSalles()
     {
         this.salle1_coordonnesGraphiques = new Coordonnees[5][5];
         this.salle2_coordonnesGraphiques = new Coordonnees[5][5];
         this.salle3_coordonnesGraphiques = new Coordonnees[5][5];
 
-        int i = 1;
-        int ii = 1;
-        for(i = 0; i<5; i++)
-        {
-            salle1_coordonnesGraphiques[i][ii] = coordonneesCases[i][ii];
-            //salle2_coordonnesGraphiques[i][ii] = coordonneesCases[i+8][ii];
-            //salle3_coordonnesGraphiques[i][ii] = coordonneesCases[i+16][ii];
-        }
-    }
+        int ligne = 1;
+        int colonne = 1;
 
-    public void linkGraphique()
-    {
-        Robot robot = jeu.robot1;
-        int xGraphique = robot.getPositionX();
-        int yGraphique = robot.getPositionY();
-        //robot.setPositionLabel();
+        // Démarrage à 1 pour mieux comprendre en fonction du mouvement en back-end
+        for(ligne = 1; ligne<=5; ligne++)
+        {
+            for(colonne = 1; colonne<=5; colonne++)
+            {
+                salle1_coordonnesGraphiques[ligne-1][colonne-1] = coordonneesCases[ligne][colonne];
+                salle1_coordonnesGraphiques[ligne-1][colonne-1].setX(colonne);
+                salle1_coordonnesGraphiques[ligne-1][colonne-1].setY(ligne);
+                
+                salle2_coordonnesGraphiques[ligne-1][colonne-1] = coordonneesCases[ligne+8][colonne];
+                salle2_coordonnesGraphiques[ligne-1][colonne-1].setX(colonne);
+                salle2_coordonnesGraphiques[ligne-1][colonne-1].setY(ligne+8);
+                
+                salle3_coordonnesGraphiques[ligne-1][colonne-1] = coordonneesCases[ligne+16][colonne];
+                salle2_coordonnesGraphiques[ligne-1][colonne-1].setX(colonne);
+                salle2_coordonnesGraphiques[ligne-1][colonne-1].setY(ligne+16);
+            }
+            
+        }
     }
 }
