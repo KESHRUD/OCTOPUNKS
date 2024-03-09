@@ -8,7 +8,7 @@ import java.util.Map;
 public class Salle
 {
     private int id;
-
+    private List<leFichier> SalleFiles;
     private Map<Coordonnees, Champ> contenu; // Représentation de ce qui se trouve dans la salle
     private Map<Integer, String> portes; // Représentation des portes numérotées
     private List<Link> liensSortant; //entre 0 et 3 liens Sortant pour chaque salle
@@ -28,6 +28,7 @@ public class Salle
         this.liensSortant = new ArrayList<>(3) ;
         this.lienEntrant = lienEntrant;
         this.theFile = null;
+        this.SalleFiles = new ArrayList<>();
     }
 
     /**
@@ -51,7 +52,7 @@ public class Salle
     public void ajouterLienSortant(Link lien) {
         this.liensSortant.add(lien);
     }
-
+    
     /**
      * Permet d'ajouter une porte
      * @param numeroPorte le numéro de la porte
@@ -60,7 +61,7 @@ public class Salle
     public void ajouterPorte(int numeroPorte, String destination) {
         this.portes.put(numeroPorte, destination);
     }
-
+    
     /**
      * Permet de vérifier si un champ est occupé
      * @param coordonnees les coordonnées du champ à tester
@@ -179,4 +180,12 @@ public class Salle
     public void setTheFile(leFichier theFile) {
         this.theFile = theFile;
     }
+    public List<leFichier> getSalleFiles() {
+        return SalleFiles;
+    }
+
+    public void setSalleFiles(List<leFichier> salleFiles) {
+        SalleFiles = salleFiles;
+    }
+
 }
