@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class ZoneAssembleur extends JPanel
 {
+    Jeu jeu;
+
     private JLabel labelAssembleur;
     private JScrollPane scrollBar1;
     private JScrollPane scrollBar2;
@@ -18,17 +20,18 @@ public class ZoneAssembleur extends JPanel
     private JTextArea zoneTexteRobot2;
     private Font police;
 
-    private JLabel FR1;
-    private JLabel MR1;
-    private JLabel TR1;
-    private JLabel XR1;
+    private JLabel FR1, FR2;
+    private JLabel MR1, MR2;
+    private JLabel TR1, TR2;
+    private JLabel XR1, XR2;
 
 
     /**
      * On crée la zone qui concerne les entrées de code assembleur.
      */
-    public ZoneAssembleur(Octopunks octopunks)
+    public ZoneAssembleur(Octopunks octopunks, Jeu jeu)
     {
+        this.jeu = jeu;
         this.setLayout(null);
 
         this.setSize((int)(octopunks.getDimension().getWidth()/4),(int)octopunks.getDimension().getHeight()*2/3);
@@ -62,25 +65,53 @@ public class ZoneAssembleur extends JPanel
         scrollBar2.setBounds(zoneTexteRobot2.getX(), zoneTexteRobot2.getY(), zoneTexteRobot2.getWidth(), zoneTexteRobot2.getHeight());
         this.add(scrollBar2);
 
+        createRegisterLabel();
+    }
 
+    /**
+     * Création des registres des deux robots :
+     * - un registre F
+     * - un registree M
+     * - un registre T
+     * - un registre X
+     */
+    private void createRegisterLabel()
+    {
         // 4 REGISTRES À AJOUTER X,M,T,F
+        int spaceBetween = 20;
+        int spaceFromASM = 20;
 
-        this.FR1 = new JLabel("FR1");
-        this.FR1.setBounds(this.zoneTexteRobot1.getWidth()+25,50,40,10);
+        this.FR1 = new JLabel("F1 : ");
+        this.FR1.setBounds(this.zoneTexteRobot1.getWidth()+spaceFromASM,this.zoneTexteRobot1.getY(),40,10);
         this.add(this.FR1);
 
-        this.MR1 = new JLabel("MR1");
-        this.MR1.setBounds(this.zoneTexteRobot1.getWidth()+25,this.FR1.getY()*2,40,10);
+        this.MR1 = new JLabel("M1 : ");
+        this.MR1.setBounds(this.zoneTexteRobot1.getWidth()+spaceFromASM,this.FR1.getY()+spaceBetween,40,10);
         this.add(this.MR1);
     
-        this.TR1 = new JLabel("TR1");
-        this.TR1.setBounds(this.zoneTexteRobot1.getWidth()+25,this.FR1.getY()*3,40,10);
+        this.TR1 = new JLabel("T1 : ");
+        this.TR1.setBounds(this.zoneTexteRobot1.getWidth()+spaceFromASM,this.FR1.getY()+spaceBetween*2,40,10);
         this.add(this.TR1);
 
-        this.XR1 = new JLabel("XR1");
-        this.XR1.setBounds(this.zoneTexteRobot1.getWidth()+25,this.FR1.getY()*4,40,10);
+        this.XR1 = new JLabel("X1 : ");
+        this.XR1.setBounds(this.zoneTexteRobot1.getWidth()+spaceFromASM,this.FR1.getY()+spaceBetween*3,40,10);
         this.add(this.XR1);
 
+        this.FR2 = new JLabel("F2 : ");
+        this.FR2.setBounds(this.zoneTexteRobot2.getWidth()+spaceFromASM,this.zoneTexteRobot2.getY(),40,10);
+        this.add(this.FR2);
+
+        this.MR2 = new JLabel("M2 : ");
+        this.MR2.setBounds(this.zoneTexteRobot2.getWidth()+spaceFromASM,this.FR2.getY()+spaceBetween,40,10);
+        this.add(this.MR2);
+    
+        this.TR2 = new JLabel("T2 : ");
+        this.TR2.setBounds(this.zoneTexteRobot2.getWidth()+spaceFromASM,this.FR2.getY()+spaceBetween*2,40,10);
+        this.add(this.TR2);
+
+        this.XR2 = new JLabel("X2 : ");
+        this.XR2.setBounds(this.zoneTexteRobot2.getWidth()+spaceFromASM,this.FR2.getY()+spaceBetween*3,40,10);
+        this.add(this.XR2);
     }
 
     /**
@@ -102,7 +133,6 @@ public class ZoneAssembleur extends JPanel
         this.zoneTexteRobot1.setEditable(true);
         this.zoneTexteRobot2.setEditable(true);
     }
-
 
     /**
      * Renvoie le ccode assembleur du robot 1.
@@ -126,7 +156,7 @@ public class ZoneAssembleur extends JPanel
         return zoneTexteRobot2.getText();
     }
 
-        /**
+    /**
      * Fonction permettant de lire le code assembleur
      * et de retouner une listes d'objet de type instructions avec leurs paramètres
      * @param listASMB une chaîne de caractères constituée des instructions Assembleur
@@ -162,6 +192,49 @@ public class ZoneAssembleur extends JPanel
         return listeInstruction;
     }
 
+    /**
+     * Permet de modifier le registre F des deux robots.
+     * On fait correspondre avec celui des robots, on ne passe
+     * donc rien en paramètre.
+     */
+    public void setRegisterF()
+    {
+        this.FR1.setText("F1 : "+jeu.robot1.getRegistreF());
+        this.FR2.setText("F2 : "+jeu.robot2.getRegistreF());
+    }
+
+    /**
+     * Permet de modifier le registre M des deux robots.
+     * On fait correspondre avec celui des robots, on ne passe
+     * donc rien en paramètre.
+     */
+    public void setRegisterM()
+    {
+        this.MR1.setText("M1 : "+jeu.robot1.getRegistreM());
+        this.MR2.setText("M2 : "+jeu.robot2.getRegistreM());
+    }
+
+    /**
+     * Permet de modifier le registre T des deux robots.
+     * On fait correspondre avec celui des robots, on ne passe
+     * donc rien en paramètre.
+     */
+    public void setRegisterT()
+    {
+        this.TR1.setText("T1 : "+jeu.robot1.getRegistreT());
+        this.TR2.setText("T2 : "+jeu.robot2.getRegistreT());
+    }
+
+    /**
+     * Permet de modifier le registre X des deux robots.
+     * On fait correspondre avec celui des robots, on ne passe
+     * donc rien en paramètre.
+     */
+    public void setRegisterX()
+    {
+        this.XR1.setText("X1 : "+jeu.robot1.getRegistreX());
+        this.XR2.setText("X2 : "+jeu.robot2.getRegistreX());
+    }
 
     /**
      * SUPPLÉMENTAIRE
@@ -171,5 +244,16 @@ public class ZoneAssembleur extends JPanel
     public void saveAssembleur()
     {
         // Compléter
+    }
+
+    /**
+     * Met à jour les valeurs des registres.
+     */
+    public void update()
+    {
+        setRegisterF();
+        setRegisterM();
+        setRegisterT();
+        setRegisterX();
     }
 }
