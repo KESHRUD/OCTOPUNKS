@@ -49,7 +49,6 @@ public class Robot
     }
 
     
-    
     //ADDI a(R/N) b(R/N) dest(R)
     public void add(String a, String b, String dest){
         int valueA, valueB;
@@ -432,22 +431,37 @@ public class Robot
         return this.position.getY();
     }
 
+    /**
+     * @return le registre F du robot
+     */
     public int getRegistreF() {
         return this.registreF;
     }
 
+    /**
+     * @return le registre M du robot
+     */
     public int getRegistreM() {
         return this.registreM;
     }
 
+    /**
+     * @return le registre T du robot
+     */
     public int getRegistreT() {
         return this.registreT;
     }
 
+    /**
+     * @return le registre X du robot
+     */
     public int getRegistreX() {
         return this.registreX;
     }
 
+    /**
+     * @return le label contenant l'image du robot
+     */
     public JLabel getRobotLabel()
     {
         if(this.robotLabel == null) 
@@ -523,7 +537,7 @@ public class Robot
         getCurrentSalle().libererChamp(position); //faut liberer l'espace d'un robot qui est mort
     }
 
-        public void link(String a) {
+    public void link(String a) {
         int valueA = Integer.parseInt(a);
         if (valueA == -1) {
             if (getCurrentSalle().getLienEntrant() != null) {
@@ -642,13 +656,20 @@ public class Robot
     // Méthode pour déplacer le robot en fonction des instructions
     public void move(int deltaX, int deltaY) {
         // Mise à jour de la position du robot en verifiant si le mouvement est possible donc x et y entre 0 et 4
-        if(position.getX() + deltaX < 0 || position.getX() + deltaX > 4 ||
-           position.getY() + deltaY < 0 || position.getY() + deltaY > 4 ){
-               System.err.println("le mouvement est impossible");
-        }else{
-            setPositionX(deltaX);
-            setPositionY(deltaY);    
+        if(position.getX() + deltaX < 1 || position.getX() + deltaX > 5 ||
+           position.getY() + deltaY < 1 || position.getY() + deltaY > 5 ) {
+            // System.err.println("Le mouvement est impossible.");
+            System.err.println("le mouvement est impossible : x = "+getPositionX() + " et deltaX = "+deltaX +" ; y = " + getPositionY() +" et deltaY = "+deltaY);
+        } else {
+            setPositionX(deltaX+getPositionX());
+            setPositionY(deltaY+getPositionY());
+            System.out.println("x : "+getPositionX()+" y : "+getPositionY()+" - Salle : "+getCurrentSalle().getId());
         }
+    }
+
+    public void moveGraphique(Coordonnees coordonnees)
+    {
+        setPositionLabel(coordonnees.getXGraphique(), coordonnees.getYGraphique());
     }
 
     public void multiply(String a, String b, String dest){
@@ -731,13 +752,9 @@ public class Robot
      * @param xGraphique la nouvelle position graphique x de l'image
      * @param yGraphique la nouvelle position graphique y de l'image 
      */
-    public void setPositionLabel(Coordonnees coordonnees)
+    public void setPositionLabel(int xGraphique, int yGraphique)
     {
-        if(coordonnees == null)
-        {
-            throw new NullPointerException("Les coordonnées sont null.");
-        }
-        this.robotLabel.setLocation(coordonnees.getXGraphique(), coordonnees.getYGraphique());
+        this.robotLabel.setLocation(xGraphique, yGraphique);
     }
 
     /**
@@ -750,6 +767,8 @@ public class Robot
 
     /**
      * Permet de modifier la position y du robot.
+     * Si la valeur passée en paramètre est > 5,
+     * on modifie à 5. 
      * @param positionY la nouvelle position y du robot
      */
     public void setPositionY(int positionY) {
