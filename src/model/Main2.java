@@ -33,7 +33,6 @@ public class Main2 {
         exa.link("-1");
         System.out.println(" link -1 : exa1  x = " + exa.getPositionX() + " y = " + exa.getPositionY() + " salle : " + exa.getCurrentSalle().getId());
         */
-        exa.getCurrentSalle().setTheFile(file);
         exa.grab("200");
         System.out.println("grab 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
         
