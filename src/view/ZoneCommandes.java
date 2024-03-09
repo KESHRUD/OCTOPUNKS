@@ -46,18 +46,24 @@ public class ZoneCommandes extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 jeu.getZoneAssembleur().disableModification();
+                jeu.robot1.setLesInstructions(jeu.zoneAssembleur.parse(jeu.zoneAssembleur.getAssembleurRobot1()));
+                jeu.robot1.executeInstruction();
+                // on fait -1 car le tableau va de 0 à 4 <=> 1-1 à 5-1
+                
+                switch(jeu.robot1.getCurrentSalle().getId())
+                {
+                    case 1 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle1(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
+                                break;
+                    case 2 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle2(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
+                                break;
+                    case 3 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle3(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
+                                break;
+                    default :   System.err.println("Salle non trouvée.");
+                                break;  
+                }
 
-                int x = jeu.robot1.getPositionX();
-                jeu.robot1.setPositionX(x+1);
-                int y = jeu.robot1.getPositionY();
-                jeu.robot1.setPositionY(y+3);
-
-                //int diffSalle = jeu.robot1.getCurrentSalle().getLienEntrant().getSalleAvant().getId() -jeu.robot1.getCurrentSalle().getId();
-
-                //System.out.println("x : "+jeu.robot1.getPositionX()+" et y : "+jeu.robot1.getPositionY());
-
-                jeu.robot1.setPositionLabel(jeu.zoneMonde.getCoordonnees(y, x));
                 jeu.zoneMemoire.update();
+                jeu.zoneAssembleur.update();
             }
         });
         this.add(this.boutonPas);
