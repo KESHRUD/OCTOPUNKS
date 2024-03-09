@@ -1,8 +1,11 @@
 package src.view;
 
 import src.model.Coordonnees;
+import src.model.Link;
 import src.model.Robot;
 import src.model.Salle;
+import src.model.leFichier;
+import src.model.Main2;
 
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -46,24 +49,65 @@ public class Jeu extends JPanel implements KeyListener
         }
         this.octopunks = octopunks;
 
-        salle1 = new Salle(1);
-        salle2 = new Salle(2);
-        salle3 = new Salle(3);
+        
 
+        salle1 = new Salle(1, null);
+        salle2 = new Salle(2, null);
+        salle3 = new Salle(3, null);
 
         this.robot1 = new Robot(new Coordonnees(1, 1, salle1));
         this.robot2 = new Robot(new Coordonnees(1, 2, salle1));
 
-        this.zoneAssembleur = new ZoneAssembleur(octopunks);
+
+        salle1.ajouterLienSortant(new Link(400, salle1, salle2, true));
+        salle2.setLienEntrant( salle1.getLiensSortant().get(0));
+
+        salle2.ajouterLienSortant(new Link(800, salle2, salle3, true));
+        salle3.setLienEntrant(salle2.getLiensSortant().get(0));
+
+        leFichier file = new leFichier(200, new Coordonnees(1, 2, salle2));
+
+        System.out.println("robot11  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
+        System.out.println("200  x = " + file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
+        
+        //robot1.link("400");
+        //System.out.println(" link 400 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
+        
+
+        /*robot1.link("800");
+        System.out.println(" link 800 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
+        
+        robot1.link("-1");
+        System.out.println(" link -1 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
+        */
+        /*
+        robot1.getCurrentSalle().setTheFile(file);
+        robot1.grab("200");
+        System.out.println("grab 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
+        
+        robot1.link("800");
+        System.out.println(" link 800 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
+        System.out.println("grab 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
+        
+        robot1.drop();
+        System.out.println(" robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
+        System.out.println(" 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
+       */
+       
+
+
+        this.zoneAssembleur = new ZoneAssembleur(octopunks, this);
         this.zoneCommandes = new ZoneCommandes(octopunks, this);
         this.zoneMemoire = new ZoneMemoire(octopunks,this);
         this.zoneMonde = new ZoneMonde(octopunks, this);
+
+
 
         this.vitesseExecution = 1.0;
         this.setSize((int)octopunks.getDimension().getWidth(),(int)octopunks.getDimension().getHeight());
         this.setLocation(0,0);
         
-        
+
         /**
          * On ajoute les différentes zones dans le panel.
          */
@@ -78,7 +122,7 @@ public class Jeu extends JPanel implements KeyListener
     }
 
 
-    public JScrollPane getScrollBar()
+    private JScrollPane getScrollBar()
     {
         if(this.scrollBar == null)
         {
