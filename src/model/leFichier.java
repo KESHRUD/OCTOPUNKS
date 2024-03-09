@@ -1,10 +1,8 @@
 package src.model;
 import java.util.Objects;
 
-import src.files.File;
-import src.files.Pile;
-import src.files.TableauDynamique;
 import src.files.TypeFichier;
+import src.file.*;
 
 public class leFichier
 {
@@ -28,7 +26,7 @@ public class leFichier
         }
         this.position = laPosition;
         occuperChamp(laPosition);
-       laPosition.getSalle().setTheFile(this);
+        laPosition.getSalle().getSalleFiles().add(this);
     }
 
     /**
