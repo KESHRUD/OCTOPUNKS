@@ -153,15 +153,35 @@ public class Robot
         setRegisterValue2(dest, quotient);
     }
 
-    public void drop(){
-        if(!this.hasAFile()){
-            System.err.println("Fatal error: NO FILE IS HELD");
-        }else{
-            //intervention de Abdulkarim pour drop le fichier sur un champ libre au hasard dans la currentSalle
-            this.getFile().setPosition(new Coordonnees(this.getPositionX()+1, this.getPositionY() + 1, getCurrentSalle()));
-             instruction = null;
+    public void drop() {
+        if (!this.hasAFile()) {
+            throw new RuntimeException("Fatal error: NO FILE IS HELD");
+        } else {
+            // Recherche d'une position libre dans la salle
+            int x = 1;
+            int y = 1;
+    
+            while (getCurrentSalle().estOccupe(new Coordonnees(x, y, getCurrentSalle()))) {
+                // Incrémentation des coordonnées X et réinitialisation si nécessaire
+                x++;
+                if (x > 5) {
+                    x = 1;
+                    y++;
+                    // Sortie si aucune position libre n'est trouvée
+                    if (y > 5) {
+                        throw new RuntimeException("There is no free case in this Salle");
+                    }
+                }
+            }
+    
+            // Définition de la position du fichier à la première position libre trouvée
+            this.getFile().setPosition(new Coordonnees(x, y, getCurrentSalle()));
+    
+            // Réinitialisation de l'instruction à null
+            instruction = null;
         }
     }
+    
 
     public boolean EstMort() {
         return this.estMort;
@@ -476,7 +496,7 @@ public class Robot
             System.err.println("Fatal error: CANNOT GRAB A SECOND FILE");
         }else{
             int idFile = Integer.parseInt(theFile);
-            /*for(leFichier unFichier: getCurrentSalle().getContenu2()){
+            for(leFichier unFichier: getCurrentSalle().getSalleFiles()){
                 while(this.file == null){
                     if(idFile == unFichier.getId()){
                         this.file = unFichier; //on grab le fichier
@@ -486,8 +506,8 @@ public class Robot
             }
             if(this.file == null){
                 throw new IllegalArgumentException("Fatal error : File Id not found");
-            }*/
-            if(getCurrentSalle().getTheFile() != null){
+            }
+            /*if(getCurrentSalle().getTheFile() != null){
                 if(idFile == getCurrentSalle().getTheFile().getId()){
                     this.file = getCurrentSalle().getTheFile();
                     this.file.setPosition(this.getPosition()); //la position d'un fichier pris par le robot est la position du robot 
@@ -497,9 +517,10 @@ public class Robot
                 }
             }else{
                 System.err.println("Fatal error2: FILE ID NOT FOUND");
-            }
+            }*/
         }
     }
+
     
     /**
      * Tue le robot et drop le fichier tenu par le robot sur la même place
