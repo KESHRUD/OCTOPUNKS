@@ -602,12 +602,30 @@ public class Robot
         }
     }
 
-    // crée une fichier de type arrayList
     public leFichier makeFichier(String cmd) {
         leFichier nvFichier = null;
-        nvFichier =  new leFichier(1000, new Coordonnees(3, 3, getCurrentSalle())); /*Modifier la position du fichier*/
+    
+        int x = 1;
+        int y = 1;
+    
+        while (getCurrentSalle().estOccupe(new Coordonnees(x, y, getCurrentSalle()))) {
+            // Incrémentation des coordonnées X et réinitialisation si nécessaire
+            x++;
+            if (x > 5) {
+                x = 1;
+                y++;
+                // Sortie si aucune position libre n'est trouvée
+                if (y > 5) {
+                    System.err.println("There is no free case in this Salle");
+                    return null; 
+                }
+            }
+        }
+    
+        // Utilisation des coordonnées trouvées pour créer le fichier
+        nvFichier = new leFichier(1000, new Coordonnees(x, y, getCurrentSalle()));
         nvFichier.setFichier(instruction.make(cmd));
-
+    
         return nvFichier;
     }
 
