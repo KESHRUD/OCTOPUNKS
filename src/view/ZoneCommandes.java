@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.awt.*;
+import java.util.Random;
 
 
 /**
@@ -20,6 +21,8 @@ public class ZoneCommandes extends JPanel
     private int vitesse;
     private JButton boutonAccelerer;
     private JButton boutonRalentir;
+
+    private Random random;
 
     /**
      * Le modèle de bouton standard est un carré de 60px * 60px,
@@ -38,7 +41,7 @@ public class ZoneCommandes extends JPanel
         this.commandesLabel.setSize(100,20);
         this.commandesLabel.setLocation(60, 15);
         this.add(this.commandesLabel);
-
+        this.random = new Random();
 
         this.boutonPas = new JButton("Pas");
         this.boutonPas.setBounds(40,80,boutonSize,boutonSize);
@@ -47,20 +50,44 @@ public class ZoneCommandes extends JPanel
             {
                 jeu.getZoneAssembleur().disableModification();
                 jeu.robot1.setLesInstructions(jeu.zoneAssembleur.parse(jeu.zoneAssembleur.getAssembleurRobot1()));
-                jeu.robot1.executeInstruction();
+                jeu.robot2.setLesInstructions(jeu.zoneAssembleur.parse(jeu.zoneAssembleur.getAssembleurRobot2()));
+                int a = random.nextInt(2);
+                if(a == 0){
+                    jeu.robot1.executeInstruction();
+
+                    switch(jeu.robot1.getCurrentSalle().getId())
+                    {
+                        case 1 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle1(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
+                            break;
+                        case 2 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle2(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
+                            break;
+                        case 3 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle3(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
+                            break;
+                        default :   System.err.println("Salle non trouvée.");
+                            break;
+                    }
+
+                }else{
+                    jeu.robot2.executeInstruction();
+
+                    switch(jeu.robot2.getCurrentSalle().getId())
+                    {
+                        case 1 :    jeu.robot2.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle1(jeu.robot2.getPositionX()-1, jeu.robot2.getPositionY()-1));
+                            break;
+                        case 2 :    jeu.robot2.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle2(jeu.robot2.getPositionX()-1, jeu.robot2.getPositionY()-1));
+                            break;
+                        case 3 :    jeu.robot2.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle3(jeu.robot2.getPositionX()-1, jeu.robot2.getPositionY()-1));
+                            break;
+                        default :   System.err.println("Salle non trouvée.");
+                            break;
+                    }
+
+                }
+
                 // on fait -1 car le tableau va de 0 à 4 <=> 1-1 à 5-1
                 
-                switch(jeu.robot1.getCurrentSalle().getId())
-                {
-                    case 1 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle1(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
-                                break;
-                    case 2 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle2(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
-                                break;
-                    case 3 :    jeu.robot1.moveGraphique(jeu.zoneMonde.getCoordonneesGraphiquesSalle3(jeu.robot1.getPositionX()-1, jeu.robot1.getPositionY()-1));
-                                break;
-                    default :   System.err.println("Salle non trouvée.");
-                                break;  
-                }
+
+
 
                 jeu.zoneMemoire.update();
                 jeu.zoneAssembleur.update();
