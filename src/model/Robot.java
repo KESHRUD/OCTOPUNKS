@@ -786,6 +786,11 @@ public void executeInstruction(){
         this.file = newFile;
         setRegistreM(newFile.getId());
     }
+
+    public void setIndexToUn()
+    {
+        this.index = 1;
+    }
     
     /**
      * Permet de modifier les instructions du robot.
