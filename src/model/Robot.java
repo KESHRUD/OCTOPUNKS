@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 
+import src.view.ZoneMonde;
+
 public class Robot
 {
     private Coordonnees position; //position x y et salle
@@ -435,6 +437,11 @@ public class Robot
         return this.imageRobot;
     }
 
+    public int getIndex()
+    {
+        return this.index;
+    }
+
     public List<Instruction> getLesInstructions() {
         return this.lesInstructions;
     }
@@ -706,9 +713,19 @@ public class Robot
         }
     }
 
-    public void moveGraphique(Coordonnees coordonnees)
+    public void moveGraphique(ZoneMonde zoneMonde)
     {
-        setPositionLabel(coordonnees.getXGraphique(), coordonnees.getYGraphique());
+        switch(this.getCurrentSalle().getId())
+        {
+            case 1 :    setPositionLabel(zoneMonde.getCoordonneesGraphiquesSalle1(this.getPositionX()-1, this.getPositionY()-1));
+                        break;
+            case 2 :    setPositionLabel(zoneMonde.getCoordonneesGraphiquesSalle2(this.getPositionX()-1, this.getPositionY()-1));
+                        break;
+            case 3 :    setPositionLabel(zoneMonde.getCoordonneesGraphiquesSalle3(this.getPositionX()-1, this.getPositionY()-1));
+                        break;
+            default :   System.err.println("Salle non trouvée.");
+                        break;  
+        }
     }
 
     public void multiply(String a, String b, String dest){
@@ -791,9 +808,9 @@ public class Robot
      * @param xGraphique la nouvelle position graphique x de l'image
      * @param yGraphique la nouvelle position graphique y de l'image 
      */
-    public void setPositionLabel(int xGraphique, int yGraphique)
+    public void setPositionLabel(Coordonnees coordonnees)
     {
-        this.robotLabel.setLocation(xGraphique, yGraphique);
+        this.robotLabel.setLocation(coordonnees.getXGraphique(), coordonnees.getYGraphique());
     }
 
     /**
