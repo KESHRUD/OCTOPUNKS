@@ -1,8 +1,18 @@
 package src.model;
+import java.io.IOException;
 import java.util.Objects;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+import src.files.File;
+import src.files.Pile;
+import src.files.TableauDynamique;
 import src.files.TypeFichier;
-import src.file.*;
+
+import src.view.Jeu;
+
 
 public class leFichier
 {
@@ -10,23 +20,68 @@ public class leFichier
     private TypeFichier<Integer> fichier; //le type de fichier
     private Coordonnees position; //le fichier aussi a une position
 
+    private ImageIcon imageFichier; // l'image du fichier
+    protected JLabel fichierLabel; // le label qui permet d'afficher l'image
+
+    private Jeu jeu;
 
     /**
      * CONSTRUCTEUR
      * @param id l'identifiant du fichier
      * @param laPosition la position du fichier
      * @param type le type du fichier
+     * @throws IOException 
      */
-   public leFichier(int id, Coordonnees laPosition) {
+    public leFichier(int id, Coordonnees laPosition) throws IOException
+    {
         if(id != 0) {
             this.id = id;
         }
         else {
             throw new IllegalArgumentException("file id is null");
         }
+
         this.position = laPosition;
         occuperChamp(laPosition);
-        laPosition.getSalle().getSalleFiles().add(this);
+        laPosition.getSalle().setTheFile(this);
+
+        this.imageFichier = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/image_fichier.png")));
+        this.fichierLabel = new JLabel(this.imageFichier);
+    }
+
+    public void afficher()
+    {
+        this.fichierLabel.setSize(20,20);
+        switch(position.getSalle().getId())
+        {
+            case 1 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle1(this.getPosition().getX(), this.getPosition().getY()));
+                        break;
+            case 2 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle2(this.getPosition().getX(), this.getPosition().getY()));
+                        break;
+            case 3 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle3(this.getPosition().getX(), this.getPosition().getY()));
+                        break;
+        }
+    }
+
+    /**
+     * Permet de définir l'attribut jeu sans modifier le consructeur.
+     * @param jeu l'élément à affecter
+     */
+    public void defineJeu(Jeu jeu)
+    {
+        if(jeu == null)
+        {
+            throw new NullPointerException("jeu est null.");
+        }
+        this.jeu = jeu;
+    }
+
+    /**
+     * Permet de retirer l'image du fichier de l'interface graphique.
+     */
+    public void enleverGraphique()
+    {
+        this.fichierLabel.setIcon(null);
     }
 
     /**
@@ -43,6 +98,14 @@ public class leFichier
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * @return le label de l'image du fichier
+     */
+    public JLabel getFichierLabel()
+    {
+        return this.fichierLabel;
     }
 
     /**
@@ -92,6 +155,16 @@ public class leFichier
         this.position.getSalle().libererChamp(this.position); //liberer l'ancienne position
         this.position = newPosition;
         occuperChamp(newPosition); //occuper la novelle position
+    }
+
+    /**
+     * Permet de modifier la position de l'image du robot (le label sur l'interface graphique).
+     * @param xGraphique la nouvelle position graphique x de l'image
+     * @param yGraphique la nouvelle position graphique y de l'image 
+     */
+    public void setPositionLabel(Coordonnees coordonnees)
+    {
+        this.fichierLabel.setLocation(coordonnees.getXGraphique(), coordonnees.getYGraphique());
     }
 
     @Override
