@@ -28,6 +28,7 @@ public class Robot
     private ImageIcon imageRobot; // l'image du robot
     protected JLabel robotLabel; // le label qui permet d'afficher l'image
     private InstructionFichier<Integer> instruction;
+    private static int fichierID = 400;
 
     private Jeu jeu;
 
@@ -710,9 +711,9 @@ public class Robot
         }
     
         // Utilisation des coordonnées trouvées pour créer le fichier
-        nvFichier = new leFichier(1000, new Coordonnees(x, y, getCurrentSalle()));
+        nvFichier = new leFichier(fichierID, new Coordonnees(x, y, getCurrentSalle()));
         nvFichier.setFichier(instruction.make(cmd));
-    
+        fichierID += 200;
         return nvFichier;
     }
 
