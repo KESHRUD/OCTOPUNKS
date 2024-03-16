@@ -4,6 +4,7 @@ import src.model.Coordonnees;
 import src.model.Robot;
 import src.model.Salle;
 import src.model.TypeCellule;
+import src.model.leFichier;
 
 import java.awt.*;
 import java.io.*;
@@ -63,7 +64,7 @@ public class ZoneMonde extends JPanel
 
         setDimensionsMonde();
 
-        loadNiveau();
+        loadNiveau(jeu.file);
 
         setSousTableauxCoordonneesSalles();
 
@@ -76,61 +77,73 @@ public class ZoneMonde extends JPanel
      * @param yGraphique la position de la cellule sur l'écran selon l'axe y
      * @throws IOException si l'image de la cellule n'a pas pu être lue
      */
-    public void afficherCellule(TypeCellule typeCellule, int xGraphique, int yGraphique) throws IOException
+    public void afficherCellule(TypeCellule typeCellule, int xGraphique, int yGraphique, leFichier file) throws IOException
     {
         JLabel image;
         this.widthCellule = 20;
         this.heightCellule = 20;
         switch(typeCellule)
         {
-            case EXA1 : image = jeu.robot1.getRobotLabel();
-                        image.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);            
-                        this.add(image);
-
-                        image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
-                        image.setSize(widthCellule,heightCellule);
-                        image.setLocation(xGraphique,yGraphique);           
-                        this.add(image);
-                        break;
-            
-            case EXA2 : image = jeu.robot2.getRobotLabel();
-                        image.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);            
-                        this.add(image);
-
-                        image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
-                        image.setSize(widthCellule,heightCellule);
-                        image.setLocation(xGraphique,yGraphique);           
-                        this.add(image);
-                        break;
-            
-            case MUR :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/mur.png"))));
-                        image.setSize(widthCellule,heightCellule);
-                        image.setLocation(xGraphique,yGraphique);           
-                        this.add(image);                
-                        break;
-
-            case ENTREE :   this.caseEntree = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_jaune.png"))));
-                            caseEntree.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);
-                            this.add(caseEntree);
-                            break;
-
             case ARRIERE :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_vert.png"))));
                             image.setSize(widthCellule,heightCellule);
                             image.setLocation(xGraphique,yGraphique);
                             this.add(image);
                             break;
 
-            case LINK : image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Lien.png"))));
-                        image.setSize(widthCellule,heightCellule);
-                        image.setLocation(xGraphique,yGraphique);
-                        this.add(image);                
-                        break;
+            case ENTREE :   this.caseEntree = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_jaune.png"))));
+                            caseEntree.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);
+                            this.add(caseEntree);
+                            break;
+            
             
             case ENTRE_DEUX_SALLES :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Entree_salle.png"))));
                                 image.setSize(widthCellule,heightCellule);
                                 image.setLocation(xGraphique,yGraphique);
                                 this.add(image);
                                 break;
+
+            case EXA1 :     image = jeu.robot1.getRobotLabel();
+                            image.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);            
+                            this.add(image);
+
+                            image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
+                            image.setSize(widthCellule,heightCellule);
+                            image.setLocation(xGraphique,yGraphique);           
+                            this.add(image);
+                            break;
+            
+            case EXA2 :     image = jeu.robot2.getRobotLabel();
+                            image.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);            
+                            this.add(image);
+
+                            image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
+                            image.setSize(widthCellule,heightCellule);
+                            image.setLocation(xGraphique,yGraphique);           
+                            this.add(image);
+                            break;
+
+            case FICHIER :  image = file.getFichierLabel();
+                            image.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);            
+                            this.add(image);
+
+                            image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
+                            image.setSize(widthCellule,heightCellule);
+                            image.setLocation(xGraphique,yGraphique);           
+                            this.add(image);
+                            break;
+
+            case LINK :     image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Lien.png"))));
+                            image.setSize(widthCellule,heightCellule);
+                            image.setLocation(xGraphique,yGraphique);
+                            this.add(image);                
+                            break;
+            
+            case MUR :      image = new JLabel(new ImageIcon(ImageIO.read(new File("images/mur.png"))));
+                            image.setSize(widthCellule,heightCellule);
+                            image.setLocation(xGraphique,yGraphique);           
+                            this.add(image);                
+                            break;
+                                
 
             default :   image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Vide.png"))));
                         image.setSize(widthCellule,heightCellule);
@@ -245,7 +258,7 @@ public class ZoneMonde extends JPanel
     /**
      * Permet d'afficher le niveau dans la page de jeu.
      */
-    private void loadNiveau()
+    private void loadNiveau(leFichier file)
     {
         try {
             String fichierJeuTextuel = "levels/Niveau1.txt";
@@ -278,7 +291,7 @@ public class ZoneMonde extends JPanel
                     TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
                         
                     this.coordonneesCases[ligne][colonne] = new Coordonnees(x, y, xGraphique, yGraphique, salle);
-                    afficherCellule(typeCellule,xGraphique,yGraphique);
+                    afficherCellule(typeCellule,xGraphique,yGraphique, file);
                     xGraphique+=espaceEntreCases;
                     x++;
                 }
