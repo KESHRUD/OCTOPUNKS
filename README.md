@@ -2,7 +2,7 @@
 Octopunks un clône de Exapunks
 
 # Exécution :
-Pour lancez le jeu entrer la commande :
+Pour lancez le jeu entrer la commande depuis le répertoire OCTOPUNKS :
 make; make launch
 
 
