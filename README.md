@@ -13,13 +13,13 @@ Pour lancez le jeu entrer la commande "make; make launch" depuis le répertoire 
 	- Affichage des coordonnées des robots
 	- Jeu fini()
 	- Registres des robots 
-# Responsable du code méta-fichiers : 
+# Responsable du code des méta-fichiers : 
 	-Strcutures de données (pile,file,tableau dynamique)
 	-Instructions : MAKE(FIFO-LIFO) GRAB DROP SEEK VOID F COPY TEST EOF WIPE
 
-# Responsable code métier :
+# Responsable du code métier :
 	- Implémentation de toutes les instructions demandées 
-# Responsable Jeu Textuel
+# Responsable du jeu textuel
 	- Parsing 
 	- Affichage de niveau avec lecture du niveau 
 	- Exécuter pas à pas 
