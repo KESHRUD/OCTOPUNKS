@@ -16,7 +16,7 @@ make; make launch
 	-registre des robots 
 # Responsable du code méta-fichiers : 
 	-Strcutures de données (pile,file,tableau dynamique)
-	-INSTRUCTION : MAKE(FIFO-LIFO) GRAB DROP SEEK VOID F COPY TEST EOF WIPE
+	-Instructions : MAKE(FIFO-LIFO) GRAB DROP SEEK VOID F COPY TEST EOF WIPE
 
 # Responsable code métier :
 	- Implementation de toutes les instructions demandé 
