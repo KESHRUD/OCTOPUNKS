@@ -31,14 +31,14 @@ public class Jeu extends JPanel implements KeyListener
     protected ZoneMonde zoneMonde;
     private JScrollPane scrollBar;
     
-    protected Double vitesseExecution;
-
     protected Robot robot1;
     protected Robot robot2;
 
     protected Salle salle1;
     protected Salle salle2;
     protected Salle salle3;
+
+    protected leFichier file;
 
 
     public Jeu(Octopunks octopunks) throws IOException
@@ -49,26 +49,37 @@ public class Jeu extends JPanel implements KeyListener
         }
         this.octopunks = octopunks;
 
-        
 
         salle1 = new Salle(1, null);
         salle2 = new Salle(2, null);
         salle3 = new Salle(3, null);
 
-        this.robot1 = new Robot(new Coordonnees(1, 1, salle1));
-        this.robot2 = new Robot(new Coordonnees(1, 2, salle1));
+        this.file = new leFichier(200, new Coordonnees(1, 1, salle2));
+        this.file.defineJeu(this);
+        this.file.occuperChamp(file.getPosition());
+        
 
+        this.robot1 = new Robot(new Coordonnees(1, 1, salle1));
+        this.robot1.defineJeu(this);
+        this.robot1.setImage("images/Exapunks_robot.png");
+
+        this.robot2 = new Robot(new Coordonnees(1, 2, salle1));
+        this.robot2.setImage("images/Robot.png");
+        this.robot2.defineJeu(this);
+
+        this.salle2.getSalleFiles().add(this.file);
 
         salle1.ajouterLienSortant(new Link(400, salle1, salle2, true));
-        salle2.setLienEntrant( salle1.getLiensSortant().get(0));
+
+        salle2.setLienEntrant(salle1.getLiensSortant().get(0));
 
         salle2.ajouterLienSortant(new Link(800, salle2, salle3, true));
         salle3.setLienEntrant(salle2.getLiensSortant().get(0));
 
-        leFichier file = new leFichier(200, new Coordonnees(1, 2, salle2));
+        
 
-        System.out.println("robot11  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
-        System.out.println("200  x = " + file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
+        // System.out.println("robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
+        // System.out.println("200  x = " + file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
         
         //robot1.link("400");
         //System.out.println(" link 400 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
@@ -93,21 +104,20 @@ public class Jeu extends JPanel implements KeyListener
         System.out.println(" robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
         System.out.println(" 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
        */
-       
 
 
         this.zoneAssembleur = new ZoneAssembleur(octopunks, this);
+        this.zoneMonde = new ZoneMonde(octopunks, this);
         this.zoneCommandes = new ZoneCommandes(octopunks, this);
         this.zoneMemoire = new ZoneMemoire(octopunks,this);
-        this.zoneMonde = new ZoneMonde(octopunks, this);
 
+        //this.file.afficher(this);
 
+        System.out.println("Fichier : x = "+file.getPosition().getX()+" et y = "+file.getPosition().getY()+" - salle : "+file.getPosition().getSalle().getId());
 
-        this.vitesseExecution = 1.0;
         this.setSize((int)octopunks.getDimension().getWidth(),(int)octopunks.getDimension().getHeight());
         this.setLocation(0,0);
         
-
         /**
          * On ajoute les différentes zones dans le panel.
          */
@@ -129,11 +139,6 @@ public class Jeu extends JPanel implements KeyListener
             throw new NullPointerException("La scrollbar est null.");
         }
         return this.scrollBar;
-    }
-
-    public Double getVitesseExecution()
-    {
-        return this.vitesseExecution;
     }
 
     public ZoneAssembleur getZoneAssembleur()
@@ -163,6 +168,10 @@ public class Jeu extends JPanel implements KeyListener
         return this.zoneMemoire;
     }
 
+    public ZoneMonde getZoneMonde()
+    {
+        return this.zoneMonde;
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
