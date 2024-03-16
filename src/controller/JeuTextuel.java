@@ -191,7 +191,7 @@ public class JeuTextuel
     }
 
     
-    /* 
+    
     public void executerPasAPas(ArrayList<Instruction> codeAssembleur, String cheminNiveau, Niveau niveau){
         System.out.println("Exécuter pas à pas votre code Assembleur en appuyant sur 'Entrée'");
         for (Instruction instruction : codeAssembleur) {
@@ -200,7 +200,7 @@ public class JeuTextuel
             niveau.getRobot1().executeInstruction();
             afficheNiveau(cheminNiveau);
         }   
-    }*/
+    }
     
     public boolean verifierFichierDansSalle3(int idFichier, Salle salle)
     {
