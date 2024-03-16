@@ -1,0 +1,6 @@
+#=/bin/sh
+
+pwd
+
+make
+make launch
