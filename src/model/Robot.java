@@ -172,12 +172,11 @@ public class Robot
         setRegisterValue2(dest, quotient);
     }
 
-    public void drop() {
+    public void drop() throws IOException {
         if (!this.hasAFile()) {
             throw new RuntimeException("Fatal error: NO FILE IS HELD");
         } else {
             // Recherche d'une position libre dans la salle
-            instruction.drop();
             int x = 1;
             int y = 1;
     
@@ -195,16 +194,24 @@ public class Robot
             }
     
             // Définition de la position du fichier à la première position libre trouvée
-            this.getFile().setPosition(new Coordonnees(x, y, getCurrentSalle()));
-            this.getFile().fichierLabel.setIcon(new ImageIcon(getClass().getResource("/images/image_fichier.png")));
+            this.getFile().getPosition().setCurrentSalle(jeu.getSalle(1));
+            this.getFile().getPosition().setX(x);
+            this.getFile().getPosition().setY(y);
             this.getFile().fichierLabel.setSize(30,30);
+
+            int xGraphique = 0;
+            int yGraphique = 0;
+
             switch(getCurrentSalle().getId())
             {
-                case 1 :    this.getFile().setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle1(x-1, y-1));
+                case 1 :    xGraphique = jeu.getZoneMonde().getCoordonneesGraphiquesSalle1(x-1, y-1).getXGraphique();
+                            yGraphique = jeu.getZoneMonde().getCoordonneesGraphiquesSalle1(x-1, y-1).getYGraphique();
+                            System.out.println("x : "+x+" y : "+y+"xg : "+xGraphique+" yg : "+yGraphique);
+                            this.getFile().fichierLabel.setLocation(xGraphique, yGraphique);
                             break;
-                case 2 :    this.getFile().setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle2(x-1, y-1));
+                case 2 :    getFile().afficherGraphique(2);
                             break;
-                case 3 :    this.getFile().setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle3(x-1, y-1));
+                case 3 :    getFile().afficherGraphique(3);
                             break;
             }
             
