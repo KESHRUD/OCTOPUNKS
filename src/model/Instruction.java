@@ -46,6 +46,7 @@ public class Instruction
      */
     public Instruction(InstructionType instructionType) {
         this.instructionType = instructionType;
+        this.arguments = new String [0];    
     }
 
     /**
