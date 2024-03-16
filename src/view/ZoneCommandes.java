@@ -5,6 +5,7 @@ import javax.swing.*;
 import src.model.Coordonnees;
 
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.awt.*;
@@ -85,12 +86,22 @@ public class ZoneCommandes extends JPanel
                     // Exécuter l'instruction
                     if(random.nextInt(2) == 0)
                     {
-                        jeu.robot1.executeInstruction();
+                        try {
+                            jeu.robot1.executeInstruction();
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
                         // on fait -1 car le tableau va de 0 à 4 <=> 1-1 à 5-1
                 
                         jeu.robot1.moveGraphique(jeu.zoneMonde);
                     } else {
-                        jeu.robot2.executeInstruction();
+                        try {
+                            jeu.robot2.executeInstruction();
+                        } catch (IOException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
                         // on fait -1 car le tableau va de 0 à 4 <=> 1-1 à 5-1
                         jeu.robot2.moveGraphique(jeu.zoneMonde);
                     }
@@ -108,8 +119,7 @@ public class ZoneCommandes extends JPanel
         timer.start();
     }
 
-
-    private void actionBoutonPas(Jeu jeu)
+    private void actionBoutonPas(Jeu jeu) throws IOException
     {
         Random random = new Random();
         //System.out.println("SSS");
@@ -177,7 +187,11 @@ public class ZoneCommandes extends JPanel
         this.boutonPas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                ZoneCommandes.this.actionBoutonPas(jeu);
+                try {
+                    ZoneCommandes.this.actionBoutonPas(jeu);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         this.add(this.boutonPas);
@@ -211,8 +225,6 @@ public class ZoneCommandes extends JPanel
         this.boutonReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                jeu.robot1.setPositionX(1);
-                jeu.robot1.setPositionY(1);
                 jeu.robot1.setCurrentSalle(jeu.salle1);
                 jeu.robot1.setIndexToUn();
                 jeu.robot2.setPositionX(2);
@@ -223,8 +235,6 @@ public class ZoneCommandes extends JPanel
         });
         this.add(this.boutonReset);
     }
-
-
 
     private void setBoutonStop(Jeu jeu)
     {
