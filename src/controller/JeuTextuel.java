@@ -207,7 +207,7 @@ public class JeuTextuel
         }   
     }
     
-    public boolean verifierFichierDansSalle3(int idFichier, Salle salle)
+    /*public boolean verifierFichierDansSalle3(int idFichier, Salle salle)
     {
         for (Map.Entry<Coordonnees, Champ> champ : salle.getContenu().entrySet())
         {
@@ -219,7 +219,7 @@ public class JeuTextuel
             }
         }
         return false;
-    }
+    }*/
     
     
     public static void main(String[] var0) throws IOException
