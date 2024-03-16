@@ -2,7 +2,10 @@
 Octopunks un clône de Exapunks
 
 # Exécution :
-Pour lancez le jeu entrer la commande "make; make launch" depuis le répertoire "OCTOPUNKS" :
+## pour compiler :
+      ~/OCTOPUNKS$ make
+## pour exécuter :
+      ~/OCTOPUNKS$ make launch
 
 # Responsable graphique :
 	- Choix du niveau
