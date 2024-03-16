@@ -51,7 +51,7 @@ public class Robot
 
         this.imageRobot = new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png")));
         this.robotLabel = new JLabel(this.imageRobot);
-        instruction = null;
+        instruction = new InstructionFichier<Integer>();
     }
 
     
@@ -177,6 +177,7 @@ public class Robot
             throw new RuntimeException("Fatal error: NO FILE IS HELD");
         } else {
             // Recherche d'une position libre dans la salle
+            instruction.drop();
             int x = 1;
             int y = 1;
     
@@ -555,6 +556,7 @@ public class Robot
                 while(this.file == null){
                     if(idFile == unFichier.getId()){
                         this.file = unFichier; //on grab le fichier
+                        instruction.grab(this.file.getFichier());
                         unFichier.enleverGraphique();
                         unFichier.setPosition(this.position);
                     }
