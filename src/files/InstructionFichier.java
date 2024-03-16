@@ -5,8 +5,7 @@ public class InstructionFichier<E> {
     private E register = null;
     private TypeFichier<E> f = null;
 
-    public InstructionFichier(TypeFichier<E> fi) {
-        f = fi;
+    public InstructionFichier() {
     }
 
     public E getRegister() {
@@ -19,16 +18,13 @@ public class InstructionFichier<E> {
    
    
     /** Fichier attraper par l'octopunk */
-    public boolean grab() {
-        f.grab();
-        return f.getGrab();
-
+    public void grab(TypeFichier<E> fi) {
+        f = fi;
     }
 
     /** Fichier poser par l'octopunk */
-    public boolean drop() {
-        f.drop();
-        return f.getGrab();
+    public void drop() {
+        f = null;
     }
 
    /** Test si le fichier est vide */
