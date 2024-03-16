@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 
+import src.view.Jeu;
 import src.view.ZoneMonde;
 
 public class Robot
@@ -27,6 +28,8 @@ public class Robot
     private ImageIcon imageRobot; // l'image du robot
     protected JLabel robotLabel; // le label qui permet d'afficher l'image
     private InstructionFichier<Integer> instruction;
+
+    private Jeu jeu;
 
     /**
      * CONSTRUCTEUR
@@ -118,6 +121,19 @@ public class Robot
         setRegisterValue(dest, value);//dest doit etre un registre
     }
 
+    /**
+     * Permet de définir la classe Jeu (src.view) sans avoir à modifier le constructeur.
+     * @param jeu la classe jeu à affecter
+     */
+    public void defineJeu(Jeu jeu)
+    {
+        if(jeu == null)
+        {
+            throw new NullPointerException("jeu est null.");
+        }
+        this.jeu = jeu;
+    }
+
     public void divide (String a , String b, String dest){
         int valueA, valueB;
         switch(a){
@@ -178,26 +194,42 @@ public class Robot
     
             // Définition de la position du fichier à la première position libre trouvée
             this.getFile().setPosition(new Coordonnees(x, y, getCurrentSalle()));
-    
+            this.getFile().fichierLabel.setIcon(new ImageIcon(getClass().getResource("/images/image_fichier.png")));
+            this.getFile().fichierLabel.setSize(30,30);
+            switch(getCurrentSalle().getId())
+            {
+                case 1 :    this.getFile().setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle1(x-1, y-1));
+                            break;
+                case 2 :    this.getFile().setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle2(x-1, y-1));
+                            break;
+                case 3 :    this.getFile().setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle3(x-1, y-1));
+                            break;
+            }
+            
+            
+            System.out.println("Fichier : x = "+getFile().getPosition().getX());
+            System.out.println("Fichier : y = "+getFile().getPosition().getY());
+            System.out.println("Fichier : salle = "+getFile().getPosition().getSalle().getId());
+
+            
             // Réinitialisation de l'instruction à null
             instruction = null;
         }
     }
     
-
     public boolean EstMort() {
         return this.estMort;
     }
     
     //methode pour executer toute les instruction a la fois 
-    public void executeAllInstruction(){
+    public void executeAllInstruction() throws IOException{
         while(index < lesInstructions.size()){
             executeInstruction();
         }
     }
 
     //permet d'executer l'instruction d'indice i
-public void executeInstruction(){
+    public void executeInstruction() throws IOException{
         if(index < 0 && index >= this.lesInstructions.size()){
             System.err.println("l'indice des instruction est en dehors de l'intervalle");
         }else{
@@ -437,23 +469,38 @@ public void executeInstruction(){
         return this.imageRobot;
     }
 
+    /**
+     * @return l'index dans les instructions du robot
+     */
     public int getIndex()
     {
         return this.index;
     }
 
+    /**
+     * @return la liste d'instructions du robot
+     */
     public List<Instruction> getLesInstructions() {
         return this.lesInstructions;
     }
 
+    /**
+     * @return la position du robot
+     */
     public Coordonnees getPosition() {
         return this.position;
     }
 
+    /**
+     * @return la position x du robot
+     */
     public int getPositionX() {
         return this.position.getX();
     }
 
+    /**
+     * @return la position y du robot
+     */
     public int getPositionY() {
         return this.position.getY();
     }
@@ -507,12 +554,13 @@ public void executeInstruction(){
                 while(this.file == null){
                     if(idFile == unFichier.getId()){
                         this.file = unFichier; //on grab le fichier
+                        unFichier.enleverGraphique();
                         unFichier.setPosition(this.position);
                     }
                 }
             }
             if(this.file == null){
-                throw new IllegalArgumentException("Fatal error : File Id not found");
+                throw new NullPointerException("Fatal error : File Id not found");
             }
             /*if(getCurrentSalle().getTheFile() != null){
                 if(idFile == getCurrentSalle().getTheFile().getId()){
@@ -560,6 +608,9 @@ public void executeInstruction(){
         }
     }
 
+    /**
+     * Tue le robot.
+     */
     public void kill(){
         setEstMort(true);
         getCurrentSalle().libererChamp(position); //faut liberer l'espace d'un robot qui est mort
@@ -567,6 +618,7 @@ public void executeInstruction(){
 
     public void link(String a) {
         int valueA = Integer.parseInt(a);
+        getCurrentSalle().occuperChamp(position, TypeCellule.VIDE);
         if (valueA == -1) {
             if (getCurrentSalle().getLienEntrant() != null) {
                 getCurrentSalle().libererChamp(position);
@@ -594,7 +646,7 @@ public void executeInstruction(){
                         }
                     }
                 } while (getCurrentSalle().estOccupe(position));
-
+                
                 // Une fois qu'une case libre est trouvée, occuper cette case
                 getCurrentSalle().occuperChamp(position, TypeCellule.EXA1);
             }
@@ -636,8 +688,8 @@ public void executeInstruction(){
             System.err.println("lien pas trouvé");
         }
     }
-    
-    public leFichier makeFichier(String cmd) {
+
+    public leFichier makeFichier(String cmd) throws IOException {
         leFichier nvFichier = null;
     
         int x = 1;
@@ -793,12 +845,18 @@ public void executeInstruction(){
         this.file = newFile;
         setRegistreM(newFile.getId());
     }
-
+    
     public void setIndexToUn()
     {
         this.index = 1;
     }
-    
+
+    public void setImage(String pathname) throws IOException
+    {
+        this.imageRobot = new ImageIcon(ImageIO.read(new File(pathname)));
+        this.robotLabel.setIcon(this.imageRobot);
+    }
+
     /**
      * Permet de modifier les instructions du robot.
      * @param lesInstructions les nouvelles instructions
