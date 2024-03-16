@@ -10,7 +10,6 @@ public class TableauDynamique<E> extends TypeFichier<E> {
 
     public TableauDynamique() {
         liste = new ArrayList<E>();
-        this.drop();
         index = 0;
     }
 
