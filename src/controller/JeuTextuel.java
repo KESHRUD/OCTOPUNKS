@@ -146,11 +146,11 @@ public class JeuTextuel
                 default : System.out.println("Entrez le bon caractère !!");
             }
         }
-        if (verifierFichierDansSalle3(200, niveau1.getSalle3())) {
+        /*if (verifierFichierDansSalle3(200, niveau1.getSalle3())) {
             System.out.println("Fichier trouvé dans la salle 3 ! Vous avez terminé le niveau !");
         } else {
             System.out.println("Le fichier n'est pas dans la salle 3 !");
-        }
+        }*/
     }
 
     
