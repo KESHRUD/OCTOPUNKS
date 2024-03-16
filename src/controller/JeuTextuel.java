@@ -198,7 +198,7 @@ public class JeuTextuel
             console.nextLine(); // Permet d'attendre que l'utilisateur appuie sur ENTREE
             instruction.printInstruction();
             try {
-                jeu.robot1.executeInstruction();
+                niveau.robot1.executeInstruction();
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
