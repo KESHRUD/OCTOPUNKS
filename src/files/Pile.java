@@ -10,7 +10,6 @@ public class Pile<E> extends TypeFichier<E> {
     /** Initialise une pile vide et un pointeur sur la pile  */
     public Pile() {
         p = new LinkedList<E>();
-        this.drop();
     }
     
     /** Renvoie la pile */
