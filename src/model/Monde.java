@@ -1,6 +1,7 @@
 package src.model;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,29 +33,33 @@ public class Monde
     
     /**
      * Exécute les instructions du robot 1
+     * @throws IOException 
      */
-    public void executeAutoExa1(){
+    public void executeAutoExa1() throws IOException{
         this.getRobot1().executeAllInstruction();
     }
 
     /**
      * Exécute les instructions du robot 2
+     * @throws IOException 
      */
-    public void executeAutoExa2(){
+    public void executeAutoExa2() throws IOException{
         this.getRobot2().executeAllInstruction();
     }
 
     /**
      * Exécute une instruction sur le robot 1
+     * @throws IOException 
      */
-    public void executePasExa1(){
+    public void executePasExa1() throws IOException{
         this.getRobot1().executeInstruction();
     }
 
     /**
      * Exécute une instruction sur le robot 2
+     * @throws IOException 
      */
-    public void executePasExa2(){
+    public void executePasExa2() throws IOException{
         this.getRobot2().executeInstruction();
     }
 
