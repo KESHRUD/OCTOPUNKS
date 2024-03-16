@@ -25,8 +25,9 @@ public class JeuTextuel
 
     /**
      * CONSTRUCTEUR
+     * @throws IOException 
      */
-    public JeuTextuel() {
+    public JeuTextuel() throws IOException {
         boolean jeuEnCours = true;
         String menu;
 
@@ -98,8 +99,9 @@ public class JeuTextuel
     /**
      * Lance le niveau.
      * @param cheminNiveau le path vers le fichier qui contient le niveau
+     * @throws IOException 
      */
-    public void lancerNiveau(String cheminNiveau)
+    public void lancerNiveau(String cheminNiveau) throws IOException
     {
         // AFFICHAGE NIVEAU TEXTUEL
 
@@ -215,7 +217,7 @@ public class JeuTextuel
     }
     
     
-    public static void main(String[] var0)
+    public static void main(String[] var0) throws IOException
     {
         new JeuTextuel();   
     }
