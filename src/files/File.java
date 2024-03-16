@@ -11,7 +11,6 @@ public class File<E> extends TypeFichier<E> {
     /** Creer un file vide */
     public File() {
         f = new LinkedList<E>();
-        this.drop();
     }
 
     
