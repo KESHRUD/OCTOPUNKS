@@ -569,6 +569,7 @@ public void executeInstruction(){
         int valueA = Integer.parseInt(a);
         if (valueA == -1) {
             if (getCurrentSalle().getLienEntrant() != null) {
+                getCurrentSalle().libererChamp(position);
                 setCurrentSalle(getCurrentSalle().getLienEntrant().getSalleAvant());
                 setPositionX(1);
                 setPositionY(1);
@@ -593,10 +594,14 @@ public void executeInstruction(){
                         }
                     }
                 } while (getCurrentSalle().estOccupe(position));
+
+                // Une fois qu'une case libre est trouvée, occuper cette case
+                getCurrentSalle().occuperChamp(position, TypeCellule.EXA1);
             }
         } else {
             for (Link unLien : getCurrentSalle().getLiensSortant()) {
                 if (unLien.getId() == valueA) {
+                    getCurrentSalle().libererChamp(position);
                     setCurrentSalle(unLien.getSalleApres());
                     setPositionX(1);
                     setPositionY(1);
@@ -621,7 +626,9 @@ public void executeInstruction(){
                             }
                         }
                     } while (getCurrentSalle().estOccupe(position));
-    
+                    
+                    // Une fois qu'une case libre est trouvée, occuper cette case
+                    getCurrentSalle().occuperChamp(position, TypeCellule.EXA1);
                     return;
                 }
             }
@@ -629,7 +636,7 @@ public void executeInstruction(){
             System.err.println("lien pas trouvé");
         }
     }
-
+    
     public leFichier makeFichier(String cmd) {
         leFichier nvFichier = null;
     
