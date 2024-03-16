@@ -7,7 +7,7 @@ Octopunks un clône de Exapunks
 ## pour exécuter :
       ~/OCTOPUNKS$ make launch
 
-# Responsable graphique :
+# graphique :
 	- Choix du niveau
 	- Bouton pas à pas
 	- Blocage de la saisie d'assembleur pendant exécution
@@ -16,16 +16,16 @@ Octopunks un clône de Exapunks
 	- Affichage des coordonnées des robots
 	- Jeu fini()
 	- Registres des robots 
-# Responsable du code des méta-fichiers : 
+# méta-fichiers : 
 	-Strcutures de données (pile,file,tableau dynamique)
 	-Instructions : MAKE(FIFO-LIFO) GRAB DROP SEEK VOID F COPY TEST EOF WIPE
 
-# Responsable du code métier :
+# code métier :
 	- Implémentation de toutes les instructions demandées 
-# Responsable du jeu textuel
+# jeu textuel
 	- Parsing 
 	- Affichage de niveau avec lecture du niveau 
 	- Exécuter pas à pas 
 	- Récuperer code assembleur depuis le terminal
-# Responsable des commandes asynchrones
+# commandes asynchrones
 	-Implémentation des exécutions asynchrones discrètes 
