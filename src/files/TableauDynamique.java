@@ -9,11 +9,13 @@ public class TableauDynamique<E> extends TypeFichier<E> {
     private ArrayList<E> liste;
     private int index;
 
+    /** Initialise une tableau dynamique vide */
     public TableauDynamique() {
         liste = new ArrayList<E>();
         index = 0;
     }
 
+    /** Revoie l'index de l'élément courant */
     public int getIndex() {
         return index;
     }
@@ -24,7 +26,7 @@ public class TableauDynamique<E> extends TypeFichier<E> {
     }
 
     
-    /** Pas sur */
+    /** Ajoute une élément dans le tableau dynamique */
     public void add(E elt) {
         if(elt == null)
             throw new NullPointerException();
@@ -32,7 +34,7 @@ public class TableauDynamique<E> extends TypeFichier<E> {
     
     }
 
-    /*Pas sur */
+    /** Suprime un élément du le tableau dynamique */
     public void remove() {  
         try {
             liste.remove(index);
@@ -44,11 +46,12 @@ public class TableauDynamique<E> extends TypeFichier<E> {
             index--;
     }
 
-
+    /** Renvoie la taille du tableau dynamique */
     public int size() {
         return liste.size();
     }
 
+    /** Met le tableau dynamique à null */
     public void clear() {
         liste.clear();
         liste = null;
@@ -59,14 +62,17 @@ public class TableauDynamique<E> extends TypeFichier<E> {
         return liste.iterator();
     }
 
+    /** Déplace l'index courant au suivant */
     public void nextIndex() {
         index++;
     }
 
+    /** Déplace l'index courant au précedent */
     public void previousIndex() {
         index--;
     }
 
+    /** Renvoie l'élément courant */
     public E getCurrentElement() {
         return liste.get(index);
     }
