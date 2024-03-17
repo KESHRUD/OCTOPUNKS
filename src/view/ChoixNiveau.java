@@ -105,7 +105,7 @@ public class ChoixNiveau extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-                descriptif.setText("Destiné à ceux qui n'ont plus de vie sociale à cause du niveau 1.");
+                descriptif.setText("Destiné à ceux qui n'ont plus de vie sociale à cause du niveau 1. (Indisponible)");
                 octopunks.setNiveau(2);
                 System.out.println("Niveau : " + octopunks.getNiveau());
             }
@@ -134,7 +134,7 @@ public class ChoixNiveau extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-                descriptif.setText("Réservé exclusivement aux nerds qui ont Octopunks dans les veines.");
+                descriptif.setText("Réservé exclusivement aux nerds qui ont Octopunks dans les veines. (Indisponible)");
                 octopunks.setNiveau(3);
                 System.out.println("Niveau : " + octopunks.getNiveau());
             }
@@ -155,6 +155,11 @@ public class ChoixNiveau extends JPanel
                 {
                     descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
                     descriptif.setText("Il faut sélectionner un niveau avant de jouer !");
+                }
+                else if (octopunks.getNiveau() > 1)
+                {
+                    descriptif.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+                    descriptif.setText("Le niveau choisi est indisponible.");
                 }
                 else
                 {
