@@ -1,16 +1,15 @@
 package src.model;
 
-import src.files.InstructionFichier;
-
-import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.imageio.ImageIO;
 
+import src.files.InstructionFichier;
 import src.view.Jeu;
 import src.view.ZoneMonde;
 
@@ -91,7 +90,7 @@ public class Robot
         setRegisterValue2(dest, sum);
     }
 
-    //JUMP dest(L
+    //JUMP 
     public void conditionalJump(String lines){
         if(registreT == 0){
             jump(lines);
@@ -234,7 +233,7 @@ public class Robot
         }
     }
 
-    //permet d'executer l'instruction d'indice i
+    //permet d'executer l'instruction d'indice i (le pas a pas)
     public void executeInstruction() throws IOException{
         if(index < 0 && index >= this.lesInstructions.size()){
             System.err.println("l'indice des instruction est en dehors de l'intervalle");
@@ -246,7 +245,7 @@ public class Robot
                         this.copy(arguments[0],arguments[1]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case ADDI:
@@ -254,7 +253,7 @@ public class Robot
                         this.add(arguments[0], arguments[1], arguments[2]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case MULI:
@@ -262,7 +261,7 @@ public class Robot
                         this.multiply(arguments[0], arguments[1], arguments[2]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case SUBI:
@@ -270,7 +269,7 @@ public class Robot
                         this.substract(arguments[0], arguments[1], arguments[2]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case DIVI:
@@ -278,7 +277,7 @@ public class Robot
                         this.divide(arguments[0], arguments[1], arguments[2]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case MODI:
@@ -286,7 +285,7 @@ public class Robot
                         this.modulo(arguments[0], arguments[1], arguments[2]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case SWIZ:
@@ -294,7 +293,7 @@ public class Robot
                         this.swizzle(arguments[0], arguments[1], arguments[2]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case JUMP:
@@ -302,7 +301,7 @@ public class Robot
                         this.jump(arguments[0]);
                         //seule instruction ou ya pas de index++ vu que c'est inclus dans la methode(voir jump)
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case FJMP:
@@ -310,7 +309,7 @@ public class Robot
                         this.conditionalJump(arguments[0]);
                         //seule instruction ou ya pas de index++ vu que c'est inclus dans la  methode(voir jump)
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case LINK:
@@ -318,7 +317,7 @@ public class Robot
                         this.link(arguments[0]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                     case TEST_EOF:
@@ -326,7 +325,7 @@ public class Robot
                         this.testEndOfFile();
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case GRAB:
@@ -334,23 +333,22 @@ public class Robot
                         this.grab(arguments[0]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
-                        break;
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case DROP:
-                    if(arguments.length == 1){
+                    if(arguments.length == 0){
                         this.drop();
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case NOOP:
                     if(arguments.length == 0){
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case TEST:
@@ -358,7 +356,7 @@ public class Robot
                         this.test(arguments[0], arguments[1], arguments[2]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case KILL:
@@ -366,31 +364,7 @@ public class Robot
                         this.kill();
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
-                    }
-                    break;
-                case MODE:
-                    if(arguments.length == 0){
-                        this.mode();
-                        index++;
-                    }else{
-                        System.err.println("nombre d'arguments invalable");
-                    }
-                    break;
-                case TEST_MRD:
-                    if(arguments.length == 0){
-                        this.test_mrd();
-                        index++;
-                    }else{
-                        System.err.println("nombre d'arguments invalable");
-                    }
-                    break;
-                case VOID_M:
-                    if(arguments.length == 0){
-                        this.void_m();
-                        index++;
-                    }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case VOID_F:
@@ -398,7 +372,7 @@ public class Robot
                         this.void_f();
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case SEEK:
@@ -406,7 +380,7 @@ public class Robot
                         this.seek(arguments[0]);
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case MAKE:
@@ -414,7 +388,7 @@ public class Robot
                         this.makeFichier("MAKE");
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case MAKEFIFO:
@@ -422,7 +396,7 @@ public class Robot
                         this.makeFichier("MAKEFIFO");
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case MAKELIFO:
@@ -430,7 +404,7 @@ public class Robot
                         this.makeFichier("MAKELIFO");
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case WIPE:
@@ -438,15 +412,14 @@ public class Robot
                         this.wipe();
                         index++;
                     }else{
-                        System.err.println("nombre d'arguments invalable");
+                        throw new IllegalArgumentException("nombre d'arguments invalable");
                     }
                     break;
                 case HALT:
                     this.halt();
                     break;
                 default:
-                    System.err.println("type d'instruction invalide");
-                    break;
+                throw new IllegalArgumentException("nombre d'arguments invalable");
             }
         }
 
@@ -456,12 +429,7 @@ public class Robot
         return this.position.getSalle();
     }
 
-    private  int getDigit(int number, int position) {
-        // Récupérer le chiffre à la position spécifiée
-        int divisor = (int) Math.pow(10, position);
-        return (number / divisor) % 10;
-    }
-
+    
     public leFichier getFile(){
         return this.file;
     }
@@ -569,17 +537,6 @@ public class Robot
             if(this.file == null){
                 throw new NullPointerException("Fatal error : File Id not found");
             }
-            /*if(getCurrentSalle().getTheFile() != null){
-                if(idFile == getCurrentSalle().getTheFile().getId()){
-                    this.file = getCurrentSalle().getTheFile();
-                    this.file.setPosition(this.getPosition()); //la position d'un fichier pris par le robot est la position du robot 
-                    instruction = new InstructionFichier<Integer>(file.getFichier());
-                }else{
-                    System.err.println("Fatal error1: FILE ID NOT FOUND");
-                }
-            }else{
-                System.err.println("Fatal error2: FILE ID NOT FOUND");
-            }*/
         }
     }
 
@@ -609,7 +566,7 @@ public class Robot
     public void jump(String lines){
         int n = Integer.parseInt(lines);
         if((index + n) < 0 && (index + n) > lesInstructions.size()){
-            System.err.println("nombre d'instructions a sauter invalide");
+            throw new IllegalArgumentException("nombre d'instructions a sauter invalide");
         }else{
             index = index + n;
         }
@@ -718,15 +675,14 @@ public class Robot
     
         // Utilisation des coordonnées trouvées pour créer le fichier
         nvFichier = new leFichier(idFichier, new Coordonnees(x, y, getCurrentSalle()));
+        this.getCurrentSalle().getSalleFiles().add(nvFichier);
         nvFichier.setFichier(instruction.make(cmd));
         idFichier += 200;
     
         return nvFichier;
     }
 
-    public void mode(){
-        //a implmenter par abdoulkarim
-    }
+    
 
    public void modulo(String a , String b, String dest){
         int valueA, valueB;
@@ -766,19 +722,7 @@ public class Robot
     }
 
 
-    // Méthode pour déplacer le robot en fonction des instructions
-    public void move(int deltaX, int deltaY) {
-        // Mise à jour de la position du robot en verifiant si le mouvement est possible donc x et y entre 0 et 4
-        if(position.getX() + deltaX < 1 || position.getX() + deltaX > 5 ||
-           position.getY() + deltaY < 1 || position.getY() + deltaY > 5 ) {
-            // System.err.println("Le mouvement est impossible.");
-            System.err.println("le mouvement est impossible : x = "+getPositionX() + " et deltaX = "+deltaX +" ; y = " + getPositionY() +" et deltaY = "+deltaY);
-        } else {
-            setPositionX(deltaX+getPositionX());
-            setPositionY(deltaY+getPositionY());
-            System.out.println("x : "+getPositionX()+" y : "+getPositionY()+" - Salle : "+getCurrentSalle().getId());
-        }
-    }
+    
 
     public void moveGraphique(ZoneMonde zoneMonde)
     {
@@ -1077,6 +1021,13 @@ public class Robot
         setRegisterValue2(dest, result);
     }
 
+    private  int getDigit(int number, int position) {
+        // Récupérer le chiffre à la position spécifiée
+        int divisor = (int) Math.pow(10, position);
+        return (number / divisor) % 10;
+    }
+
+
     public void test(String a, String operation, String b){
         int valueA, valueB;
         switch(a){
@@ -1147,26 +1098,12 @@ public class Robot
         }
     }
 
-    /**
-     * À COMPLÉTER
-     */
-    public void test_mrd(){
-        // a implenter par abdulkarim
-    }
-
-    /**
-     * À COMPLÉTER
-     */
+    
     public void void_f(){
         instruction.void_f();
     }
 
-    /**
-     * À COMPLÉTER
-     */
-    public void void_m(){
-        //abdoulaye
-    }
+    
 
     public void wipe(){
         if(!hasAFile()){
