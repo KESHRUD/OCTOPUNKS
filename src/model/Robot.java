@@ -337,7 +337,7 @@ public class Robot
                     }
                     break;
                 case DROP:
-                    if(arguments.length == 0){
+                    if(arguments.length == 1){
                         this.drop();
                         index++;
                     }else{
