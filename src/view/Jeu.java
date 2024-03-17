@@ -125,10 +125,32 @@ public class Jeu extends JPanel implements KeyListener
         this.add(this.zoneCommandes);
         this.add(this.zoneMemoire);
         this.add(this.zoneMonde);
+        this.zoneMonde.setFile(file);
 
         this.addKeyListener(this);
         this.setSize(this.octopunks.getDimension());
         this.setLayout(null);
+    }
+
+
+    public Salle getSalle(int id)
+    {
+        if(id == 1)
+        {
+            return this.salle1;
+        }
+        else if(id == 2)
+        {
+            return this.salle2;
+        }
+        else if(id == 3)
+        {
+            return this.salle3;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Pas de salle avec cet id.");
+        }
     }
 
 
