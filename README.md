@@ -32,5 +32,7 @@ Octopunks un clône de Exapunks
 	- Exécuter pas à pas 
 	- Récuperer code assembleur depuis le terminal
 # commandes asynchrones
-	-Implémentation des exécutions asynchrones discrètes 
+	-Implémentation des exécutions asynchrones discrètes
+
+# Exemple code
 <img width="1440" alt="code" src="https://github.com/KESHRUD/OCTOPUNKS/assets/84630495/75051f60-0672-4c2a-9e89-8fffaa8397eb">
