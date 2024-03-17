@@ -57,7 +57,7 @@ public class TableauDynamique<E> extends TypeFichier<E> {
         liste = null;
     }
 
-    /** Renvoie un iterateur sur la pile avec l'index du début de la pile */
+    /** Renvoie un iterateur sur le tableau dynamique */
     public Iterator<E> getIterator() {
         return liste.iterator();
     }
