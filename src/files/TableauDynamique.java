@@ -1,6 +1,7 @@
 package src.files;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -54,8 +55,8 @@ public class TableauDynamique<E> extends TypeFichier<E> {
     }
 
     /** Renvoie un iterateur sur la pile avec l'index du début de la pile */
-    public ListIterator<E> getIterator(int index) {
-        return liste.listIterator(index);
+    public Iterator<E> getIterator() {
+        return liste.iterator();
     }
 
     public void nextIndex() {
