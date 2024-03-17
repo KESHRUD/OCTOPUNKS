@@ -6,6 +6,7 @@ import src.model.Instruction;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class ZoneAssembleur extends JPanel
@@ -24,6 +25,8 @@ public class ZoneAssembleur extends JPanel
     private JLabel MR1, MR2;
     private JLabel TR1, TR2;
     private JLabel XR1, XR2;
+
+    private Random random;
 
 
     /**
@@ -66,6 +69,10 @@ public class ZoneAssembleur extends JPanel
         this.add(scrollBar2);
 
         createRegisterLabel();
+
+
+        // Initialisation de l'aléatoire
+        this.random = new Random();
     }
 
     /**
@@ -154,6 +161,57 @@ public class ZoneAssembleur extends JPanel
     public String getAssembleurRobot2()
     {
         return zoneTexteRobot2.getText();
+    }
+
+
+    /**
+     * Permet de gérer l'aléatoire
+     * @param instructionsRobot1 la liste d'instructions du robot 1 (après parsage)
+     * @param instructionsRobot2 la liste d'instructions du robot 2 (après parsage)
+     * @return
+     */
+    public ArrayList<Instruction> getBothInstructions(ArrayList<Instruction> instructionsRobot1, ArrayList<Instruction> instructionsRobot2)
+    {
+        ArrayList<Instruction> les2Instructions = new ArrayList<Instruction>();
+
+        int i = 0;
+        int ii = 0;
+
+        int a = instructionsRobot1.size();
+        int b = instructionsRobot2.size();
+
+        int varA = 0;
+        int varB = 0;
+
+        for(i = 0; i < a+b-1; i++)
+        {
+            if(random.nextInt(2) == 0)
+            {
+                if(varA < a)
+                {
+                    les2Instructions.add(instructionsRobot1.get(varA));
+                    varA++;
+                }
+                else
+                {
+                    les2Instructions.add(instructionsRobot2.get(varB));
+                    varB++;
+                }
+            }
+
+            if(varB < b)
+            {
+                les2Instructions.add(instructionsRobot2.get(varB));
+                varB++;
+            }
+            else
+            {
+                les2Instructions.add(instructionsRobot1.get(varA));
+                varA++;
+            }
+        }
+
+        return les2Instructions;
     }
 
     /**
