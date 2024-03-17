@@ -1,5 +1,6 @@
 package src.view;
 
+import src.files.TableauDynamique;
 import src.model.Coordonnees;
 import src.model.Link;
 import src.model.Robot;
@@ -13,15 +14,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import java.io.IOException;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-public class Jeu extends JPanel implements KeyListener
+public class Jeu extends JPanel
 {
     private Octopunks octopunks;
 
@@ -29,7 +28,6 @@ public class Jeu extends JPanel implements KeyListener
     protected ZoneCommandes zoneCommandes;
     protected ZoneMemoire zoneMemoire;
     protected ZoneMonde zoneMonde;
-    private JScrollPane scrollBar;
     
     protected Robot robot1;
     protected Robot robot2;
@@ -40,6 +38,8 @@ public class Jeu extends JPanel implements KeyListener
 
     protected leFichier file;
 
+    boolean isFinished = false;
+
 
     public Jeu(Octopunks octopunks) throws IOException
     {
@@ -49,14 +49,20 @@ public class Jeu extends JPanel implements KeyListener
         }
         this.octopunks = octopunks;
 
-
         salle1 = new Salle(1, null);
         salle2 = new Salle(2, null);
         salle3 = new Salle(3, null);
 
+        TableauDynamique<Integer>td = new TableauDynamique<Integer>();
+        td.add(52);
+        td.add(19);
+        td.add(534);
+        td.add(79);
+
         this.file = new leFichier(200, new Coordonnees(1, 1, salle2));
         this.file.defineJeu(this);
         this.file.occuperChamp(file.getPosition());
+        this.file.setFichier(td);
         
 
         this.robot1 = new Robot(new Coordonnees(1, 1, salle1));
@@ -72,38 +78,8 @@ public class Jeu extends JPanel implements KeyListener
         salle1.ajouterLienSortant(new Link(400, salle1, salle2, true));
 
         salle2.setLienEntrant(salle1.getLiensSortant().get(0));
-
         salle2.ajouterLienSortant(new Link(800, salle2, salle3, true));
         salle3.setLienEntrant(salle2.getLiensSortant().get(0));
-
-        
-
-        // System.out.println("robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
-        // System.out.println("200  x = " + file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
-        
-        //robot1.link("400");
-        //System.out.println(" link 400 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
-        
-
-        /*robot1.link("800");
-        System.out.println(" link 800 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
-        
-        robot1.link("-1");
-        System.out.println(" link -1 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
-        */
-        /*
-        robot1.getCurrentSalle().setTheFile(file);
-        robot1.grab("200");
-        System.out.println("grab 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
-        
-        robot1.link("800");
-        System.out.println(" link 800 : robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
-        System.out.println("grab 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
-        
-        robot1.drop();
-        System.out.println(" robot1  x = " + robot1.getPositionX() + " y = " + robot1.getPositionY() + " salle : " + robot1.getCurrentSalle().getId());
-        System.out.println(" 200  x = "+ file.getPosition().getX() + " y = " + file.getPosition().getY() + " salle : " + file.getPosition().getSalle().getId());
-       */
 
 
         this.zoneAssembleur = new ZoneAssembleur(octopunks, this);
@@ -111,28 +87,24 @@ public class Jeu extends JPanel implements KeyListener
         this.zoneCommandes = new ZoneCommandes(octopunks, this);
         this.zoneMemoire = new ZoneMemoire(octopunks,this);
 
-        //this.file.afficher(this);
-
-        System.out.println("Fichier : x = "+file.getPosition().getX()+" et y = "+file.getPosition().getY()+" - salle : "+file.getPosition().getSalle().getId());
-
         this.setSize((int)octopunks.getDimension().getWidth(),(int)octopunks.getDimension().getHeight());
         this.setLocation(0,0);
         
-        /**
-         * On ajoute les différentes zones dans le panel.
-         */
+        /** On ajoute les différentes zones dans le panel. */
         this.add(this.zoneAssembleur);
-        this.add(this.zoneCommandes);
         this.add(this.zoneMemoire);
         this.add(this.zoneMonde);
         this.zoneMonde.setFile(file);
+        this.add(this.zoneCommandes);
 
-        this.addKeyListener(this);
         this.setSize(this.octopunks.getDimension());
         this.setLayout(null);
     }
 
-
+    /**
+     * @param id l'identifiant de la salle (1,2 ou 3)
+     * @return la salle en fonction de l'identifiant passé en paramètre.
+     */
     public Salle getSalle(int id)
     {
         if(id == 1)
@@ -153,16 +125,9 @@ public class Jeu extends JPanel implements KeyListener
         }
     }
 
-
-    private JScrollPane getScrollBar()
-    {
-        if(this.scrollBar == null)
-        {
-            throw new NullPointerException("La scrollbar est null.");
-        }
-        return this.scrollBar;
-    }
-
+    /**
+     * @return la zone assembleur
+     */
     public ZoneAssembleur getZoneAssembleur()
     {
         if(this.zoneAssembleur == null)
@@ -172,6 +137,9 @@ public class Jeu extends JPanel implements KeyListener
         return this.zoneAssembleur;
     }
 
+    /**
+     * @return la zone de commandes
+     */
     public ZoneCommandes getZoneCommandes()
     {
         if(this.zoneCommandes == null)
@@ -181,6 +149,9 @@ public class Jeu extends JPanel implements KeyListener
         return this.zoneCommandes;
     }
 
+    /**
+     * @return la zone mémoire
+     */
     public ZoneMemoire getZoneMemoire()
     {
         if(this.zoneMemoire == null)
@@ -190,25 +161,12 @@ public class Jeu extends JPanel implements KeyListener
         return this.zoneMemoire;
     }
 
+    /**
+     * @return la zone monde
+     */
     public ZoneMonde getZoneMonde()
     {
         return this.zoneMonde;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        System.out.println("La touche " + e.getKeyCode() + " est appuyée !");
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("La touche " + e.getKeyCode() + " est pressée !");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println("La touche " + e.getKeyCode() + " est relâchée !");
     }
 
     @Override
