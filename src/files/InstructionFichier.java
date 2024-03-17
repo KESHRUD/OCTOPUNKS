@@ -8,10 +8,12 @@ public class InstructionFichier<E> {
     public InstructionFichier() {
     }
 
+    /** Registre permettent de manipuler l'element courant */
     public E getRegister() {
         return register;
     }
 
+    
     public void setRegister(E elt) {
         register = elt;
     }
