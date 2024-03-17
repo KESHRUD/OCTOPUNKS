@@ -28,7 +28,6 @@ public class Robot
     private ImageIcon imageRobot; // l'image du robot
     protected JLabel robotLabel; // le label qui permet d'afficher l'image
     private InstructionFichier<Integer> instruction;
-    private static int fichierID = 400;
 
     private Jeu jeu;
 
@@ -51,7 +50,7 @@ public class Robot
 
         this.imageRobot = new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png")));
         this.robotLabel = new JLabel(this.imageRobot);
-        instruction = new InstructionFichier<Integer>();
+        instruction = null;
     }
 
     
@@ -176,8 +175,6 @@ public class Robot
         if (!this.hasAFile()) {
             throw new RuntimeException("Fatal error: NO FILE IS HELD");
         } else {
-             instruction.drop();
-            
             // Recherche d'une position libre dans la salle
             int x = 1;
             int y = 1;
@@ -196,9 +193,7 @@ public class Robot
             }
     
             // Définition de la position du fichier à la première position libre trouvée
-            this.getFile().getPosition().setCurrentSalle(jeu.getSalle(1));
-            this.getFile().getPosition().setX(x);
-            this.getFile().getPosition().setY(y);
+            this.getFile().setPosition(new Coordonnees(x, y, getCurrentSalle()));
             this.getFile().fichierLabel.setSize(30,30);
 
             int xGraphique = 0;
@@ -222,6 +217,9 @@ public class Robot
             System.out.println("Fichier : y = "+getFile().getPosition().getY());
             System.out.println("Fichier : salle = "+getFile().getPosition().getSalle().getId());
 
+            
+            // Réinitialisation de l'instruction à null
+            instruction = null;
         }
     }
     
@@ -562,7 +560,6 @@ public class Robot
                 while(this.file == null){
                     if(idFile == unFichier.getId()){
                         this.file = unFichier; //on grab le fichier
-                        instruction.grab(this.file.getFichier());
                         unFichier.enleverGraphique();
                         unFichier.setPosition(this.position);
                     }
@@ -719,9 +716,9 @@ public class Robot
         }
     
         // Utilisation des coordonnées trouvées pour créer le fichier
-        nvFichier = new leFichier(fichierID, new Coordonnees(x, y, getCurrentSalle()));
+        nvFichier = new leFichier(1000, new Coordonnees(x, y, getCurrentSalle()));
         nvFichier.setFichier(instruction.make(cmd));
-        fichierID += 200;
+    
         return nvFichier;
     }
 
