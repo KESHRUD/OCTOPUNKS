@@ -21,7 +21,8 @@ Octopunks un clône de Exapunks
 	-Instructions : MAKE(FIFO-LIFO) GRAB DROP SEEK VOID F COPY TEST EOF WIPE
 
 # code métier :
-	- Implémentation de toutes les instructions demandées 
+	- Implémentation des classes du répertoire Model (logique du jeu)
+	- Implémentation de toutes les instructions demandées dans la classe Robot
 # jeu textuel
 	- Parsing 
 	- Affichage de niveau avec lecture du niveau 
