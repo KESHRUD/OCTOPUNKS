@@ -255,6 +255,11 @@ public class ZoneMonde extends JPanel
         return this.longueurMonde;
     }
 
+    public void setFile(leFichier file)
+    {
+        this.jeu.file = file;
+    }
+
     /**
      * Permet d'afficher le niveau dans la page de jeu.
      */
