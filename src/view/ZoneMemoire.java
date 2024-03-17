@@ -87,9 +87,24 @@ public class ZoneMemoire extends JPanel
         this.labelRobot1.setText("XR1 : " + jeu.robot1.getPositionX() + " - YR1 : " + jeu.robot1.getPositionY() + " - Salle "+jeu.robot1.getCurrentSalle().getId());
         this.labelRobot2.setText("XR2 : " + jeu.robot2.getPositionX() + " - YR2 : " + jeu.robot2.getPositionY() + " - Salle "+jeu.robot2.getCurrentSalle().getId());
         setLabelValeursFichier();
-        if(jeu.isFinished == true)
+        testConditionDeVictoire();
+    }
+
+    public void testConditionDeVictoire()
+    {
+        if(jeu.robot1.getIndex() == (jeu.robot1.getLesInstructions().size()-1))
         {
-            showGameIsFinished();
+            if(jeu.robot2.getIndex() == (jeu.robot2.getLesInstructions().size()-1))
+            {
+                if(jeu.file.getPosition().getSalle().getId() == 3 && (jeu.file.getPosition().getX() != jeu.robot1.getPositionX()) && (jeu.file.getPosition().getY() != jeu.robot1.getPositionY()))
+                {
+                    if(jeu.file.getPosition().getX() != jeu.robot2.getPositionX() && (jeu.file.getPosition().getY() != jeu.robot2.getPositionY()))
+                    {
+                        jeu.isFinished = true;
+                        showGameIsFinished();
+                    }
+                }
+            }
         }
     }
 }
