@@ -24,7 +24,7 @@ public class BarreDeMenu extends JMenuBar
             }
         });
         menuFenetre.add(boutonAgrandir);
-
+        /*
         JMenuItem boutonPleinEcran = new JMenuItem("Passer en plein écran");
         boutonPleinEcran.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -41,6 +41,7 @@ public class BarreDeMenu extends JMenuBar
             }
         });
         menuFenetre.add(boutonPleinEcran);
+        */
         this.add(menuFenetre);
     }
 }
