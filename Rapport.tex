@@ -1,0 +1,154 @@
+\documentclass{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx} % Pour inclure des images
+\usepackage{pdfpages}
+\usepackage{rotating} % Pour les figures en mode paysage
+
+% Titre
+\title{Rapport de Projet de Programmation}
+\author{Votre Groupe de Projet}
+\date{\today}
+
+\begin{document}
+
+% Page de garde
+\begin{titlepage}
+    \centering
+    % Logo de l'université
+    \begin{minipage}[t]{0.45\textwidth}
+        \raggedright
+        \includegraphics[width=0.8\textwidth]{octopunks/USPN.png}
+    \end{minipage}
+    \hfill
+    % Logo de l'institut
+    \begin{minipage}[t]{0.45\textwidth}
+        \raggedleft
+        \includegraphics[width=0.8\textwidth]{octopunks/institut.jpg}
+    \end{minipage}\par\vspace{1cm}
+    
+    % Titre du rapport
+    {\Huge\bfseries Rapport de Projet de Programmation\par}
+    \vspace{0.8cm}
+    % Description du projet
+    {\LARGE Octopunks : Un clone de Exapunks\par}
+    \vspace{1.2cm}
+    % Image du projet
+    \includegraphics[width=0.5\textwidth]{octopunks/oc.png}\par\vspace{1.2cm}
+    
+    % Informations supplémentaires
+    \begin{minipage}[t]{0.45\textwidth}
+        \raggedright
+        % Nom de l'encadrant
+        \textbf{Encadrant:} Flavien Breuvart\par
+        % Formation
+        \textbf{Formation:} L2 Informatique\par
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.45\textwidth}
+        \raggedleft
+        % Nom du groupe
+        {\Large\textbf{Groupe:} OctoCodeCrafters\par}
+    \end{minipage}\par\vspace{1.2cm}
+    
+    % Date
+    {\Large \today\par}
+\end{titlepage}
+
+% Contenu du rapport
+
+\section{Répartition des Rôles et Organisation du Travail}
+\subsection{Répartition des Rôles}
+\begin{enumerate}
+    \item Coordination et Vision Globale: BENHAMMADA Ahmed Amine
+    \item Responsable Graphique et Contrôles: Steve KINGSLEY
+    \item Responsable du Code Métier: MEHAMLI Samy
+    \item Responsable Entrées-Sorties Textuelles: BICHART Adrien
+    \item Responsable des Commandes Asynchrones: Abdulkarim ALI
+    \item Responsable du Code des Méta-fichiers: Aboulaye HAIDARA
+\end{enumerate}
+\subsection{Organisation du Travail}
+\subsubsection{Communication et Coordination}
+\textit{OctoCodeCrafters} utilise des outils de communication modernes tels que WhatsApp et Discord, établis par le coordinateur pour faciliter les échanges d'informations. Ces plates-formes permettent une communication asynchrone, favorisant ainsi la collaboration continue en permettant aux membres de poser des questions et de partager des mises à jour à tout moment. En centralisant les communications, ces outils simplifient la gestion et la recherche d'informations, garantissant que le coordinateur et les membres restent informés des progrès du projet en temps réel.
+\subsubsection{Planification des réunions}
+\textit{OctoCodeCrafters} adopte une approche flexible, organisant à la fois des rencontres physiques à la bibliothèque dans des salles réservées et des sessions virtuelles sur Discord.Ces \textit{meetings}    virtuelles permettent le partage d'écran pour suivre le code en direct et résoudre des problèmes. Les rencontres peuvent impliquer l'ensemble du groupe ou seulement certains membres dans la présence du coordinateur, en fonction des besoins spécifiques à chaque situation et à chaque tache, optimisant ainsi l'efficacité des échanges.
+\subsubsection{Collaboration interne}
+\textit{OctoCodeCrafters} adopte une approche proactive pour encourager l'apprentissage et l'entraide entre ses membres. Des tutoriels et des ressources sont partagés régulièrement pour renforcer les compétences nécessaires au projet, comme l'utilisation avancée de Git et les bases de la programmation de jeux 2D. En outre, certains membres, comme le responsable des entrées-sorties et le coordinateur, offrent leur assistance pour aider les autres membres à terminer leurs tâches. Cette culture de partage et d'échange favorise un environnement collaboratif où chacun cherche l'aide de ses pairs en cas de besoin. Ainsi, le groupe progresse de manière cohésive et efficace vers les objectifs du projet.
+\subsubsection{Respect des deadlines}
+Les membres de \textit{OctoCodeCrafters} ont accepté de respecter des délais, mais ont rencontré des difficultés en raison des différences de rythmes et de groupes de travaux dirigés. Néanmoins, cette pression temporelle a contribué à accélérer le travail et à améliorer l'efficacité dans l'accomplissement des tâches.
+
+
+\section{Diagramme des Classes Final}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.76\textwidth]{octopunks/jpg/diagramme_classes.jpg}
+    \caption{Diagramme des Classes pour le projet}
+\end{figure}
+
+\section{Diagramme de Gantt Effectif}
+\begin{figure}[h]
+    \centering
+	\includepdf[scale=1.1]{octopunks/pdf/DiagrammedeGantt.pdf}
+	\caption{Diagramme de Gantt}
+\end{figure}
+\clearpage
+
+\section{Listing des Bugs Encore Présents}
+\begin{enumerate}
+\item Lorsque le robot 2 se déplace sur la case (1,1) avec un LINK, le robot disparaît temporairement puis réapparaît à la nouvelle instruction.
+\item Nous avons identifié un problème dans la partie graphique concernant l'affichage du fichier après l'exécution de la commande DROP. L'image du fichier se place sous la case VIDE, alors qu'elle devrait normalement se superposer à cette case. Ce problème a été difficile à repérer car les dimensions du fichier et de la case sont identiques, ce qui masque entièrement le fichier. Nous avons exploré plusieurs solutions rapides, telles que la modification des dimensions de l'image du fichier, mais aucune n'a fonctionné. La seule solution viable était de créer une nouvelle classe, \texttt{Cellule.java}, dérivée de \texttt{JPanel}, pour gérer l'affichage des objets (robots ou fichiers) sur la case, assurant ainsi que l'image de l'objet en cours d'exécution soit toujours en premier plan.
+\item Certains clics pendant le déroulement pas à pas semblent ne pas être pris en compte correctement, probablement en raison d'un délai non pris en compte.
+\item Les commandes MAKE (FIFO LIFO) ne s'affichent pas correctement car elles sont créées à partir de la classe \texttt{Robot}, ce qui était un problème d'implémentation découvert tardivement dans le projet.
+\end{enumerate}
+
+
+\section{Auto-Évaluation}
+
+L'implication de tous les membres du groupe a été exceptionnelle, avec une présence à 100\% lors de nos réunions et un engagement sérieux envers toutes les tâches qui nous ont été assignées. Chacun d'entre nous a démontré une compréhension solide des responsabilités individuelles, et nous avons travaillé ensemble sans ego mal placé, ce qui a favorisé une collaboration harmonieuse et efficace.
+
+\subsection{Points forts :}
+\begin{itemize}
+\item \textbf{Engagement total :} Tous les membres du groupe ont participé activement aux réunions et aux tâches assignées, démontrant ainsi un engagement fort envers le projet.
+\item \textbf{Compréhension des responsabilités :} Chaque membre du groupe avait une compréhension claire de ses responsabilités individuelles, ce qui a permis une répartition efficace des tâches et une avancée harmonieuse du projet.
+\item \textbf{Collaboration sans ego :} Nous avons travaillé ensemble dans un esprit de collaboration et de soutien mutuel, en mettant de côté nos ego pour le bien du projet.
+\item \textbf{Communication ouverte :} Nous avons maintenu une communication ouverte et transparente, ce qui nous a permis de résoudre rapidement les problèmes et de prendre des décisions éclairées.
+\end{itemize}
+
+\subsection{Points à améliorer :}
+\begin{itemize}
+\item \textbf{Fluence de la communication :} Bien que la communication ait été ouverte, nous aurions pu améliorer la fluidité des échanges d'informations entre les membres du groupe, ce qui aurait pu accélérer l'implémentation du projet.
+\item \textbf{Visualisation du travail collectif :} Une meilleure visualisation du travail collectif aurait pu être bénéfique, notamment en ce qui concerne la gestion des tâches et la compréhension de l'avancement du projet.
+\item \textbf{Compétences techniques :} Nous avons identifié un besoin d'amélioration des compétences techniques, notamment dans les domaines de la programmation orientée objet et de l'utilisation de Git. Un renforcement de ces compétences aurait pu faciliter la mise en œuvre de certaines fonctionnalités.
+\end{itemize}
+
+Dans l'ensemble, notre auto-évaluation met en lumière à la fois nos points forts et nos domaines à améliorer. En reconnaissant ces aspects, nous pouvons nous efforcer de maintenir nos forces tout en travaillant activement à améliorer nos faiblesses pour de futurs projets.
+
+\section{Difficultés Rencontrées}
+Pendant le projet, nous avons été confrontés à plusieurs difficultés :
+
+\begin{itemize}
+\item La transition des valeurs et l'aspect visuel du jeu ont posé des problèmes techniques.
+\item La logique d'initialisation des salles s'est avérée complexe.
+\item Une difficulté rencontrée dans ce projet est la mise en mouvement du robot sur l'interface graphique : nous avons mis en place un tableau à deux dimensions dans lequel on met les coordonnées graphiques de chaque case. Sauf qu'un objet (robot et fichier) se trouvant à la case (1,1) par exemple dans la salle 1 n'a pas les mêmes coordonnées graphiques qu'un objet se trouvant à la case (1,1) dans la salle 2. Il a donc fallu trouver un moyen de résoudre ce problème, et la solution la plus simple est de créer des tableaux à deux dimensions qui ne contiennent uniquement les coordonnées graphiques d'une seule salle. Dans l'idée c'est simple à mettre en place, mais quelques petits bugs difficiles à comprendre car absurdes ont compliqué la tâche, mais nous avons pu correctement implémenter cela dans les heures qui ont suivi l'apparition de l'idée.
+\item La perte d'un membre de notre équipe, Joel Brodusch, a constitué un obstacle supplémentaire. Cela nous a obligés à revoir la répartition des tâches.
+\item Les membres du groupe OctoCodeCrafters ne sont pas dans les mêmes groupes de TD et TP, ce qui a rendu difficile l'organisation des réunions.
+\end{itemize}
+
+\section{Description d'une Solution Utilisée}
+Pour surmonter ces difficultés, nous avons mis en place plusieurs solutions :
+
+\begin{itemize}
+\item Nous avons intensifié notre collaboration en organisant des réunions sur Discord et des sessions de travail après les cours. Certains membres ont même choisi de se retrouver à la faculté pendant les vacances pour consacrer plus de temps au projet.
+\item Nous avons réaffecté le responsable de la gamification au rôle asynchrone, assurant ainsi la continuité du projet malgré le départ de Joel Brodusch.
+\item Pour résoudre les problèmes liés aux coordonnées graphiques des objets sur l'interface, nous avons décidé de créer des tableaux à deux dimensions qui ne contiennent que les coordonnées graphiques d'une seule salle. Bien que cette solution ait présenté quelques difficultés, nous avons pu les surmonter et implémenter avec succès cette solution.
+\item Abdulkarim Ali a remplacé Joel Brodusch. Bien qu'il ait initialement été désorienté, il a rapidement acquis les connaissances nécessaires et a contribué de manière significative au projet.
+\item Nous avons organisé des meets Discord et des réunions en petits groupes de trois membres afin de faciliter la communication et la coordination malgré nos emplois du temps chargés.
+\end{itemize}
+
+Cette approche nous a permis de résoudre les difficultés rencontrées et de maintenir le projet sur la bonne voie.
+
+
+\end{document}
