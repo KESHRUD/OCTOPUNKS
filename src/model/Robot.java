@@ -176,8 +176,9 @@ public class Robot
         if (!this.hasAFile()) {
             throw new RuntimeException("Fatal error: NO FILE IS HELD");
         } else {
+             instruction.drop();
+            
             // Recherche d'une position libre dans la salle
-            instruction.drop();
             int x = 1;
             int y = 1;
     
@@ -221,9 +222,6 @@ public class Robot
             System.out.println("Fichier : y = "+getFile().getPosition().getY());
             System.out.println("Fichier : salle = "+getFile().getPosition().getSalle().getId());
 
-            
-            // Réinitialisation de l'instruction à null
-            instruction = null;
         }
     }
     
