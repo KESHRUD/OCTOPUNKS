@@ -28,6 +28,7 @@ public class Robot
     private ImageIcon imageRobot; // l'image du robot
     protected JLabel robotLabel; // le label qui permet d'afficher l'image
     private InstructionFichier<Integer> instruction;
+    public static int idFichier;
 
     private Jeu jeu;
 
@@ -51,6 +52,7 @@ public class Robot
         this.imageRobot = new ImageIcon(ImageIO.read(new File("images/Exapunks_robot.png")));
         this.robotLabel = new JLabel(this.imageRobot);
         instruction = new InstructionFichier<Integer>();
+        idFichier = 400;
     }
 
     
@@ -715,8 +717,9 @@ public class Robot
         }
     
         // Utilisation des coordonnées trouvées pour créer le fichier
-        nvFichier = new leFichier(1000, new Coordonnees(x, y, getCurrentSalle()));
+        nvFichier = new leFichier(idFichier, new Coordonnees(x, y, getCurrentSalle()));
         nvFichier.setFichier(instruction.make(cmd));
+        idFichier += 200;
     
         return nvFichier;
     }
