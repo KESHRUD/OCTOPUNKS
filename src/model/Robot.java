@@ -177,6 +177,7 @@ public class Robot
             throw new RuntimeException("Fatal error: NO FILE IS HELD");
         } else {
             // Recherche d'une position libre dans la salle
+            instruction.drop();
             int x = 1;
             int y = 1;
     
