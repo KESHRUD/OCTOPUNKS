@@ -73,7 +73,7 @@ public class Octopunks extends JFrame
       // Ajout de la barre de menu à la fenêtre
       this.setJMenuBar(this.barreDeMenu);
 
-      this.lesPages.show(this.contenu, "Jeu");
+      this.lesPages.show(this.contenu, "Menu");
       
       GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
       //Est ce que le mode plein ecran est disponible ?
