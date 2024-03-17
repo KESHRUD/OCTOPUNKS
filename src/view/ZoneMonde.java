@@ -110,7 +110,7 @@ public class ZoneMonde extends JPanel
                             break;
             
             
-            case ENTRE_DEUX_SALLES :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Entree_salle.png"))));
+            case ENTRE_DEUX_SALLES :  image = new JLabel(new ImageIcon(ImageIO.read(new File("images/Carre_bleu.png"))));
                                 image.setSize(widthCellule,heightCellule);
                                 image.setLocation(xGraphique,yGraphique);
                                 this.add(image);
