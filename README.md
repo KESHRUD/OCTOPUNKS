@@ -17,7 +17,8 @@ Octopunks un clône de Exapunks
 	- Modifier la vitesse d'exécution
 	- Affichage des coordonnées des robots
 	- Jeu fini()
-	- Registres des robots 
+	- Registres des robots <img width="1440" alt="octo" src="https://github.com/KESHRUD/OCTOPUNKS/assets/84630495/142effce-7325-4191-80f9-f247516c5e92">
+
 # méta-fichiers : 
 	-Strcutures de données (pile,file,tableau dynamique)
 	-Instructions : MAKE(FIFO-LIFO) GRAB DROP SEEK VOID F COPY TEST EOF WIPE
@@ -32,3 +33,4 @@ Octopunks un clône de Exapunks
 	- Récuperer code assembleur depuis le terminal
 # commandes asynchrones
 	-Implémentation des exécutions asynchrones discrètes 
+<img width="1440" alt="code" src="https://github.com/KESHRUD/OCTOPUNKS/assets/84630495/75051f60-0672-4c2a-9e89-8fffaa8397eb">
