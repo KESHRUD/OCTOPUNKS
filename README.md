@@ -6,6 +6,8 @@ Octopunks un clône de Exapunks
       ~/OCTOPUNKS$ make
 ## pour exécuter :
       ~/OCTOPUNKS$ make launch
+## ou directement :
+      ~/OCTOPUNKS$ make; make launch
 
 # graphique :
 	- Choix du niveau
