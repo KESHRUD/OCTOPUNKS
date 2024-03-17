@@ -1,9 +1,11 @@
 package src.files;
 
+import java.util.Iterator;
+import java.util.ListIterator;
 
 public class InstructionFichier<E> {
     private E register = null;
-    private TypeFichier<E> f = null;
+    private TypeFichier<E> f;
 
     public InstructionFichier() {
     }
@@ -13,15 +15,39 @@ public class InstructionFichier<E> {
         return register;
     }
 
-    
+
+    public TypeFichier<E> getTypeFichier()
+    {
+        return this.f;
+    }
+
     public void setRegister(E elt) {
         register = elt;
     }
    
-   
+    public Iterator<E>getIteratorFichier()
+    {
+        if(f == null)
+        {
+            throw new NullPointerException("f est null");
+        }
+        if(f instanceof Pile<?>) {
+            Pile<E> pile = (Pile<E>) f;
+            return pile.getIterator(0);    
+        }
+        else if(f instanceof File<?>) {
+            File<E> file = (File<E>) f;
+            return file.getIterator(0);
+        }
+        else {
+            TableauDynamique<E> td = (TableauDynamique<E>) f;
+            return td.getIterator();
+        }
+    }
+
     /** Fichier attraper par l'octopunk */
     public void grab(TypeFichier<E> fi) {
-        f = fi;
+        this.f = fi;
     }
 
     /** Fichier poser par l'octopunk */
@@ -56,9 +82,6 @@ public class InstructionFichier<E> {
             return false;
         }
     }
-    
-    
-    
     
     /** Supprime un element du fichier */
     public void void_f() {
@@ -123,7 +146,6 @@ public class InstructionFichier<E> {
         }
     }
 
-    
     /** Deplace le curseur dans le fichier */ /* Condition d'arret ex seek 9999 */
     public  void seek(String curs) {
         if(curs == null)
@@ -185,7 +207,7 @@ public class InstructionFichier<E> {
     /** "Supprime" le fichier */
     public void wipe() {
         if(f == null)
-            throw new NullPointerException();
+            throw new NullPointerException("f est null dans wipe");
 
         if(f instanceof Pile<?>) {
             Pile<E> pile = (Pile<E>) f;
