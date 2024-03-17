@@ -23,11 +23,15 @@ public class ZoneCommandes extends JPanel
     private JButton boutonAutomatique;
     private JButton boutonPas;
     private JButton boutonRalentir;
-    private JButton boutonReset;
     private JButton boutonStop;
     private Timer timer;
+    private Random random;
 
     private int delai = 1000; // délai en millisecondes
+
+    private int vitesse = 100;
+
+    private boolean isRunning;
 
     /**
      * Le modèle de bouton standard est un carré de 60px * 60px,
@@ -43,6 +47,9 @@ public class ZoneCommandes extends JPanel
         this.setLocation((int)(jeu.zoneAssembleur.getX()),(int)(jeu.zoneAssembleur.getHeight()));
         this.setBackground(Color.darkGray);
 
+        this.isRunning = false;
+        this.random = new Random();
+
         this.commandesLabel = new JLabel("Commandes");
         this.commandesLabel.setSize(100,20);
         this.commandesLabel.setLocation(60, 15);
@@ -57,11 +64,9 @@ public class ZoneCommandes extends JPanel
         
         setBoutonAccelerer(jeu);
         setBoutonRalentir(jeu);
-        setBoutonReset(jeu);
 
-
-        this.affichageVitesse = new JLabel("Vitesse : "+ZoneCommandes.this.delai/10 + "%");
-        this.affichageVitesse.setSize(100,20);
+        this.affichageVitesse = new JLabel("Vitesse : "+ZoneCommandes.this.vitesse+"%");
+        this.affichageVitesse.setSize(150,20);
         this.affichageVitesse.setLocation(this.commandesLabel.getX()+this.commandesLabel.getWidth(), this.commandesLabel.getY());
         this.add(this.affichageVitesse);
     }
@@ -69,8 +74,6 @@ public class ZoneCommandes extends JPanel
 
     private void actionBoutonAutomatique(Jeu jeu)
     {
-        Random random = new Random();
-
         // Désactiver la modification de la zone d'assemblage
         jeu.getZoneAssembleur().disableModification();
         jeu.robot1.setLesInstructions(jeu.zoneAssembleur.parse(jeu.zoneAssembleur.getAssembleurRobot1()));
@@ -82,46 +85,56 @@ public class ZoneCommandes extends JPanel
         timer = new Timer(delai, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (index < size) {
+                if (index < size && isRunning) {
                     // Exécuter l'instruction
                     if(random.nextInt(2) == 0)
                     {
                         try {
                             jeu.robot1.executeInstruction();
+                            /*
+                            System.out.println("FR1 : "+ jeu.robot1.getRegistreF());
+                            System.out.println("MR1 : "+ jeu.robot1.getRegistreM());
+                            System.out.println("TR1 : "+ jeu.robot1.getRegistreT());
+                            System.out.println("XR1 : "+ jeu.robot1.getRegistreX());
+                            System.out.println();
+                            */
                         } catch (IOException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
-                        // on fait -1 car le tableau va de 0 à 4 <=> 1-1 à 5-1
-                
+
                         jeu.robot1.moveGraphique(jeu.zoneMonde);
                     } else {
                         try {
                             jeu.robot2.executeInstruction();
+                            /*
+                            System.out.println("FR2 : "+ jeu.robot2.getRegistreF());
+                            System.out.println("MR2 : "+ jeu.robot2.getRegistreM());
+                            System.out.println("TR2 : "+ jeu.robot2.getRegistreT());
+                            System.out.println("XR2 : "+ jeu.robot2.getRegistreX());
+                            System.out.println();
+                            */
+
                         } catch (IOException e1) {
                             // TODO Auto-generated catch block
                             e1.printStackTrace();
                         }
-                        // on fait -1 car le tableau va de 0 à 4 <=> 1-1 à 5-1
                         jeu.robot2.moveGraphique(jeu.zoneMonde);
                     }
                     jeu.zoneMemoire.update();
                     jeu.zoneAssembleur.update();
                 } else {
-                    // Arrêter le timer lorsque toutes les instructions ont été exécutées
+                    // On arrête le timer lorsque toutes les instructions autont été exécutées
                     ((Timer) e.getSource()).stop();
                     jeu.getZoneAssembleur().enableModification();
                 }
             }
         });
-
-        // Démarrer le timer
         timer.start();
     }
 
     private void actionBoutonPas(Jeu jeu) throws IOException
     {
-        Random random = new Random();
         //System.out.println("SSS");
         jeu.getZoneAssembleur().disableModification();
         jeu.robot1.setLesInstructions(jeu.zoneAssembleur.parse(jeu.zoneAssembleur.getAssembleurRobot1()));
@@ -132,7 +145,7 @@ public class ZoneCommandes extends JPanel
             jeu.robot1.executeInstruction();
             // on fait -1 car le tableau va de 0 à 4 <=> 1-1 à 5-1
                 
-            jeu.robot2.moveGraphique(jeu.zoneMonde);
+            jeu.robot1.moveGraphique(jeu.zoneMonde);
         }
         else
         {
@@ -153,10 +166,11 @@ public class ZoneCommandes extends JPanel
         this.boutonAccelerer.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                if(ZoneCommandes.this.delai > 250)
+                if(ZoneCommandes.this.delai > 250 && (ZoneCommandes.this.vitesse <175))
                 {
                     ZoneCommandes.this.delai -= 250;
-                    ZoneCommandes.this.affichageVitesse.setText("Vitesse : "+ZoneCommandes.this.delai/10 + "%");
+                    ZoneCommandes.this.vitesse += 25;
+                    ZoneCommandes.this.affichageVitesse.setText("Vitesse : "+ZoneCommandes.this.vitesse+"%");
                 }
             }
         });
@@ -172,9 +186,8 @@ public class ZoneCommandes extends JPanel
         this.boutonAutomatique.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                // System.out.println("SSS");
+                ZoneCommandes.this.isRunning = true;
                 ZoneCommandes.this.actionBoutonAutomatique(jeu);
-
             }
         });
         this.add(this.boutonAutomatique);
@@ -206,34 +219,15 @@ public class ZoneCommandes extends JPanel
         this.boutonRalentir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                if(ZoneCommandes.this.delai < 2000)
+                if(ZoneCommandes.this.delai < 2000 && (ZoneCommandes.this.vitesse > 25))
                 {
                     ZoneCommandes.this.delai += 250;
-                    ZoneCommandes.this.affichageVitesse.setText("Vitesse : "+ZoneCommandes.this.delai/10 + "%");
+                    ZoneCommandes.this.vitesse -= 25;
+                    ZoneCommandes.this.affichageVitesse.setText("Vitesse : "+ZoneCommandes.this.vitesse+"%");
                 }
             }
         });
         this.add(this.boutonRalentir);
-    }
-
-    private void setBoutonReset(Jeu jeu)
-    {
-        this.boutonReset = new JButton("Reset");
-        this.boutonReset.setSize(boutonSize,boutonSize);
-
-        this.boutonReset.setLocation(this.boutonAutomatique.getX(),this.boutonAutomatique.getY()+boutonReset.getHeight());
-        this.boutonReset.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)
-            {
-                jeu.robot1.setCurrentSalle(jeu.salle1);
-                jeu.robot1.setIndexToUn();
-                jeu.robot2.setPositionX(2);
-                jeu.robot2.setPositionY(1);
-                jeu.robot2.setCurrentSalle(jeu.salle1);
-                jeu.robot2.setIndexToUn();
-            }
-        });
-        this.add(this.boutonReset);
     }
 
     private void setBoutonStop(Jeu jeu)
@@ -245,6 +239,7 @@ public class ZoneCommandes extends JPanel
             public void actionPerformed(ActionEvent e)
             {
                 jeu.zoneAssembleur.enableModification();
+                ZoneCommandes.this.isRunning = false;
             }
         });
         this.add(this.boutonStop);
