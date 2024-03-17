@@ -7,6 +7,7 @@ public class InstructionFichier<E> {
     private E register = null;
     private TypeFichier<E> f;
 
+    /** Initialise une insance InstructionFichier */
     public InstructionFichier() {
     }
 
@@ -15,16 +16,18 @@ public class InstructionFichier<E> {
         return register;
     }
 
-
+    /** Renvoie un fichiers de n'importe quel type */
     public TypeFichier<E> getTypeFichier()
     {
         return this.f;
     }
 
+    /** Renvoie le registre F */
     public void setRegister(E elt) {
         register = elt;
     }
-   
+
+    /** Renvoie un itérateur sur le fichier */
     public Iterator<E>getIteratorFichier()
     {
         if(f == null)
@@ -50,7 +53,7 @@ public class InstructionFichier<E> {
         this.f = fi;
     }
 
-    /** Fichier poser par l'octopunk */
+    /** Fichier poser par le robot */
     public void drop() {
         f = null;
     }
@@ -146,7 +149,7 @@ public class InstructionFichier<E> {
         }
     }
 
-    /** Deplace le curseur dans le fichier */ /* Condition d'arret ex seek 9999 */
+    /** Deplace le curseur dans le fichier */ 
     public  void seek(String curs) {
         if(curs == null)
             throw new NullPointerException();
