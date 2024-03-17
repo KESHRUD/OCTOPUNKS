@@ -6,24 +6,20 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import src.files.File;
-import src.files.Pile;
-import src.files.TableauDynamique;
 import src.files.TypeFichier;
-
 import src.view.Jeu;
 
 
 public class leFichier
 {
-    private Jeu jeu;
-
     private int id; //200 par exemple dans le premier niveau de exapunks
     private TypeFichier<Integer> fichier; //le type de fichier
     private Coordonnees position; //le fichier aussi a une position
 
     private ImageIcon imageFichier; // l'image du fichier
     protected JLabel fichierLabel; // le label qui permet d'afficher l'image
+
+    private Jeu jeu;
 
     /**
      * CONSTRUCTEUR
@@ -43,7 +39,7 @@ public class leFichier
 
         this.position = laPosition;
         occuperChamp(laPosition);
-        laPosition.getSalle().setTheFile(this);
+        laPosition.getSalle().getSalleFiles().add(this);
 
         this.imageFichier = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/image_fichier.png")));
         this.fichierLabel = new JLabel(this.imageFichier);
@@ -81,7 +77,7 @@ public class leFichier
      */
     public void enleverGraphique()
     {
-        this.fichierLabel.setSize(0, 0);
+        this.fichierLabel.setSize(30, 30);
     }
 
     /**
@@ -140,9 +136,7 @@ public class leFichier
         this.fichier = fichier;
     }
 
-    public void setFileOfSalle(){
-        getPosition().getSalle().setTheFile(this);
-    }
+    
 
     /**
      * Permet d'affecter un nouvel identifiant.
