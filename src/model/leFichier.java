@@ -49,16 +49,16 @@ public class leFichier
         this.fichierLabel = new JLabel(this.imageFichier);
     }
 
-    public void afficher()
+    public void afficherGraphique(int idSalle)
     {
-        this.fichierLabel.setSize(20,20);
-        switch(position.getSalle().getId())
+        this.fichierLabel.setSize(40,30);
+        switch(idSalle)
         {
-            case 1 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle1(this.getPosition().getX(), this.getPosition().getY()));
+            case 1 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle1(this.getPosition().getX()-1, this.getPosition().getY()-1));
                         break;
-            case 2 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle2(this.getPosition().getX(), this.getPosition().getY()));
+            case 2 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle2(this.getPosition().getX()-1, this.getPosition().getY()-1));
                         break;
-            case 3 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle3(this.getPosition().getX(), this.getPosition().getY()));
+            case 3 :    setPositionLabel(jeu.getZoneMonde().getCoordonneesGraphiquesSalle3(this.getPosition().getX()-1, this.getPosition().getY()-1));
                         break;
         }
     }
@@ -81,7 +81,7 @@ public class leFichier
      */
     public void enleverGraphique()
     {
-        this.fichierLabel.setIcon(null);
+        this.fichierLabel.setSize(30, 30);
     }
 
     /**
@@ -106,6 +106,11 @@ public class leFichier
     public JLabel getFichierLabel()
     {
         return this.fichierLabel;
+    }
+
+    public ImageIcon getImage()
+    {
+        return this.imageFichier;
     }
 
     /**
