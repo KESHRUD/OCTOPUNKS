@@ -10,10 +10,8 @@ public class Salle
     private int id;
     private List<leFichier> SalleFiles;
     private Map<Coordonnees, Champ> contenu; // Représentation de ce qui se trouve dans la salle
-    private Map<Integer, String> portes; // Représentation des portes numérotées
     private List<Link> liensSortant; //entre 0 et 3 liens Sortant pour chaque salle
     private Link lienEntrant; //1 lien entrant pour chaque Salle sauf pour la premiere
-    private leFichier theFile; //le fichier present dans cette salle
     
     /**
      * CONSTRUCTEUR
@@ -24,10 +22,8 @@ public class Salle
         this.id = id;
         this.contenu = new HashMap<>();
         initialiserContenu();
-        this.portes = new HashMap<>();
         this.liensSortant = new ArrayList<>(3) ;
         this.lienEntrant = lienEntrant;
-        this.theFile = null;
         this.SalleFiles = new ArrayList<>();
     }
 
@@ -39,10 +35,8 @@ public class Salle
         this.id = id;
         this.contenu = new HashMap<>();
         initialiserContenu();
-        this.portes = new HashMap<>();
         liensSortant = new ArrayList<>(3) ;
         this.lienEntrant = null;
-        theFile = null;
     }
 
     /**
@@ -53,14 +47,7 @@ public class Salle
         this.liensSortant.add(lien);
     }
     
-    /**
-     * Permet d'ajouter une porte
-     * @param numeroPorte le numéro de la porte
-     * @param destination la destination de la porte
-     */
-    public void ajouterPorte(int numeroPorte, String destination) {
-        this.portes.put(numeroPorte, destination);
-    }
+    
     
     /**
      * Permet de vérifier si un champ est occupé
@@ -99,20 +86,10 @@ public class Salle
         return this.liensSortant;
     }
 
-    /**
-     * @return les portes de la salle
-     */
-    public Map<Integer, String> getPortes() {
-        return this.portes;
-    }
+    
+    
 
-    /**
-     * @return le fichier présent dans la salle
-     */
-    public leFichier getTheFile() {
-        return this.theFile;
-    }
- 
+    
     /**
      * Permet d'initialiser le contenu de la salle
      */
@@ -165,21 +142,13 @@ public class Salle
         this.liensSortant = liensSortant;
     }
 
-    /**
-     * Modifie la porte.
-     * @param portes la nouvelle porte
-     */
-    public void setPortes(Map<Integer, String> portes) {
-        this.portes = portes;
-    }
+   
 
     /**
      * Modifie le fichier présent dans la salle.
      * @param theFile le nouveau fichier
      */
-    public void setTheFile(leFichier theFile) {
-        this.theFile = theFile;
-    }
+   
     public List<leFichier> getSalleFiles() {
         return SalleFiles;
     }
