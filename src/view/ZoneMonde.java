@@ -17,20 +17,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-
 public class ZoneMonde extends JPanel
 {
     private Jeu jeu;
+    private leFichier file;
 
-    protected int widthCellule;
-    protected int heightCellule;
-    /**
-     * L'espace entre chaque cellule
-     */
+    protected int widthCellule = 20;
+    protected int heightCellule = 20;
+    
+    /** L'espace entre chaque cellule */
     private int espaceEntreCases;
     protected JLabel caseEntree;
 
-    // INUTILE, MAIS PEUT SERVIR
     private int largeurMonde;
     private int longueurMonde;
 
@@ -38,6 +36,8 @@ public class ZoneMonde extends JPanel
     protected Coordonnees[][] salle1_coordonnesGraphiques;
     protected Coordonnees[][] salle2_coordonnesGraphiques;
     protected Coordonnees[][] salle3_coordonnesGraphiques;
+
+    protected TypeCellule[][] lesCellules;
 
     /**
      * Contient les coordonnées graphiques de chaque cellule.
@@ -50,9 +50,10 @@ public class ZoneMonde extends JPanel
      * @param jeu l'instance de la classe jeu dans laquelle se trouve cette classe
      * @throws IOException si une image est mal lue
      */
-    public ZoneMonde(Octopunks octopunks, Jeu jeu)
+    public ZoneMonde(Octopunks octopunks, Jeu jeu) throws IOException
     {
         this.jeu = jeu;
+        this.file = jeu.file;
         this.setLayout(null);
 
         this.setSize((int)octopunks.getDimension().getWidth()*3/4, (int)octopunks.getDimension().getHeight()*5/6);
@@ -62,12 +63,21 @@ public class ZoneMonde extends JPanel
         this.coordonneesCases = null; // initialisation dans loadNiveau()
         this.espaceEntreCases = 30;
 
-        setDimensionsMonde();
+        this.lesCellules = null;
 
-        loadNiveau(jeu.file);
+        setDimensionsMonde();
+        setLesCellules();
+
+        setCoordonneesGraphiques();
+        // setLesImages();
 
         setSousTableauxCoordonneesSalles();
-
+        try {
+            afficherMonde();
+        } catch (IOException e) {
+            // Gérer l'exception ici, par exemple afficher un message d'erreur ou effectuer une autre action appropriée
+            e.printStackTrace(); // Affichez la trace de la pile pour faciliter le débogage
+        }
     }
 
     /**
@@ -77,8 +87,12 @@ public class ZoneMonde extends JPanel
      * @param yGraphique la position de la cellule sur l'écran selon l'axe y
      * @throws IOException si l'image de la cellule n'a pas pu être lue
      */
-    public void afficherCellule(TypeCellule typeCellule, int xGraphique, int yGraphique, leFichier file) throws IOException
+    public void afficherCellule(TypeCellule typeCellule, int xGraphique, int yGraphique) throws IOException
     {
+        if(typeCellule == null)
+        {
+            throw new NullPointerException("typeCellule est null.");
+        }
         JLabel image;
         this.widthCellule = 20;
         this.heightCellule = 20;
@@ -122,7 +136,7 @@ public class ZoneMonde extends JPanel
                             this.add(image);
                             break;
 
-            case FICHIER :  image = file.getFichierLabel();
+            case FICHIER :  image = this.file.getFichierLabel();
                             image.setBounds(xGraphique,yGraphique,widthCellule,heightCellule);            
                             this.add(image);
 
@@ -152,6 +166,71 @@ public class ZoneMonde extends JPanel
                         break;
         }
         
+    }
+
+    public void afficherMonde() throws IOException
+    {
+        int ligne = 0;
+        int colonne = 0;
+
+        for(ligne = 0; ligne < getLongueurMonde(); ligne++)
+        {
+            for(colonne = 0; colonne < getLargeurMonde(); colonne++)
+            {
+                afficherCellule(lesCellules[ligne][colonne], coordonneesCases[ligne][colonne].getXGraphique(), coordonneesCases[ligne][colonne].getYGraphique());
+            }
+        }
+    }
+
+    public TypeCellule[][] getCellulesSalle1()
+    {
+        TypeCellule[][] cellulesSalle1 = new TypeCellule[5][5];
+        
+        int y = 0;
+        int x = 0;
+
+        for(y = 1 ; y <= 5; y++)
+        {
+            for(x = 1; x <= 5; x++)
+            {
+                cellulesSalle1[y][x] = lesCellules[y][x];
+            }
+        }
+        return cellulesSalle1;
+    }
+
+    public TypeCellule[][] getCellulesSalle2()
+    {
+        TypeCellule[][] cellulesSalle2 = new TypeCellule[5][5];
+        
+        int y = 0;
+        int x = 0;
+
+        for(y = 1 ; y <= 5; y++)
+        {
+            for(x = 1; x <= 5; x++)
+            {
+                cellulesSalle2[y][x] = lesCellules[y+8][x];
+            }
+        }
+        return cellulesSalle2;
+    }
+
+    public TypeCellule[][] getCellulesSalle3()
+    {
+        TypeCellule[][] cellulesSalle3 = new TypeCellule[5][5];
+        
+        int y = 0;
+        int x = 0;
+
+        for(y = 1 ; y <= 5; y++)
+        {
+            for(x = 1; x <= 5; x++)
+            {
+                cellulesSalle3[y][x] = lesCellules[y+16][x];
+            }
+        }
+        return cellulesSalle3;
     }
 
     private Coordonnees getCoordonnees(int x, int y)
@@ -255,15 +334,37 @@ public class ZoneMonde extends JPanel
         return this.longueurMonde;
     }
 
-    public void setFile(leFichier file)
-    {
-        this.jeu.file = file;
-    }
-
     /**
      * Permet d'afficher le niveau dans la page de jeu.
      */
-    private void loadNiveau(leFichier file)
+    private void setLesCellules()
+    {
+        try {
+            String fichierJeuTextuel = "levels/Niveau1.txt";
+            
+            this.lesCellules = new TypeCellule[getLongueurMonde()][getLargeurMonde()];
+
+            BufferedReader fichierBuffer = new BufferedReader(new FileReader(fichierJeuTextuel));
+            String ligneFichier;
+
+            int ligne = 0;
+
+            while ((ligneFichier = fichierBuffer.readLine()) != null)
+            {
+                int colonne = 0;
+                for(colonne = 0; colonne < ligneFichier.length(); colonne++)
+                {   
+                    this.lesCellules[ligne][colonne] = TypeCellule.fromSymbol(ligneFichier.charAt(colonne));
+                }
+                ligne++;
+            }
+        fichierBuffer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setCoordonneesGraphiques()
     {
         try {
             String fichierJeuTextuel = "levels/Niveau1.txt";
@@ -290,13 +391,10 @@ public class ZoneMonde extends JPanel
                 x = 0;
 
                 for(colonne = 0; colonne < ligneFichier.length(); colonne++)
-                {
-                    char symbol = ligneFichier.charAt(colonne);
+                {   
+                    this.coordonneesCases[ligne][colonne] = new Coordonnees(x, y, xGraphique, yGraphique, null);
 
-                    TypeCellule typeCellule = TypeCellule.fromSymbol(symbol);
-                        
-                    this.coordonneesCases[ligne][colonne] = new Coordonnees(x, y, xGraphique, yGraphique, salle);
-                    afficherCellule(typeCellule,xGraphique,yGraphique, file);
+                    //afficherCellule(this.lesCellules[ligne][colonne],xGraphique,yGraphique);
                     xGraphique+=espaceEntreCases;
                     x++;
                 }
@@ -350,6 +448,20 @@ public class ZoneMonde extends JPanel
         }
     }
 
+    public void setCellule(TypeCellule cellule, int ligne, int colonne)
+    {
+        this.lesCellules[ligne][colonne] = cellule;
+    }
+
+    /**
+     * Permet de définir le fichier
+     * @param file le fichier à affecter
+     */
+    public void setFile(leFichier file)
+    {
+        this.file = file;
+    }
+
     /**
      * Permet d'initialiser 3 sous-tableaux afin de pouvoir se déplacer dans chaque
      * salle plus facilement.
@@ -383,4 +495,5 @@ public class ZoneMonde extends JPanel
             
         }
     }
+
 }
